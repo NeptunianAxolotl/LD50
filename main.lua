@@ -57,7 +57,7 @@ local util = require("include/util")
 function love.load(arg)
 	if arg[#arg] == "-debug" then require("mobdebug").start() end
 	local major, minor, revision, codename = love.getVersion()
-	--print(string.format("Version %d.%d.%d - %s", major, minor, revision, codename))
+	print(string.format("Version %d.%d.%d - %s", major, minor, revision, codename))
 
 	love.graphics.setBackgroundColor(150/255, 150/225, 150/255, 1)
 

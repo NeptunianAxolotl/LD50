@@ -159,7 +159,7 @@ function api.Draw()
 		if not d then break end
 		d.f()
 	end
-	ShadowHandler.DrawViewShadow(self.cameraTransform)
+	ShadowHandler.DrawVisionShadow(self.cameraTransform)
 	
 	local windowX, windowY = love.window.getMode()
 	if windowX/windowY > 16/9 then

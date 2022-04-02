@@ -3,6 +3,7 @@ local Shadows = require("shadows")
 local LightWorld = require("shadows.LightWorld")
 local Light = require("shadows.Light")
 local Body = require("shadows.Body")
+local Star = require("shadows.Star")
 local PolygonShadow = require("shadows.ShadowShapes.PolygonShadow")
 local CircleShadow = require("shadows.ShadowShapes.CircleShadow")
 
@@ -31,22 +32,22 @@ function api.DrawGroundShadow(cameraTransform)
 	DrawShadowWorld(self.groundShadow, cameraTransform)
 end
 
-function api.DrawViewShadow(cameraTransform)
-	DrawShadowWorld(self.viewShadow, cameraTransform)
+function api.DrawVisionShadow(cameraTransform)
+	DrawShadowWorld(self.visionShadow, cameraTransform)
 end
 
 function api.Update(dt)
 	local mx, my = love.mouse.getPosition()
 	self.mouseLightGround:SetPosition(mx, my, 0.2)
-	self.mouseLightView:SetPosition(mx, my, 0.2)
+	self.mouseLightVision:SetPosition(mx, my, 0.2)
 end
 
-function api.ViewResize(width, height)
+function api.VisionResize(width, height)
 	if self.groundShadow then
 		self.groundShadow:Resize(width, height)
 	end
-	if self.viewShadow then
-		self.viewShadow:Resize(width, height)
+	if self.visionShadow then
+		self.visionShadow:Resize(width, height)
 	end
 end
 
@@ -67,19 +68,22 @@ function api.Initialize(parentWorld)
 	
 	-- Create a light world
 	self.groundShadow = LightWorld:new()
-	self.viewShadow = LightWorld:new()
+	self.visionShadow = LightWorld:new()
+	
+	self.groundShadow:SetColor(80, 80, 80)
+	self.visionShadow:SetColor(80, 80, 80)
 
 	-- Create a light on the light world, with radius 300
 	self.mouseLightGround = Light:new(self.groundShadow, 800)
-	self.mouseLightView = Light:new(self.viewShadow, 600)
+	self.mouseLightVision = Light:new(self.visionShadow, 600)
 
 	-- Set the light's color to white
-	self.mouseLightGround:SetColor(255, 255, 255, 255)
-	self.mouseLightView:SetColor(255, 255, 255, 255)
+	self.mouseLightGround:SetColor(200, 200, 200)
+	self.mouseLightVision:SetColor(200, 200, 200)
 
 	-- Set the light's position
 	self.mouseLightGround:SetPosition(400, 400)
-	self.mouseLightView:SetPosition(400, 400)
+	self.mouseLightVision:SetPosition(400, 400)
 
 	-- Create a body
 	--newBody = Body:new(self.groundShadow)
