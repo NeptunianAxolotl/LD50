@@ -32,6 +32,11 @@ local function NewGuy(self, physicsWorld)
 		self.animTime = self.animTime + dt
 	end
 	
+	function self.GetPos()
+		local bx, by = self.body:getPosition()
+		return {bx, by}
+	end
+	
 	function self.Draw(drawQueue)
 		local bx, by = self.body:getPosition()
 		drawQueue:push({y=by; f=function()

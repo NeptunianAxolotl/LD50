@@ -30,6 +30,10 @@ local function DoGuyMovement()
 	end
 end
 
+function api.GetViewRestriction()
+	return {{pos = self.playerGuy.GetPos(), radius = 800}}
+end
+
 function api.Update(dt)
 	DoGuyMovement()
 	self.playerGuy.Update(dt)

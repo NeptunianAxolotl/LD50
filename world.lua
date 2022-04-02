@@ -149,7 +149,7 @@ function api.Update(dt, realDt)
 	EffectsHandler.Update(dt)
 	GameHandler.Update(dt)
 	
-	local cameraX, cameraY, cameraScale = Camera.UpdateCameraToViewPoints(dt, GameHandler.GetViewRestriction(), 550, 0.98, 0.98)
+	local cameraX, cameraY, cameraScale = Camera.UpdateCameraToViewPoints(dt, PlayerHandler.GetViewRestriction(), 0.75, 0.75)
 	Camera.UpdateTransform(self.cameraTransform, cameraX, cameraY, cameraScale)
 end
 
@@ -217,8 +217,8 @@ function api.Initialize()
 	
 	-- Note that the camera pins only function for these particular second entries.
 	Camera.Initialize({
-		pinX = {875, 0.5},
-		pinY = {900, 1},
+		--pinX = {875, 0.5},
+		--pinY = {900, 1},
 		minScale = 1000,
 		initPos = {875, 500}
 	})

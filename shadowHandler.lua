@@ -89,28 +89,6 @@ function api.Initialize(parentWorld)
 	-- Set the light's position
 	self.mouseLightGround:SetPosition(400, 400)
 	self.mouseLightVision:SetPosition(400, 400)
-
-	-- Create a body
-	--newBody = Body:new(self.groundShadow)
-	--
-	---- Set the body's position and rotation
-	--newBody:SetPosition(300, 300)
-	--newBody:SetAngle(-15)
-	--
-	------ Create a polygon shape on the body with the given points
-	----PolygonShadow:new(newBody, -10, -10, 10, -10, 10, 10, -10, 10)
-	--
-	---- Create a circle shape on the body at (-30, -30) with radius 16
-	--CircleShadow:new(newBody, 90, 400, 16)
-
-	---- Create a second body
-	--newBody2 = Body:new(self.groundShadow)
-	--
-	---- Set the second body's position
-	--newBody2:SetPosition(350, 350)
-	--
-	---- Add a polygon shape to the second body
-	--PolygonShadow:new(newBody2, -20, -20, 20, -20, 20, 20, -20, 20)
 end
 
 return api
