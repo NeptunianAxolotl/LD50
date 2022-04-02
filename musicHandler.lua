@@ -1,101 +1,108 @@
+
 local IterableMap = require("include/IterableMap")
+local util = require("include/util")
 
 local SoundHandler = require("soundHandler")
+local soundFiles = util.LoadDefDirectory("sounds/defs")
 
 local api = {}
+local world
 
 local font = love.graphics.newFont(70)
 
-local tracks = {
-	intro = {id = 'a', sound = 'crocodial_a', duration = 6.04, canLoop = false},
-	normal = {id = 'b', sound = 'crocodial_b', duration = 12.170, canLoop = true},
-	late = {id = 'c', sound = 'crocodial_c', duration = 12.170, canLoop = true},
-	boss = {id = 'd', sound = 'crocodial_d', duration = 12.170, canLoop = true}
+-- First eligible tracks are used as start music
+local trackList = {
+	'01_drums',
 }
 
-local fadeRate = 1
+local fallbackTrack = {
+	'01_solo_fake',
+	'01_solo_fake',
+	'01_solo_fake',
+}
 
-local currentTrack = nil
-local queuedTracks = {}
+local currentTrack = {}
+local trackRunning = false
+local initialDelay = true
 local currentTrackRemaining = 0
+local trackParity = 1
 
-function api.SwitchTrack(id)
-	if id == 'none' then 
-		queuedTracks = {false}
-		return true
+local function GetTracks()
+	local foundTrack = {}
+	
+	for i = 1, #trackList do
+		local track = soundFiles[trackList[i]]
+		if track.handler and not foundTrack[track.handler] then
+			foundTrack[track.handler] = {sound = trackList[i]}
+		end
 	end
-	if not tracks[id] then
-		return false
+	
+	for i = 1, 3 do
+		if not foundTrack[i] then
+			foundTrack[i] = {sound = fallbackTrack[i]}
+		end
 	end
-	queuedTracks = {tracks[id]}
-	return true
+	util.Permute(trackList)
+	
+	return foundTrack
 end
 
-function api.QueueTrack(id)
-	if id == 'none' then 
-		queuedTracks[#queuedTracks+1] = {false}
-		return true
-	end
-	if not tracks[id] then
-		return false
-	end
-	queuedTracks[#queuedTracks+1] = tracks[id]
-	return true
+function api.StopCurrentTrack(delay)
+	currentTrackRemaining = delay or 0
 end
 
-function api.StopCurrentTrack()
-	currentTrackRemaining = 0
+function api.SetCurrentTrackFadeTime(fadeTime)
+	if trackRunning then
+		for i = 1, #currentTrack do
+			SoundHandler.SetSoundFade(currentTrack[i].sound, false, 1/fadeTime)
+		end
+	end
 end
 
 function api.Update(dt)
-	if currentTrack then
-		currentTrackRemaining = currentTrackRemaining - dt
-		if currentTrackRemaining < 0 then
-			if #queuedTracks > 0 then
-				SoundHandler.StopSound(currentTrack.sound .. '_track' .. currentTrack.id, false)
-				currentTrack = queuedTracks[1]
-				for i = 1, #queuedTracks-1 do
-					queuedTracks[i] = queuedTracks[i+1]
-				end
-				queuedTracks[#queuedTracks] = nil
-				if currentTrack then 
-					SoundHandler.PlaySound(currentTrack.sound, currentTrack.canLoop, '_track' .. currentTrack.id, fadeRate, fadeRate, 0)
-				end
-			else
-				if not currentTrack.canLoop then
-					SoundHandler.StopSound(currentTrack.sound .. '_track' .. currentTrack.id, false)
-					currentTrack = false
-				end
-			end
-			currentTrackRemaining = currentTrack and currentTrack.duration or 0
+	if initialDelay then
+		initialDelay = initialDelay - dt
+		if initialDelay < 0 then
+			initialDelay = false
 		end
-	else
-		if #queuedTracks > 0 then
-			currentTrack = queuedTracks[1]
-			for i = 1, #queuedTracks-1 do
-				queuedTracks[i] = queuedTracks[i+1]
+		return
+	end
+	currentTrackRemaining = (currentTrackRemaining or 0) - dt
+	if currentTrackRemaining < 0 then
+		if world.MusicEnabled() then
+			if trackRunning then
+				for i = 1, #currentTrack do
+					SoundHandler.StopSound(currentTrack[i].sound, trackParity)
+				end
 			end
-			queuedTracks[#queuedTracks] = nil
-			if currentTrack then
-				SoundHandler.PlaySound(currentTrack.sound, currentTrack.canLoop, '_track' .. currentTrack.id, 100, fadeRate, 0)
-			end
-			currentTrackRemaining = currentTrack and currentTrack.duration or 0
-		else
+			trackParity = 3 - trackParity
+			currentTrack = GetTracks()
 			currentTrackRemaining = 0
+			for i = 1, 3 do
+				currentTrackRemaining = math.max(currentTrackRemaining, soundFiles[currentTrack[i].sound].duration or Global.DEFAULT_MUSIC_DURATION)
+			end
+			currentTrackRemaining = currentTrackRemaining - Global.CROSSFADE_TIME
+			trackRunning = true
+			for i = 1, #currentTrack do
+				SoundHandler.PlaySound(currentTrack[i].sound, trackParity, false, 1 / Global.CROSSFADE_TIME)
+			end
+		elseif trackRunning then
+			for i = 1, #currentTrack do
+				SoundHandler.StopSound(currentTrack[i].sound, trackParity)
+			end
+			trackRunning = false
 		end
 	end
 end
 
-function api.Draw(x,y)
-	love.graphics.setColor(1, 0, 0, 1)
-	love.graphics.setFont(font)
-	love.graphics.print(currentTrack and currentTrack.id or (currentTrack == false and '0' or '-'),x,y, 0, 1, 1)
-	love.graphics.print(#queuedTracks > 0 and (queuedTracks[1] == false and '0' or queuedTracks[1].id) or '-',x,y + 100, 0, 1, 1)
-end
-
-function api.Initialize()
-	api.SwitchTrack('none')
+function api.Initialize(newWorld)
+	world = newWorld
 	api.StopCurrentTrack()
+	initialDelay = 3
+	for i = 1, #trackList do
+		SoundHandler.LoadSound(trackList[i], 1)
+		SoundHandler.LoadSound(trackList[i], 2)
+	end
 end
 
 return api

@@ -9,20 +9,23 @@ local sin = math.sin
 -- Vector funcs
 --------------------------------------------------
 
-function util.DistSq(x1, y1, x2, y2)
-	return (x1 - x2)*(x1 - x2) + (y1 - y2)*(y1 - y2)
-end
-
-function util.Dist(x1, y1, x2, y2)
-	return sqrt(util.DistSq(x1,y1,x2,y2))
-end
-
 function util.DistSqVectors(u, v)
 	return util.DistSq(u[1], u[2], v[1], v[2])
 end
 
 function util.DistVectors(u, v)
 	return util.Dist(u[1], u[2], v[1], v[2])
+end
+
+function util.DistSq(x1, y1, x2, y2)
+	if y2 then
+		return (x1 - x2)*(x1 - x2) + (y1 - y2)*(y1 - y2)
+	end
+	return util.DistSqVectors(x1, y1)
+end
+
+function util.Dist(x1, y1, x2, y2)
+	return sqrt(util.DistSq(x1,y1,x2,y2))
 end
 
 function util.Dist3D(x1,y1,z1,x2,y2,z2)
@@ -115,7 +118,7 @@ end
 
 -- The normal of v1 onto v2. Returns such that v1 = normal + projection
 function util.Normal(v1, v2)
-	local projection = Project(v1, v2)
+	local projection = util.Project(v1, v2)
 	return util.Subtract(v1, projection), projection
 end
 
@@ -258,6 +261,20 @@ function util.DistanceToBoundedLineSq(point, line)
 	return util.AbsValSq(util.Subtract(startToPos, normal)), normalFactor
 end
 
+function util.DistanceToBoundedLine2(point, line)
+	local startToPos = util.Subtract(point, line[1])
+	local startToEnd = util.Subtract(line[2], line[1])
+	local normal, projection = util.Normal(startToPos, startToEnd)
+	local projFactor = util.Dot(projection, startToEnd)
+	if projFactor < 0 then
+		return math.min(util.Dist(line[1], point), util.Dist(line[2], point))
+	end
+	if math.sqrt(projFactor) > util.AbsVal(startToEnd) then
+		return math.min(util.Dist(line[1], point), util.Dist(line[2], point))
+	end
+	return util.AbsVal(normal)
+end
+
 function util.DistanceToBoundedLine(point, line)
 	local distSq, normalFactor = util.DistanceToBoundedLineSq(point, line)
 	return sqrt(distSq), normalFactor
@@ -287,7 +304,7 @@ end
 -- Circles
 
 function util.PosInCircle(pos1, pos2, radius)
-	local distSq = util.DistSqVectors(pos1, pos2)
+	local distSq = util.DistSq(pos1, pos2)
 	if distSq <= radius*radius then
 		return true, distSq
 	end
@@ -437,7 +454,31 @@ end
 -- Nice Functions
 
 function util.SmoothZeroToOne(value, factor)
-	return 1 / (1 + math.exp( - factor * (value - 0.5)))
+	local minVal = 1 / (1 + math.exp( - factor * (-0.5)))
+	local maxVal = 1 / (1 + math.exp( - factor * (0.5)))
+	factor = factor or 1
+	return (1 / (1 + math.exp( - factor * (value - 0.5))) - minVal) / (maxVal - minVal)
+end
+
+function util.SmoothStep(startRange, endRange, value, factor)
+	if value < startRange then
+		return 0
+	end
+	if value > endRange then
+		return 1
+	end
+	value = (value - startRange)/(endRange - startRange)
+	return util.SmoothZeroToOne(value, factor)
+end
+
+function util.Round(x, near)
+	near = near or 1
+	return math.floor((x + near*0.5)/near)*near
+end
+
+function util.RoundDown(x, near)
+	near = near or 1
+	return math.floor(x/near)*near
 end
 
 --------------------------------------------------
@@ -451,7 +492,7 @@ function util.SecondsToString(seconds, dashForEmpty)
 	if seconds <= 0 then
 		return "0:00"
 	end
-	local hours = math.floor(seconds/3600)			
+	local hours = math.floor(seconds/3600)
 	local minutes = math.floor(seconds/60)%60
 	local seconds = math.floor(seconds)%60
 	
@@ -519,6 +560,18 @@ function util.CopyTable(tableToCopy, deep, appendTo)
 		else
 			copy[key] = value
 		end
+	end
+	return copy
+end
+
+--------------------------------------------------
+--------------------------------------------------
+-- Array Utilities
+
+function util.ScaleArray(arrayToScale, scalar)
+	local copy = {}
+	for i = 1, #arrayToScale do
+		copy[i] = arrayToScale[i] * scalar
 	end
 	return copy
 end

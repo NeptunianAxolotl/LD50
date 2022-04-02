@@ -1,3 +1,5 @@
+
+local util = require("include/util")
 local IterableMap = {}
 
 function IterableMap.New()
@@ -71,6 +73,7 @@ end
 function IterableMap.Get(self, key)
 	return self.dataByKey[key]
 end
+
 function IterableMap.Set(self, key, data)
 	if not self.indexByKey[key] then
 		IterableMap.Add(self, key, data)
@@ -134,6 +137,23 @@ function IterableMap.Apply(self, funcToApply, ...)
 	end
 end
 
+-- Does the function until a result is found.
+function IterableMap.GetFirstSatisfies(self, funcName, ...)
+	local i = 1
+	while i <= self.indexMax do
+		local key = self.keyByIndex[i]
+		local found, toRemove = self.dataByKey[key][funcName](...)
+		if found then
+			return self.dataByKey[key]
+		elseif toRemove then
+			-- Return true with second argument to remove element
+			IterableMap.Remove(self, key)
+		else
+			i = i + 1
+		end
+	end
+end
+
 function IterableMap.ApplySelf(self, funcName, ...)
 	local i = 1
 	while i <= self.indexMax do
@@ -183,6 +203,10 @@ function IterableMap.GetDataByIndex(self, index)
 		return self.dataByKey[self.keyByIndex[index]]
 	end
 	return false
+end
+
+function IterableMap.Print(self)
+	util.PrintTable(self.dataByKey)
 end
 
 return IterableMap

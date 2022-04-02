@@ -25,7 +25,7 @@ end
 
 
 function self.Draw()
-	Resources.DrawAnimation("test_anim", 100, 100, animDt)
+	Resources.DrawAnimation("test_anim", 500, 500, animDt)
 end
 
 return self

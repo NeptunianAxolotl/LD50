@@ -156,6 +156,14 @@ end
 -- Drawing Functions
 --------------------------------------------------
 
+function self.SetTexture(mesh, name)
+	if not self.images[name] then
+		print("Invalid SetTexture ", name)
+		return
+	end
+	mesh:setTexture(self.images[name].image)
+end
+
 function self.DrawImage(name, x, y, rotation, alpha, scale, color)
 	if not self.images[name] then
 		print("Invalid DrawImage ", name)
@@ -163,7 +171,12 @@ function self.DrawImage(name, x, y, rotation, alpha, scale, color)
 	end
 	
 	rotation = rotation or 0
-	scale = scale or 1
+	local scaleX, scaleY = scale, scale
+	if type(scale) == "table" then
+		scaleX, scaleY = scale[1], scale[2]
+	end
+	scaleX = scaleX or 1
+	scaleY = scaleY or 1
 	
 	love.graphics.setColor(
 		(color and color[1]) or 1,
@@ -173,7 +186,7 @@ function self.DrawImage(name, x, y, rotation, alpha, scale, color)
 	)
 	
 	local data = self.images[name]
-	love.graphics.draw(data.image, x, y, rotation, data.xScale*scale, data.yScale*scale, data.xOffset, data.yOffset, 0, 0)
+	love.graphics.draw(data.image, x, y, rotation, data.xScale*scaleX, data.yScale*scaleY, data.xOffset, data.yOffset, 0, 0)
 end
 
 function self.DrawIsoImage(name, x, y, direction, alpha, scale, color)

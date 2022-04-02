@@ -36,13 +36,13 @@ function externalFunc.GetFont()
 end
 
 --local FONT = "FreeSansBold"
-local FONT = "alagard"
+local FONT = "RBNo3.1-Book.otf" -- https://freefontsfamily.com/rbno3-font-free-download/
 
 function externalFunc.Load()
-	hugeFont  = love.graphics.newFont('include/fonts/' .. FONT .. '.ttf', 36)
-	bigFont   = love.graphics.newFont('include/fonts/' .. FONT .. '.ttf', 24)
-	medFont   = love.graphics.newFont('include/fonts/' .. FONT .. '.ttf', 18)
-	smallFont = love.graphics.newFont('include/fonts/' .. FONT .. '.ttf', 14)
+	hugeFont  = love.graphics.newFont('include/fonts/' .. FONT, 36)
+	bigFont   = love.graphics.newFont('include/fonts/' .. FONT, 24)
+	medFont   = love.graphics.newFont('include/fonts/' .. FONT, 18)
+	smallFont = love.graphics.newFont('include/fonts/' .. FONT, 14)
 end
 
 return externalFunc
