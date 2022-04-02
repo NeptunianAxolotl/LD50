@@ -5,6 +5,7 @@ local TerrainHandler = require("terrainHandler")
 
 local util = require("include/util")
 local InventoryUtil = require("utilities/inventory")
+local ItemAction = require("defs/itemActions")
 
 local NewGuy = require("objects/guy")
 local ItemDefs = util.LoadDefDirectory("defs/items")
@@ -50,13 +51,13 @@ local function ActionCallback(feature, action, item, success)
 	if action == "collect" then
 		for i = 2, #self.inventory do
 			if self.inventory[i] == "empty" then
-				self.inventory[i] = feature.GetCollectItem()
+				self.inventory[i] = feature.GetDef().collectAs
 				return true
 			end
 		end
 		return false
 	end
-	if action == "drop" then
+	if action == "drop" or action == "burn" then
 		if not (self.activeItem and self.inventory[self.activeItem] == item) then
 			self.activeItem = false
 			return false
@@ -84,7 +85,13 @@ function api.Update(dt)
 			if self.hoveredItem then
 				self.inventory[self.selectedItem], self.inventory[self.hoveredItem] = self.inventory[self.hoveredItem], self.inventory[self.selectedItem]
 			elseif self.hoveredFeature then
-				
+				local itemAction = ItemAction.GetItemAction(self.inventory[self.selectedItem], self.hoveredFeature)
+				if itemAction then
+					self.playerGuy.SetMoveGoal(
+						self.world.GetMousePosition(), self.hoveredFeature.GetRadius() + Global.DROP_LEEWAY,
+						self.hoveredFeature, itemAction, self.inventory[self.selectedItem], ActionCallback)
+					self.activeItem = self.selectedItem
+				end
 			else
 				self.playerGuy.SetMoveGoal(self.world.GetMousePosition(), 50, false, "drop", self.inventory[self.selectedItem], ActionCallback)
 				self.activeItem = self.selectedItem
@@ -122,10 +129,10 @@ function api.MousePressedWorld(mx, my, button)
 	end
 	
 	local featurePos = self.hoveredFeature.GetPos()
-	if self.hoveredFeature.GetCollectItem() then
-		self.playerGuy.SetMoveGoal(featurePos, self.hoveredFeature.GetRadius() + 50, self.hoveredFeature, "collect", false, ActionCallback)
+	if self.hoveredFeature.GetDef().collectAs then
+		self.playerGuy.SetMoveGoal(featurePos, self.hoveredFeature.GetRadius() + Global.DROP_LEEWAY, self.hoveredFeature, "collect", false, ActionCallback)
 	else
-		self.playerGuy.SetMoveGoal(featurePos, self.hoveredFeature.GetRadius() + 50)
+		self.playerGuy.SetMoveGoal(featurePos, self.hoveredFeature.GetRadius() + Global.DROP_LEEWAY)
 	end
 end
 
@@ -148,6 +155,10 @@ function api.DrawInterface()
 	self.hoveredFeature = false
 	if not self.hoveredItem then
 		DrawHoveredFeature()
+	end
+	if self.selectedItem then
+		local mousePos = self.world.GetMousePositionInterface()
+		Resources.DrawImage(ItemDefs[self.inventory[self.selectedItem]].image, mousePos[1], mousePos[2], false, 0.6)
 	end
 end
 

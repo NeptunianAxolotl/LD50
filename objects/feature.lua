@@ -8,9 +8,12 @@ local function NewFeature(self, physicsWorld, world)
 	-- pos
 	self.animTime = 0
 	local def = self.def
+	if def.initData then
+		self = util.CopyTable(def.initData, true, self)
+	end
 	
 	self.body = love.physics.newBody(physicsWorld, self.pos[1], self.pos[2], "static")
-	if self.collide then
+	if def.collide then
 		self.shape = love.physics.newCircleShape(def.radius)
 		self.fixture = love.physics.newFixture(self.body, self.shape)
 	end
@@ -18,7 +21,6 @@ local function NewFeature(self, physicsWorld, world)
 	if def.shadowRadius then
 		self.shadow = ShadowHandler.AddCircleShadow(def.shadowRadius)
 	end
-	
 	if def.lightFunc then
 		self.light = ShadowHandler.AddLight()
 	end
@@ -32,8 +34,8 @@ local function NewFeature(self, physicsWorld, world)
 		return def.radius
 	end
 	
-	function self.GetCollectItem()
-		return def.collectAs
+	function self.GetDef()
+		return def
 	end
 	
 	function self.IsDead()

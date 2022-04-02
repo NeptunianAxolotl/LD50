@@ -4,6 +4,7 @@ local Resources = require("resourceHandler")
 local Font = require("include/font")
 local ShadowHandler = require("shadowHandler")
 local ItemDefs = util.LoadDefDirectory("defs/items")
+local ItemAction = require("defs/itemActions")
 
 local DEF = {
 	density = 1,
@@ -20,11 +21,16 @@ local function DoMoveGoalAction(self)
 		if ActionCallback(feature, action, item, true) then
 			TerrainHandler.SpawnFeature(ItemDefs[item].dropAs, actionPos)
 		end
-	end
-	if action == "collect" then
+	elseif action == "collect" then
 		if ActionCallback(feature, action, item, not feature.IsDead()) then
 			feature.Destroy()
 		end
+	elseif feature and item and not feature.IsDead() then
+		if ActionCallback(feature, action, item, not feature.IsDead()) then
+			ItemAction.DoItemToFeature(feature, action, item)
+		end
+	else
+		ActionCallback(feature, action, item, false)
 	end
 end
 

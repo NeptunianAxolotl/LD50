@@ -30,8 +30,8 @@ end
 
 function api.AddLight()
 	local light = {
-		ground = Light:new(self.groundShadow, 800),
-		vision = Light:new(self.visionShadow, 600),
+		ground = Star:new(self.groundShadow, 800),
+		vision = Star:new(self.visionShadow, 600),
 	}
 	
 	light.ground:SetColor(255, 255, 255)

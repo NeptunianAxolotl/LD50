@@ -14,6 +14,7 @@ local globals = {
 	INVENTORY_SLOTS = 7,
 	
 	MOVE_SPEED = 88,
+	DROP_LEEWAY = 70,
 }
 
 return globals

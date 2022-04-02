@@ -57,7 +57,7 @@ function api.DrawInventoryBar(world, inventory, selectedItem, activeItem, ItemDe
 		local item = inventory[i]
 		if item ~= "empty" then
 			local itemDef = ItemDefs[item]
-			Resources.DrawImage(itemDef.image, startX + i*(boxSize + boxSpacing) + boxSize*0.5, startY + boxSize*0.5, false, (i == selectedItem and 0.4) or 1)
+			Resources.DrawImage(itemDef.image, startX + i*(boxSize + boxSpacing) + boxSize*0.5, startY + boxSize*0.5, false, ((i == selectedItem or i == activeItem) and 0.4) or 1)
 		end
 	end
 	
