@@ -42,7 +42,7 @@ function api.Update(dt)
 	self.mouseLightVision:SetPosition(mx, my, 0.2)
 end
 
-function api.VisionResize(width, height)
+function api.ViewResize(width, height)
 	if self.groundShadow then
 		self.groundShadow:Resize(width, height)
 	end
