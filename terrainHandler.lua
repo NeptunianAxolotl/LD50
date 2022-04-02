@@ -14,7 +14,7 @@ function api.SpawnFeature(name, pos, data)
 	data = data or {}
 	data.pos = pos
 	data.def = def
-	IterableMap.Add(self.features, NewFeature(data, self.world.GetPhysicsWorld()))
+	IterableMap.Add(self.features, NewFeature(data, self.world.GetPhysicsWorld(), self.world))
 end
 
 local function SetupTerrain()
@@ -22,6 +22,10 @@ local function SetupTerrain()
 		local feature = terrainDef[i]
 		api.SpawnFeature(feature.name, feature.pos)
 	end
+end
+
+function api.GetFeatureUnderMouse(mousePos)
+	return IterableMap.GetFirstSatisfies(self.features, "MouseHitTest", self.world.ScreenToWorld(mousePos))
 end
 
 function api.Update(dt)

@@ -11,6 +11,7 @@ local globals = {
 	PHYSICS_SCALE = 300,
 	
 	DRAW_DEBUG = true,
+	INVENTORY_SLOTS = 7,
 }
 
 return globals

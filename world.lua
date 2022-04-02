@@ -173,12 +173,12 @@ function api.Draw()
 	end
 	ShadowHandler.DrawVisionShadow(self.cameraTransform)
 	
-	local windowX, windowY = love.window.getMode()
-	if windowX/windowY > 16/9 then
-		self.interfaceTransform:setTransformation(0, 0, 0, windowY/1080, windowY/1080, 0, 0)
-	else
-		self.interfaceTransform:setTransformation(0, 0, 0, windowX/1920, windowX/1920, 0, 0)
-	end
+	--local windowX, windowY = love.window.getMode()
+	--if windowX/windowY > 16/9 then
+	--	self.interfaceTransform:setTransformation(0, 0, 0, windowY/1080, windowY/1080, 0, 0)
+	--else
+	--	self.interfaceTransform:setTransformation(0, 0, 0, windowX/1920, windowX/1920, 0, 0)
+	--end
 	love.graphics.replaceTransform(self.interfaceTransform)
 	
 	-- Draw interface

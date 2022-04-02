@@ -4,7 +4,7 @@ local Resources = require("resourceHandler")
 local Font = require("include/font")
 local ShadowHandler = require("shadowHandler")
 
-local function NewFeature(self, physicsWorld)
+local function NewFeature(self, physicsWorld, world)
 	-- pos
 	self.animTime = 0
 	local def = self.def
@@ -25,6 +25,20 @@ local function NewFeature(self, physicsWorld)
 		self.animTime = self.animTime + dt
 	end
 	
+	function self.MouseHitTest(pos)
+		local bx, by = self.body:getPosition()
+		local hit = def.mouseHit
+		return util.PosInRectangle(pos, bx + hit.rx, by + hit.ry, hit.width, hit.height)
+	end
+	
+	function self.HitBoxToScreen()
+		local bx, by = self.body:getPosition()
+		local hit = def.mouseHit
+		local pos = world.WorldToScreen({bx + hit.rx, by + hit.ry})
+		local scale = world.WorldScaleToScreenScale()
+		return pos, hit.width * scale, hit.height * scale
+	end
+	
 	function self.Draw(drawQueue)
 		local bx, by = self.body:getPosition()
 		drawQueue:push({y=by; f=function()
@@ -42,6 +56,7 @@ local function NewFeature(self, physicsWorld)
 			ShadowHandler.UpdateLightParams(self.light, {bx, by}, lightGround)
 		end
 		if Global.DRAW_DEBUG then
+			love.graphics.setColor(1, 1, 1, 1)
 			love.graphics.circle('line', bx, by, def.radius)
 		end
 	end

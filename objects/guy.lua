@@ -8,7 +8,7 @@ local DEF = {
 	density = 1,
 }
 
-local function NewGuy(self, physicsWorld)
+local function NewGuy(self, physicsWorld, world)
 	-- pos
 	self.animTime = 0
 	self.def = DEF
@@ -49,6 +49,7 @@ local function NewGuy(self, physicsWorld)
 		end})
 		ShadowHandler.UpdateShadowParams(self.shadow, {bx, by}, self.shadowRadius)
 		if Global.DRAW_DEBUG then
+			love.graphics.setColor(1, 1, 1, 1)
 			love.graphics.circle('line', bx, by, self.radius)
 		end
 	end
