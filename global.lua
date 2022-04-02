@@ -12,6 +12,8 @@ local globals = {
 	
 	DRAW_DEBUG = true,
 	INVENTORY_SLOTS = 7,
+	
+	MOVE_SPEED = 88,
 }
 
 return globals

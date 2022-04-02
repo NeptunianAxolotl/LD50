@@ -4,6 +4,8 @@ local Resources = require("resourceHandler")
 local TerrainHandler = require("terrainHandler")
 
 local util = require("include/util")
+local InventoryUtil = require("utilities/inventory")
+
 local NewGuy = require("objects/guy")
 local ItemDefs = util.LoadDefDirectory("defs/items")
 
@@ -11,31 +13,76 @@ local api = {}
 local self = {}
 
 local function DoGuyMovement()
+	local dir = false
 	if love.keyboard.isDown("d") then
 		if love.keyboard.isDown("s") then
-			self.playerGuy.Move(util.CardinalToDirection(0.5), 1)
+			dir = 0.5
 		elseif love.keyboard.isDown("w") then
-			self.playerGuy.Move(util.CardinalToDirection(3.5), 1)
+			dir = 3.5
 		else
-			self.playerGuy.Move(util.CardinalToDirection(0), 1)
+			dir = 0
 		end
 	elseif love.keyboard.isDown("a") then
 		if love.keyboard.isDown("s") then
-			self.playerGuy.Move(util.CardinalToDirection(1.5), 1)
+			dir = 1.5
 		elseif love.keyboard.isDown("w") then
-			self.playerGuy.Move(util.CardinalToDirection(2.5), 1)
+			dir = 2.5
 		else
-			self.playerGuy.Move(util.CardinalToDirection(2), 1)
+			dir = 2
 		end
 	elseif love.keyboard.isDown("s") then
-		self.playerGuy.Move(util.CardinalToDirection(1), 1)
+		dir = 1
 	elseif love.keyboard.isDown("w") then
-		self.playerGuy.Move(util.CardinalToDirection(3), 1)
+		dir = 3
+	end
+	
+	if dir then
+		self.playerGuy.Move(util.CardinalToDirection(dir), 1)
+		self.playerGuy.ClearMoveGoal()
 	end
 end
 
-local function DrawHoveredFeature(mousePos)
-	local feature = TerrainHandler.GetFeatureUnderMouse(mousePos)
+function api.GetViewRestriction()
+	return {{pos = util.Add(self.playerGuy.GetPos(), util.Mult(0.05, self.playerGuy.GetVelocity())), radius = 800}}
+end
+
+function api.Update(dt)
+	if self.heldSinceGroundGoal then
+		if love.mouse.isDown(self.heldSinceGroundGoal) then
+			self.playerGuy.SetMoveGoal(self.world.GetMousePosition(), 50)
+		else
+			self.heldSinceGroundGoal = false
+		end
+	end
+	DoGuyMovement()
+	self.playerGuy.Update(dt)
+end
+
+function api.Draw(drawQueue)
+	self.playerGuy.Draw(drawQueue)
+end
+
+function api.MousePressedInterface(mx, my, button)
+	if not self.hoveredItem then
+		return
+	end
+	
+	return true
+end
+
+function api.MousePressedWorld(mx, my, button)
+	if not self.hoveredFeature then
+		self.playerGuy.SetMoveGoal({mx, my}, 50)
+		self.heldSinceGroundGoal = button
+		return
+	end
+	
+	local featurePos = self.hoveredFeature.GetPos()
+	self.playerGuy.SetMoveGoal(featurePos, self.hoveredFeature.GetRadius() + 50)
+end
+
+local function DrawHoveredFeature()
+	local feature = TerrainHandler.GetFeatureUnderMouse()
 	if feature then
 		local featurePos, featureWidth, featureHeight = feature.HitBoxToScreen()
 		love.graphics.setColor(1, 0.2, 0.2, 1)
@@ -46,93 +93,29 @@ local function DrawHoveredFeature(mousePos)
 	end
 end
 
-function api.GetViewRestriction()
-	return {{pos = util.Add(self.playerGuy.GetPos(), util.Mult(0.05, self.playerGuy.GetVelocity())), radius = 800}}
-end
-
-function api.Update(dt)
-	DoGuyMovement()
-	self.playerGuy.Update(dt)
-end
-
-function api.Draw(drawQueue)
-	self.playerGuy.Draw(drawQueue)
-end
-
 function api.DrawInterface()
-	local screenWidth, screenHeight = love.window.getMode()
-	
-	love.graphics.setColor(0.6, 0.7, 0.7, 1)
-	love.graphics.setLineWidth(4)
-	
-	local mousePos = self.world.GetMousePositionInterface()
-	self.hoveredItem = false
-	
-	local boxSize = 80
-	local boxSpacing = 15
-	
-	local startX = (screenWidth - boxSize*(Global.INVENTORY_SLOTS + 2) - boxSpacing*(Global.INVENTORY_SLOTS + 1)) * 0.5
-	local startY = screenHeight - boxSize - boxSpacing*0.6
-
-	love.graphics.setColor(0.6*1.1, 0.7*1.1, 0.7*1.1, 1)
-	love.graphics.setLineWidth(4)
-	for i = 1, Global.INVENTORY_SLOTS do
-		love.graphics.rectangle("fill", startX + i*(boxSize + boxSpacing) + 1, startY + 1, boxSize - 2, boxSize - 2, 0, 0, 5)
-		if util.PosInRectangle(mousePos, startX + i*(boxSize + boxSpacing), startY, boxSize, boxSize) then
-			self.hoveredItem = i
-		end
-	end
-	
-	love.graphics.setColor(0.6, 0.7, 0.7, 1)
-	love.graphics.setLineWidth(4)
-	for i = 1, Global.INVENTORY_SLOTS do
-		love.graphics.rectangle("line", startX + i*(boxSize + boxSpacing), startY, boxSize, boxSize, 0, 0, 5)
-	end
-	
-	if self.hoveredItem then
-		love.graphics.setColor(0.7*1.1, 0.9*1.1, 0.9*1.1, 1)
-		love.graphics.setLineWidth(4)
-		love.graphics.rectangle("fill", startX + self.hoveredItem*(boxSize + boxSpacing), startY, boxSize, boxSize, 0, 0, 5)
-		
-		love.graphics.setColor(0.7, 0.9, 0.9, 1)
-		love.graphics.setLineWidth(4)
-		love.graphics.rectangle("line", startX + self.hoveredItem*(boxSize + boxSpacing), startY, boxSize, boxSize, 0, 0, 5)
-	end
-	
-	if self.selectedItem then
-		love.graphics.setColor(0.2, 1, 0.5, 1)
-		love.graphics.setLineWidth(4)
-		love.graphics.rectangle("line", startX + self.selectedItem*(boxSize + boxSpacing), startY, boxSize, boxSize, 0, 0, 5)
-	end
-	
-	for i = 1, Global.INVENTORY_SLOTS do
-		local item = self.inventory.items[i]
-		if item ~= "empty" then
-			local itemDef = ItemDefs[item]
-			Resources.DrawImage(itemDef.image, startX + i*(boxSize + boxSpacing), startY)
-		end
-	end
+	self.hoveredItem = InventoryUtil.DrawInventoryBar(self.world, self.inventory, ItemDefs, 80, 15, 3, 9, 0.5, 0)
+	self.hoveredItem = InventoryUtil.DrawInventoryBar(self.world, self.inventory, ItemDefs, 80, 15, 1, 2, 0, 0.5) or self.hoveredItem
 	
 	self.hoveredFeature = false
 	if not self.hoveredItem then
-		DrawHoveredFeature(mousePos)
+		DrawHoveredFeature()
 	end
 end
 
 function api.Initialize(parentWorld)
 	self = {
 		world = parentWorld,
-		selectedItem = 4,
 		inventory = {
-			items = {
-				"tree",
-				"tree",
-				"tree",
-				"empty",
-				"empty",
-				"empty",
-				"empty",
-			}
+			"empty",
+			"empty",
+			"tree",
+			"tree",
+			"tree",
+			"empty",
+			"empty",
+			"empty",
+			"empty",
 		}
 	}
 	

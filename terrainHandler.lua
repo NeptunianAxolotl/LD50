@@ -25,7 +25,7 @@ local function SetupTerrain()
 end
 
 function api.GetFeatureUnderMouse(mousePos)
-	return IterableMap.GetFirstSatisfies(self.features, "MouseHitTest", self.world.ScreenToWorld(mousePos))
+	return IterableMap.GetFirstSatisfies(self.features, "MouseHitTest", self.world.GetMousePosition())
 end
 
 function api.Update(dt)

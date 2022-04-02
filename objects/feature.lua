@@ -21,6 +21,15 @@ local function NewFeature(self, physicsWorld, world)
 		self.light = ShadowHandler.AddLight()
 	end
 	
+	function self.GetPos()
+		local bx, by = self.body:getPosition()
+		return {bx, by}
+	end
+	
+	function self.GetRadius()
+		return def.radius
+	end
+	
 	function self.Update(dt)
 		self.animTime = self.animTime + dt
 	end
