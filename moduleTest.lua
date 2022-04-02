@@ -38,7 +38,7 @@ function api.Draw(drawQueue)
 	drawQueue:push({y=0; f=function()
 		Resources.DrawAnimation("test_anim", 500, 500, animDt)
 	end})
-	ShadowHandler.SetUpdateShadowParams(self.guyShadow, {500, 500}, 16)
+	ShadowHandler.UpdateShadowParams(self.guyShadow, {500, 500}, 16)
 end
 
 function api.Initialize()

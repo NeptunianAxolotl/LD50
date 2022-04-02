@@ -15,6 +15,10 @@ local terrain = {
 		name = "tree_test",
 		pos = {800, 200},
 	},
+	{
+		name = "fire",
+		pos = {200, 800},
+	},
 }
 
 return terrain

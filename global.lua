@@ -9,6 +9,8 @@ local globals = {
 	INC_OFFSET = -15,
 	
 	PHYSICS_SCALE = 300,
+	
+	DRAW_DEBUG = true,
 }
 
 return globals

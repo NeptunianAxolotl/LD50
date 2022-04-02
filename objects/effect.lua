@@ -3,8 +3,6 @@ local util = require("include/util")
 local Resources = require("resourceHandler")
 local Font = require("include/font")
 
-local DRAW_DEBUG = false
-
 local function NewEffect(self, def)
 	-- pos
 	self.inFront = def.inFront or 0
@@ -61,9 +59,6 @@ local function NewEffect(self, def)
 				def.color)
 			end
 		end})
-		if DRAW_DEBUG then
-			love.graphics.circle('line',self.pos[1], self.pos[2], def.radius)
-		end
 	end
 	
 	function self.DrawInterface()
@@ -75,9 +70,6 @@ local function NewEffect(self, def)
 			Resources.DrawAnimation(def.image, self.pos[1], self.pos[2], self.animTime, self.direction, GetAlpha(),
 					(self.scale or 1)*((def.lifeScale and (1 - 0.5*self.life/maxLife)) or 1),
 				def.color)
-		end
-		if DRAW_DEBUG then
-			love.graphics.circle('line',self.pos[1], self.pos[2], 100)
 		end
 	end
 	

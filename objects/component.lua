@@ -5,7 +5,6 @@ local Font = require("include/font")
 
 local DEF = {
 	density = 1,
-
 }
 
 local function NewComponent(self, physicsWorld)
@@ -49,9 +48,6 @@ local function NewComponent(self, physicsWorld)
 				end
 			love.graphics.pop()
 		end})
-		if DRAW_DEBUG then
-			love.graphics.circle('line',self.pos[1], self.pos[2], def.radius)
-		end
 	end
 	
 	function self.DrawInterface()

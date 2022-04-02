@@ -42,9 +42,9 @@ local function NewGuy(self, physicsWorld)
 		drawQueue:push({y=by; f=function()
 			Resources.DrawAnimation("test_anim", bx, by, self.animTime)
 		end})
-		ShadowHandler.SetUpdateShadowParams(self.shadow, {bx, by}, self.shadowRadius)
-		if DRAW_DEBUG then
-			love.graphics.circle('line',self.pos[1], self.pos[2], def.radius)
+		ShadowHandler.UpdateShadowParams(self.shadow, {bx, by}, self.shadowRadius)
+		if Global.DRAW_DEBUG then
+			love.graphics.circle('line', bx, by, self.radius)
 		end
 	end
 	

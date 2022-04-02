@@ -13,7 +13,13 @@ local function NewFeature(self, physicsWorld)
 	self.shape = love.physics.newCircleShape(def.radius)
 	self.fixture = love.physics.newFixture(self.body, self.shape)
 	
-	self.shadow = ShadowHandler.AddCircleShadow(def.shadowRadius)
+	if def.shadowRadius then
+		self.shadow = ShadowHandler.AddCircleShadow(def.shadowRadius)
+	end
+	
+	if def.lightFunc then
+		self.light = ShadowHandler.AddLight()
+	end
 	
 	function self.Update(dt)
 		self.animTime = self.animTime + dt
@@ -25,12 +31,17 @@ local function NewFeature(self, physicsWorld)
 			if def.image then
 				Resources.DrawImage(def.image, bx, by)
 			elseif def.animation then
-				Resources.DrawAnimation(def.image, bx, by, self.animTime)
+				Resources.DrawAnimation(def.animation, bx, by, self.animTime)
 			end
 		end})
-		ShadowHandler.SetUpdateShadowParams(self.shadow, {bx, by}, def.shadowRadius)
-		if DRAW_DEBUG then
-			love.graphics.circle('line',self.pos[1], self.pos[2], def.radius)
+		if self.shadow then
+			ShadowHandler.UpdateShadowParams(self.shadow, {bx, by}, def.shadowRadius)
+		end
+		if self.light then
+			ShadowHandler.UpdateLightParams(self.light, {bx, by}, def.lightFunc(self))
+		end
+		if Global.DRAW_DEBUG then
+			love.graphics.circle('line', bx, by, def.radius)
 		end
 	end
 	
