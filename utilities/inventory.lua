@@ -4,7 +4,7 @@ local Resources = require("resourceHandler")
 
 local api = {}
 
-function api.DrawInventoryBar(world, inventory, ItemDefs, boxSize, boxSpacing, startIndex, endIndex, leadingBoxes, trailingBoxes)
+function api.DrawInventoryBar(world, inventory, selectedItem, activeItem, ItemDefs, boxSize, boxSpacing, startIndex, endIndex, leadingBoxes, trailingBoxes)
 	local screenWidth, screenHeight = love.window.getMode()
 	local mousePos = world.GetMousePositionInterface()
 	
@@ -41,11 +41,23 @@ function api.DrawInventoryBar(world, inventory, ItemDefs, boxSize, boxSpacing, s
 		love.graphics.rectangle("line", startX + hoveredItem*(boxSize + boxSpacing), startY, boxSize, boxSize, 0, 0, 5)
 	end
 	
+	if selectedItem  and selectedItem >= startIndex and selectedItem <= endIndex then
+		love.graphics.setColor(0.7, 0.9, 0.9, 1)
+		love.graphics.setLineWidth(4)
+		love.graphics.rectangle("line", startX + selectedItem*(boxSize + boxSpacing), startY, boxSize, boxSize, 0, 0, 5)
+	end
+	
+	if activeItem and activeItem >= startIndex and activeItem <= endIndex then
+		love.graphics.setColor(1, 0.2, 0.2, 1)
+		love.graphics.setLineWidth(4)
+		love.graphics.rectangle("line", startX + activeItem*(boxSize + boxSpacing), startY, boxSize, boxSize, 0, 0, 5)
+	end
+	
 	for i = startIndex, endIndex do
 		local item = inventory[i]
 		if item ~= "empty" then
 			local itemDef = ItemDefs[item]
-			Resources.DrawImage(itemDef.image, startX + i*(boxSize + boxSpacing) + boxSize*0.5, startY + boxSize*0.5)
+			Resources.DrawImage(itemDef.image, startX + i*(boxSize + boxSpacing) + boxSize*0.5, startY + boxSize*0.5, false, (i == selectedItem and 0.4) or 1)
 		end
 	end
 	

@@ -42,6 +42,31 @@ local function DoGuyMovement()
 	end
 end
 
+local function ActionCallback(feature, action, item, success)
+	if not success then
+		self.activeItem = false
+		return true
+	end
+	if action == "collect" then
+		for i = 2, #self.inventory do
+			if self.inventory[i] == "empty" then
+				self.inventory[i] = feature.GetCollectItem()
+				return true
+			end
+		end
+		return false
+	end
+	if action == "drop" then
+		if not (self.activeItem and self.inventory[self.activeItem] == item) then
+			self.activeItem = false
+			return false
+		end
+		self.inventory[self.activeItem] = "empty"
+		self.activeItem = false
+		return true
+	end
+end
+
 function api.GetViewRestriction()
 	return {{pos = util.Add(self.playerGuy.GetPos(), util.Mult(0.05, self.playerGuy.GetVelocity())), radius = 800}}
 end
@@ -52,6 +77,20 @@ function api.Update(dt)
 			self.playerGuy.SetMoveGoal(self.world.GetMousePosition(), 50)
 		else
 			self.heldSinceGroundGoal = false
+		end
+	end
+	if self.selectedItemButton then
+		if not love.mouse.isDown(self.selectedItemButton) then
+			if self.hoveredItem then
+				self.inventory[self.selectedItem], self.inventory[self.hoveredItem] = self.inventory[self.hoveredItem], self.inventory[self.selectedItem]
+			elseif self.hoveredFeature then
+				
+			else
+				self.playerGuy.SetMoveGoal(self.world.GetMousePosition(), 50, false, "drop", self.inventory[self.selectedItem], ActionCallback)
+				self.activeItem = self.selectedItem
+			end
+			self.selectedItem = false
+			self.selectedItemButton = false
 		end
 	end
 	DoGuyMovement()
@@ -66,6 +105,11 @@ function api.MousePressedInterface(mx, my, button)
 	if not self.hoveredItem then
 		return
 	end
+	if self.inventory[self.hoveredItem] == "empty" then
+		return true
+	end
+	self.selectedItem = self.hoveredItem
+	self.selectedItemButton = button
 	
 	return true
 end
@@ -78,7 +122,11 @@ function api.MousePressedWorld(mx, my, button)
 	end
 	
 	local featurePos = self.hoveredFeature.GetPos()
-	self.playerGuy.SetMoveGoal(featurePos, self.hoveredFeature.GetRadius() + 50)
+	if self.hoveredFeature.GetCollectItem() then
+		self.playerGuy.SetMoveGoal(featurePos, self.hoveredFeature.GetRadius() + 50, self.hoveredFeature, "collect", false, ActionCallback)
+	else
+		self.playerGuy.SetMoveGoal(featurePos, self.hoveredFeature.GetRadius() + 50)
+	end
 end
 
 local function DrawHoveredFeature()
@@ -94,8 +142,8 @@ local function DrawHoveredFeature()
 end
 
 function api.DrawInterface()
-	self.hoveredItem = InventoryUtil.DrawInventoryBar(self.world, self.inventory, ItemDefs, 80, 15, 3, 9, 0.5, 0)
-	self.hoveredItem = InventoryUtil.DrawInventoryBar(self.world, self.inventory, ItemDefs, 80, 15, 1, 2, 0, 0.5) or self.hoveredItem
+	self.hoveredItem = InventoryUtil.DrawInventoryBar(self.world, self.inventory, self.selectedItem, self.activeItem, ItemDefs, 80, 15, 2, 8, 0.5, 0)
+	self.hoveredItem = InventoryUtil.DrawInventoryBar(self.world, self.inventory, self.selectedItem, self.activeItem, ItemDefs, 80, 15, 1, 1, 0, 0.5) or self.hoveredItem
 	
 	self.hoveredFeature = false
 	if not self.hoveredItem then
@@ -108,10 +156,9 @@ function api.Initialize(parentWorld)
 		world = parentWorld,
 		inventory = {
 			"empty",
-			"empty",
-			"tree",
-			"tree",
-			"tree",
+			"log_item",
+			"log_item",
+			"log_item",
 			"empty",
 			"empty",
 			"empty",

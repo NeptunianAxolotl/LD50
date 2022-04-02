@@ -3,10 +3,30 @@ local util = require("include/util")
 local Resources = require("resourceHandler")
 local Font = require("include/font")
 local ShadowHandler = require("shadowHandler")
+local ItemDefs = util.LoadDefDirectory("defs/items")
 
 local DEF = {
 	density = 1,
 }
+
+local function DoMoveGoalAction(self)
+	local actionPos = self.moveGoalPos
+	local feature = self.moveGoalAction.feature
+	local action = self.moveGoalAction.action
+	local item = self.moveGoalAction.item
+	local ActionCallback = self.moveGoalAction.ActionCallback
+	
+	if action == "drop" then
+		if ActionCallback(feature, action, item, true) then
+			TerrainHandler.SpawnFeature(ItemDefs[item].dropAs, actionPos)
+		end
+	end
+	if action == "collect" then
+		if ActionCallback(feature, action, item, not feature.IsDead()) then
+			feature.Destroy()
+		end
+	end
+end
 
 local function CheckMoveGoal(self)
 	if not self.moveGoalPos then
@@ -15,6 +35,9 @@ local function CheckMoveGoal(self)
 	
 	local bx, by = self.body:getPosition()
 	if util.DistSq(self.moveGoalPos[1], self.moveGoalPos[2], bx, by) < self.moveGoalRadius^2 then
+		if self.moveGoalAction then
+			DoMoveGoalAction(self)
+		end
 		self.ClearMoveGoal()
 		return
 	end
@@ -46,14 +69,25 @@ local function NewGuy(self, physicsWorld, world)
 		self.MoveWithVector(force)
 	end
 	
-	function self.SetMoveGoal(pos, radius)
+	function self.SetMoveGoal(pos, radius, feature, action, item, ActionCallback)
 		self.moveGoalPos = pos
 		self.moveGoalRadius = radius
+		if action then
+			self.moveGoalAction = {
+				feature = feature,
+				action = action,
+				item = item,
+				ActionCallback = ActionCallback
+			}
+		else
+			self.moveGoalAction = false
+		end
 	end
 	
 	function self.ClearMoveGoal()
 		self.moveGoalPos = false
 		self.moveGoalRadius = false
+		self.moveGoalAction = false
 	end
 	
 	function self.Update(dt)

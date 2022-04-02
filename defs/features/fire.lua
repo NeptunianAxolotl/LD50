@@ -1,5 +1,6 @@
 local def = {
 	radius = 110,
+	collide = true,
 	animation = "fire",
 	lightFunc = function (self)
 		local rand = math.random()

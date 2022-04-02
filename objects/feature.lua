@@ -10,8 +10,10 @@ local function NewFeature(self, physicsWorld, world)
 	local def = self.def
 	
 	self.body = love.physics.newBody(physicsWorld, self.pos[1], self.pos[2], "static")
-	self.shape = love.physics.newCircleShape(def.radius)
-	self.fixture = love.physics.newFixture(self.body, self.shape)
+	if self.collide then
+		self.shape = love.physics.newCircleShape(def.radius)
+		self.fixture = love.physics.newFixture(self.body, self.shape)
+	end
 	
 	if def.shadowRadius then
 		self.shadow = ShadowHandler.AddCircleShadow(def.shadowRadius)
@@ -30,11 +32,40 @@ local function NewFeature(self, physicsWorld, world)
 		return def.radius
 	end
 	
+	function self.GetCollectItem()
+		return def.collectAs
+	end
+	
+	function self.IsDead()
+		return self.dead
+	end
+	
+	function self.Destroy()
+		if self.dead then
+			return false
+		end
+		self.dead = true
+		return true
+	end
+	
 	function self.Update(dt)
 		self.animTime = self.animTime + dt
+		if self.dead then
+			self.body:destroy()
+			if self.shadow then
+				ShadowHandler.RemoveShadow(self.shadow)
+			end
+			if self.light then
+				ShadowHandler.RemoveLight(self.light)
+			end
+			return true
+		end
 	end
 	
 	function self.MouseHitTest(pos)
+		if self.dead then
+			return
+		end
 		local bx, by = self.body:getPosition()
 		local hit = def.mouseHit
 		return util.PosInRectangle(pos, bx + hit.rx, by + hit.ry, hit.width, hit.height)
@@ -49,6 +80,9 @@ local function NewFeature(self, physicsWorld, world)
 	end
 	
 	function self.Draw(drawQueue)
+		if self.dead then
+			return
+		end
 		local bx, by = self.body:getPosition()
 		drawQueue:push({y=by; f=function()
 			if def.image then

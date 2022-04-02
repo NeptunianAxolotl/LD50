@@ -39,6 +39,11 @@ function api.AddLight()
 	return light
 end
 
+function api.RemoveLight(light)
+	light.ground:Remove()
+	light.vision:Remove()
+end
+
 --------------------------------------------------
 -- Shadow Handling
 --------------------------------------------------
@@ -59,14 +64,8 @@ function api.AddCircleShadow(radius)
 	return data
 end
 
-function api.AddVisionNormalShadow(normalShadowFile)
-	newBody = Body:new(self.visionShadow)
-	newShadow = NormalShadow:new(newBody, love.graphics.newImage(normalShadowFile))
-	local data = {
-		body = newBody,
-		newShadow = newShadow
-	}
-	return data
+function api.RemoveShadow(shadow)
+	shadow.body:Remove()
 end
 
 --------------------------------------------------

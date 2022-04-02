@@ -20,6 +20,10 @@ local terrain = {
 		pos = {200, 800},
 	},
 	{
+		name = "log",
+		pos = {50, 500},
+	},
+	{
 		name = "tree_test",
 		pos = {0, 1400},
 	},
