@@ -5,11 +5,13 @@ local SoundHandler = require("soundHandler")
 local ChatHandler = require("chatHandler")
 local ComponentHandler = require("componentHandler")
 local util = require("include/util")
+local ShadowHandler = require("shadowHandler")
 
+local api = {}
 local self = {}
 local animDt = 0
 
-function self.Update(dt)
+function api.Update(dt)
 	animDt = Resources.UpdateAnimation("test_anim", animDt, dt/5)
 	if math.random() < 0.03 then
 		SoundHandler.PlaySound("health_down")
@@ -32,11 +34,15 @@ function self.Update(dt)
 	end
 end
 
-function self.Draw()
-	Resources.DrawAnimation("test_anim", 500, 500, animDt)
+function api.Draw(drawQueue)
+	drawQueue:push({y=0; f=function()
+		Resources.DrawAnimation("test_anim", 500, 500, animDt)
+	end})
+	ShadowHandler.SetShadowPosition(self.guyShadow, {500, 650})
 end
 
-function self.Initialize()
+function api.Initialize()
+	self = {}
 	data = {
 		initVelocity = {140, 20}
 	}
@@ -45,6 +51,8 @@ function self.Initialize()
 		initVelocity = {-140, 20}
 	}
 	ComponentHandler.SpawnComponent("", {600, 200}, data)
+	
+	self.guyShadow = ShadowHandler.AddCircleShadow(8)
 end
 
-return self
+return api

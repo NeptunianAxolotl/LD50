@@ -8,6 +8,7 @@ ComponentHandler = require("componentHandler")
 Camera = require("utilities/cameraUtilities")
 Delay = require("utilities/delay")
 
+local ShadowHandler = require("shadowHandler")
 local PhysicsHandler = require("physicsHandler")
 ChatHandler = require("chatHandler")
 DeckHandler = require("deckHandler")
@@ -47,7 +48,8 @@ function api.Restart()
 end
 
 function api.TakeScreenshot()
-
+	love.filesystem.setIdentity("TheMilesHigh/screenshots")
+	love.graphics.captureScreenshot("screenshot_" .. math.floor(math.random()*100000) .. "_.png")
 end
 
 function api.SetGameOver(hasWon, overType)
@@ -70,8 +72,7 @@ function api.KeyPressed(key, scancode, isRepeat)
 		api.Restart()
 	end
 	--if key == "s" and (love.keyboard.isDown("lctrl") or love.keyboard.isDown("rctrl")) then
-	--	love.filesystem.setIdentity("TheMilesHigh/screenshots")
-	--	love.graphics.captureScreenshot("screenshot_" .. math.floor(math.random()*100000) .. "_.png")
+	--	api.TakeScreenshot()
 	--end
 end
 
@@ -132,6 +133,7 @@ function api.Update(dt, realDt)
 	PhysicsHandler.Update(math.min(0.04, dt))
 	ComponentHandler.Update(dt)
 	ModuleTest.Update(dt)
+	ShadowHandler.Update(dt)
 
 	ChatHandler.Update(dt)
 	EffectsHandler.Update(dt)
@@ -142,20 +144,22 @@ function api.Update(dt, realDt)
 end
 
 function api.Draw()
-	love.graphics.replaceTransform(self.cameraTransform)
-
 	local drawQueue = PriorityQueue.new(function(l, r) return l.y < r.y end)
 
 	-- Draw world
+	love.graphics.replaceTransform(self.cameraTransform)
 	ComponentHandler.Draw(drawQueue)
 	EffectsHandler.Draw(drawQueue)
-	ModuleTest.Draw(dt)
+	ModuleTest.Draw(drawQueue)
 	
+	ShadowHandler.DrawGroundShadow(self.cameraTransform)
+	love.graphics.replaceTransform(self.cameraTransform)
 	while true do
 		local d = drawQueue:pop()
 		if not d then break end
 		d.f()
 	end
+	ShadowHandler.DrawViewShadow(self.cameraTransform)
 	
 	local windowX, windowY = love.window.getMode()
 	if windowX/windowY > 16/9 then
@@ -173,6 +177,10 @@ function api.Draw()
 	love.graphics.replaceTransform(self.emptyTransform)
 end
 
+function api.ViewResize(width, height)
+	ShadowHandler.ViewResize(width, height)
+end
+
 function api.Initialize()
 	self = {}
 	self.cameraTransform = love.math.newTransform()
@@ -182,6 +190,7 @@ function api.Initialize()
 	self.musicEnabled = true
 	
 	Delay.Initialise()
+	ShadowHandler.Initialize(api)
 	EffectsHandler.Initialize()
 	SoundHandler.Initialize()
 	MusicHandler.Initialize(api)

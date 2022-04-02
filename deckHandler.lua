@@ -3,6 +3,7 @@ local util = require("include/util")
 
 local EffectsHandler = require("effectsHandler")
 
+local api = {}
 local self = {}
 local world
 
@@ -33,7 +34,7 @@ end
 -- API
 --------------------------------------------------
 
-function self.GetNextDraw()
+function api.GetNextDraw()
 	local drawCount = GetDrawSize()
 	local toDraw = {}
 	local drawnType = {}
@@ -50,7 +51,7 @@ function self.GetNextDraw()
 	return toDraw
 end
 
-function self.GetTechLevel()
+function api.GetTechLevel()
 	return self.currentTech
 end
 
@@ -58,12 +59,13 @@ end
 -- Updating
 --------------------------------------------------
 
-function self.Initialize(parentWorld)
+function api.Initialize(parentWorld)
 	world = parentWorld
+	self = {}
 	self.deck = util.CopyTable(initialDeck)
 	self.drawIndex = 1
 	self.drawSize = 1
 	self.currentTech = 1
 end
 
-return self
+return api

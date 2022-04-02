@@ -5,11 +5,6 @@ local util = require("include/util")
 local api = {}
 local sounds = IterableMap.New()
 
-local GLOBAL_VOL_MULT = 0.5
-
-local volMult = {
-}
-
 local soundFiles = util.LoadDefDirectory("sounds/defs")
 
 function AddSource(name)
@@ -32,7 +27,7 @@ function api.LoadSound(name, id)
 			name = name,
 			want = 0,
 			have = 0,
-			volumeMult = def.volMult * GLOBAL_VOL_MULT,
+			volumeMult = def.volMult * Global.MASTER_VOLUME,
 			source = AddSource(name)
 		}
 		IterableMap.Add(sounds, id, soundData)

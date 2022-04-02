@@ -1,6 +1,7 @@
 local EffectsHandler = require("effectsHandler")
 
 local self = {}
+local api = {}
 local physicsWorld
 local world
 
@@ -8,11 +9,11 @@ local world
 -- API
 --------------------------------------------------
 
-function self.GetPhysicsWorld()
+function api.GetPhysicsWorld()
 	return physicsWorld
 end
 
-function self.AddStaticObject()
+function api.AddStaticObject()
 	return physicsWorld
 end
 
@@ -38,18 +39,19 @@ end
 -- Updating
 --------------------------------------------------
 
-function self.Update(dt)
+function api.Update(dt)
 	physicsWorld:update(dt)
 end
 
-function self.Destroy(dt)
+function api.Destroy(dt)
 	if physicsWorld then
 		physicsWorld:destroy()
 		physicsWorld = nil
 	end
 end
 
-function self.Initialize(parentWorld)
+function api.Initialize(parentWorld)
+	self = {}
 	world = parentWorld
 	physicsWorld = love.physics.newWorld(0, 0, true) -- Last argument is whether sleep is allowed.
 	physicsWorld:setCallbacks(beginContact, endContact, preSolve, postSolve)
@@ -57,4 +59,4 @@ function self.Initialize(parentWorld)
 	physicsWorld:setGravity(0, 190)
 end
 
-return self
+return api

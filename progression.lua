@@ -1,6 +1,7 @@
 
 local util = require("include/util")
 
+local api = {}
 local self = {}
 
 local DISTANCE_MULT = 1
@@ -655,7 +656,7 @@ local function ApplyHardModeToNumber(number, key, difficulty)
 	return number
 end
 
-function self.GetWinDistance()
+function api.GetWinDistance()
 	return MAX_DISTANCE*GetDistanceMult() + 6
 end
 
@@ -706,7 +707,7 @@ end
 ------------------------------------------------------------------
 ------------------------------------------------------------------
 
-function self.GetWeightTable(distance, tableName)
+function api.GetWeightTable(distance, tableName)
 	local difficulty = self.world.GetDifficulty()
 	local first, second, factor = Interpolate(distance*DISTANCE_MULT / GetDistanceMult(), tableName)
 	local weightList = {}
@@ -723,26 +724,26 @@ function self.GetWeightTable(distance, tableName)
 	return weightList, keyList
 end
 
-function self.SampleWeightedDistribution(distance, tableName)
-	local weightList, keyList = self.GetWeightTable(distance, tableName)
+function api.SampleWeightedDistribution(distance, tableName)
+	local weightList, keyList = api.GetWeightTable(distance, tableName)
 	local spawnDistribution = util.WeightsToDistribution(weightList)
 	local resultIndex = util.SampleDistribution(spawnDistribution, math.random)
 	return keyList[resultIndex]
 end
 
-function self.GetRandomValue(distance, name, tableName)
+function api.GetRandomValue(distance, name, tableName)
 	local first, second, factor = Interpolate(distance*DISTANCE_MULT / GetDistanceMult(), tableName)
 	return IntAndRand(factor, first, second, name)
 end
 
-function self.GetRandomInt(distance, name, tableName)
-	return math.floor(self.GetRandomValue(distance, name, tableName))
+function api.GetRandomInt(distance, name, tableName)
+	return math.floor(api.GetRandomValue(distance, name, tableName))
 end
 
 ------------------------------------------------------------------
 ------------------------------------------------------------------
 
-function self.GetBackgroundColor(cameraDistance)
+function api.GetBackgroundColor(cameraDistance)
 	local first, second, factor = Interpolate(cameraDistance*DISTANCE_MULT / GetDistanceMult())
 	
 	local lushFactor = IntAndRand(factor, first, second, "lushFactor")/100
@@ -756,8 +757,9 @@ end
 ------------------------------------------------------------------
 ------------------------------------------------------------------
 
-function self.Initialize(world)
+function api.Initialize(world)
+	self = {}
 	self.world = world
 end
 
-return self
+return api

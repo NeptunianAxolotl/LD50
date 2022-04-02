@@ -12,6 +12,10 @@ function love.draw()
 	World.Draw()
 end
 
+function love.resize(width, height)
+	World.ViewResize(width, height)
+end
+
 --------------------------------------------------
 -- Input
 --------------------------------------------------
@@ -37,6 +41,9 @@ end
 
 function love.update(dt)
 	local realDt = dt
+	if dt > 0.05 then
+		print(dt)
+	end
 	if dt > 0.1 then
 		dt = 0.1
 	end
@@ -52,7 +59,7 @@ function love.load(arg)
 	local major, minor, revision, codename = love.getVersion()
 	--print(string.format("Version %d.%d.%d - %s", major, minor, revision, codename))
 
-	love.graphics.setBackgroundColor(6/255, 9/225, 15/255, 1)
+	love.graphics.setBackgroundColor(150/255, 150/225, 150/255, 1)
 
 	love.keyboard.setKeyRepeat(true)
 	math.randomseed(os.clock())

@@ -1,6 +1,7 @@
 
 local util = require("include/util")
 
+local api = {}
 local self = {
 	debugMode = false
 }
@@ -141,7 +142,7 @@ local function LoadResourceFile(name)
 	end
 end
 
-function self.LoadResources()
+function api.LoadResources()
 	local resList = util.GetDefDirList("resources/defs")
 	self.images = {}
 	self.animations = {}
@@ -156,7 +157,7 @@ end
 -- Drawing Functions
 --------------------------------------------------
 
-function self.SetTexture(mesh, name)
+function api.SetTexture(mesh, name)
 	if not self.images[name] then
 		print("Invalid SetTexture ", name)
 		return
@@ -164,7 +165,7 @@ function self.SetTexture(mesh, name)
 	mesh:setTexture(self.images[name].image)
 end
 
-function self.DrawImage(name, x, y, rotation, alpha, scale, color)
+function api.DrawImage(name, x, y, rotation, alpha, scale, color)
 	if not self.images[name] then
 		print("Invalid DrawImage ", name)
 		return
@@ -189,7 +190,7 @@ function self.DrawImage(name, x, y, rotation, alpha, scale, color)
 	love.graphics.draw(data.image, x, y, rotation, data.xScale*scaleX, data.yScale*scaleY, data.xOffset, data.yOffset, 0, 0)
 end
 
-function self.DrawIsoImage(name, x, y, direction, alpha, scale, color)
+function api.DrawIsoImage(name, x, y, direction, alpha, scale, color)
 	if not self.images[name] then
 		print("Invalid DrawIsoImage ", name)
 		return
@@ -215,7 +216,7 @@ function self.DrawIsoImage(name, x, y, direction, alpha, scale, color)
 	love.graphics.draw(data.image[drawDir], x, y, rotation, data.xScale*scale, data.yScale*scale, data.xOffset, data.yOffset, 0, 0)
 end
 
-function self.UpdateAnimation(name, progress, dt)
+function api.UpdateAnimation(name, progress, dt)
 	if not self.animations[name] then
 		print("Invalid UpdateAnimation ", name)
 		return
@@ -223,7 +224,7 @@ function self.UpdateAnimation(name, progress, dt)
 	return (progress + dt)%self.animations[name].duration
 end
 
-function self.GetAnimationDuration(name)
+function api.GetAnimationDuration(name)
 	if not self.animations[name] then
 		print("Invalid GetAnimationDuration ", name)
 		return
@@ -231,7 +232,7 @@ function self.GetAnimationDuration(name)
 	return self.animations[name].duration
 end
 
-function self.DrawAnimInternal(data, x, y, progress, rotation, alpha, scale, color)
+function api.DrawAnimInternal(data, x, y, progress, rotation, alpha, scale, color)
 	love.graphics.setColor(
 		(color and color[1]) or 1,
 		(color and color[2]) or 1,
@@ -251,15 +252,15 @@ function self.DrawAnimInternal(data, x, y, progress, rotation, alpha, scale, col
 	end
 end
 
-function self.DrawAnimation(name, x, y, progress, rotation, alpha, scale, color)
+function api.DrawAnimation(name, x, y, progress, rotation, alpha, scale, color)
 	if not self.animations[name] then
 		print("Invalid DrawAnimation ", name)
 		return
 	end
-	self.DrawAnimInternal(self.animations[name], x, y, progress, rotation, alpha, scale, color)
+	api.DrawAnimInternal(self.animations[name], x, y, progress, rotation, alpha, scale, color)
 end
 
-function self.DrawIsoAnimation(name, x, y, progress, direction, alpha, scale, color)
+function api.DrawIsoAnimation(name, x, y, progress, direction, alpha, scale, color)
 	if not self.animations[name] then
 		print("Invalid DrawIsoAnimation ", name)
 		return
@@ -273,7 +274,7 @@ function self.DrawIsoAnimation(name, x, y, progress, direction, alpha, scale, co
 		rotation = -util.AngleToCardinal(direction, drawDir, data.firstDir, data.directionCount)
 	end
 	
-	self.DrawAnimInternal(data.dirAnim[drawDir], x, y, progress, rotation, alpha, scale, color)
+	api.DrawAnimInternal(data.dirAnim[drawDir], x, y, progress, rotation, alpha, scale, color)
 end
 
 
@@ -281,4 +282,4 @@ end
 -- Drawing Functions
 --------------------------------------------------
 
-return self
+return api
