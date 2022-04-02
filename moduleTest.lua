@@ -2,6 +2,7 @@
 local Resources = require("resourceHandler")
 local EffectsHandler = require("effectsHandler")
 local SoundHandler = require("soundHandler")
+local ChatHandler = require("chatHandler")
 local util = require("include/util")
 
 local self = {}
@@ -20,6 +21,13 @@ function self.Update(dt)
 		local moneyValue = math.random()*150 + 50
 		EffectsHandler.SpawnEffect("mult_popup", point, {velocity = {0, (-0.55 - math.random()*0.2) * (0.4 + 0.6*(50 / math.max(50, moneyValue)))}, text = "$" .. moneyValue})
 		SoundHandler.PlaySound("coin_collect_2")
+	end
+	
+	if math.random() < 0.005 then
+		ChatHandler.AddTurnMessage("unlock_rope")
+	end
+	if math.random() < 0.05 then
+		ChatHandler.ChatTurn()
 	end
 end
 

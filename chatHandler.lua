@@ -108,7 +108,8 @@ function api.RemoveMessage(index)
 	table.remove(self.lines, index)
 end
 
-function api.ChatTurn(turn)
+function api.ChatTurn()
+	self.turn = (self.turn or 0) + 1
 	for i = #self.lines, 1, -1 do
 		local line = self.lines[i]
 		if line.consoleTurnTimer then
@@ -119,8 +120,8 @@ function api.ChatTurn(turn)
 		end
 	end
 	
-	if chatProgression.onTurn[turn] then
-		local message = chatProgression.onTurn[turn]
+	if chatProgression.onTurn[self.turn] then
+		local message = chatProgression.onTurn[self.turn]
 		api.AddTurnMessageRaw(message)
 	end
 end
