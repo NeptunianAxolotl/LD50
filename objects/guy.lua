@@ -34,7 +34,7 @@ local function NewGuy(self, physicsWorld)
 	
 	function self.Draw(drawQueue)
 		local bx, by = self.body:getPosition()
-		drawQueue:push({y=0; f=function()
+		drawQueue:push({y=by; f=function()
 			Resources.DrawAnimation("test_anim", bx, by, self.animTime)
 		end})
 		ShadowHandler.SetUpdateShadowParams(self.shadow, {bx, by}, self.shadowRadius)

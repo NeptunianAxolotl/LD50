@@ -75,8 +75,8 @@ function api.Initialize(parentWorld)
 	self.groundShadow = LightWorld:new()
 	self.visionShadow = LightWorld:new()
 	
-	self.groundShadow:SetColor(80, 80, 80)
-	self.visionShadow:SetColor(80, 80, 80)
+	self.groundShadow:SetColor(20, 20, 20)
+	self.visionShadow:SetColor(20, 20, 20)
 
 	-- Create a light on the light world, with radius 300
 	self.mouseLightGround = Light:new(self.groundShadow, 800)
