@@ -2,7 +2,8 @@ local def = {
 	radius = 110,
 	animation = "fire",
 	lightFunc = function (self)
-		return 1500 + math.random()*120
+		local rand = math.random()
+		return 1800 + rand*120
 	end
 }
 

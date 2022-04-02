@@ -18,13 +18,14 @@ local world
 
 function api.UpdateLightParams(light, pos, radius)
 	pos = world.WorldToScreen(pos)
-	radius = radius * world.WorldScaleToScreenScale()
+	local radiusGround = radius * world.WorldScaleToScreenScale()
+	local radiusVision = (radius * 1.3) * world.WorldScaleToScreenScale()
 	
-	light.ground:SetPosition(pos[1], pos[2], 0.2)
-	light.ground:SetRadius(radius * 1.33)
+	light.ground:SetPosition(pos[1], pos[2], 1)
+	light.ground:SetRadius(radiusGround)
 	
 	light.vision:SetPosition(pos[1], pos[2], 1)
-	light.vision:SetRadius(radius)
+	light.vision:SetRadius(radiusVision)
 end
 
 function api.AddLight()

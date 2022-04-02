@@ -38,7 +38,8 @@ local function NewFeature(self, physicsWorld)
 			ShadowHandler.UpdateShadowParams(self.shadow, {bx, by}, def.shadowRadius)
 		end
 		if self.light then
-			ShadowHandler.UpdateLightParams(self.light, {bx, by}, def.lightFunc(self))
+			local lightGround = def.lightFunc(self)
+			ShadowHandler.UpdateLightParams(self.light, {bx, by}, lightGround)
 		end
 		if Global.DRAW_DEBUG then
 			love.graphics.circle('line', bx, by, def.radius)

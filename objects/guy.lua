@@ -37,6 +37,11 @@ local function NewGuy(self, physicsWorld)
 		return {bx, by}
 	end
 	
+	function self.GetVelocity()
+		local vx, vy = self.body:getLinearVelocity()
+		return {vx, vy}
+	end
+	
 	function self.Draw(drawQueue)
 		local bx, by = self.body:getPosition()
 		drawQueue:push({y=by; f=function()

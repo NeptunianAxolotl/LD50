@@ -31,7 +31,7 @@ local function DoGuyMovement()
 end
 
 function api.GetViewRestriction()
-	return {{pos = self.playerGuy.GetPos(), radius = 800}}
+	return {{pos = util.Add(self.playerGuy.GetPos(), util.Mult(0.05, self.playerGuy.GetVelocity())), radius = 800}}
 end
 
 function api.Update(dt)
@@ -41,6 +41,10 @@ end
 
 function api.Draw(drawQueue)
 	self.playerGuy.Draw(drawQueue)
+end
+
+function api.DrawInterface()
+
 end
 
 function api.Initialize(parentWorld)

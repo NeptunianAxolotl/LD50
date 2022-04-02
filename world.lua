@@ -137,7 +137,7 @@ function api.Update(dt, realDt)
 	end
 	
 	Delay.Update(dt)
-	ModuleTest.Update(dt)
+	--ModuleTest.Update(dt)
 	ComponentHandler.Update(dt)
 	TerrainHandler.Update(dt)
 	PlayerHandler.Update(dt)
@@ -162,7 +162,7 @@ function api.Draw()
 	TerrainHandler.Draw(drawQueue)
 	PlayerHandler.Draw(drawQueue)
 	EffectsHandler.Draw(drawQueue)
-	ModuleTest.Draw(drawQueue)
+	--ModuleTest.Draw(drawQueue)
 	
 	ShadowHandler.DrawGroundShadow(self.cameraTransform)
 	love.graphics.replaceTransform(self.cameraTransform)
@@ -185,6 +185,7 @@ function api.Draw()
 	EffectsHandler.DrawInterface()
 	ChatHandler.DrawInterface()
 	GameHandler.DrawInterface()
+	PlayerHandler.DrawInterface()
 	
 	love.graphics.replaceTransform(self.emptyTransform)
 end
@@ -213,7 +214,7 @@ function api.Initialize()
 	ComponentHandler.Initialize(api)
 	DeckHandler.Initialize(api)
 	GameHandler.Initialize(api)
-	ModuleTest.Initialize(api)
+	--ModuleTest.Initialize(api)
 	
 	-- Note that the camera pins only function for these particular second entries.
 	Camera.Initialize({
