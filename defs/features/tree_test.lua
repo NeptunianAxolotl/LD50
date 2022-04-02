@@ -1,4 +1,5 @@
 local def = {
+	name = "tree_test",
 	radius = 42,
 	collide = true,
 	image = "tree_test",

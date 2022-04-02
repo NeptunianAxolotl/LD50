@@ -2,6 +2,7 @@
 local IterableMap = require("include/IterableMap")
 local Resources = require("resourceHandler")
 local TerrainHandler = require("terrainHandler")
+local DialogueHandler = require("dialogueHandler")
 
 local util = require("include/util")
 local InventoryUtil = require("utilities/inventory")
@@ -9,6 +10,7 @@ local ItemAction = require("defs/itemActions")
 
 local NewGuy = require("objects/guy")
 local ItemDefs = util.LoadDefDirectory("defs/items")
+local CharacterDefs = util.LoadDefDirectory("defs/characters")
 
 local api = {}
 local self = {}
@@ -43,7 +45,7 @@ local function DoGuyMovement()
 	end
 end
 
-local function ActionCallback(feature, action, item, success)
+local function ActionCallback(success, other, action, item)
 	if not success then
 		self.activeItem = false
 		return true
@@ -51,7 +53,7 @@ local function ActionCallback(feature, action, item, success)
 	if action == "collect" then
 		for i = 2, #self.inventory do
 			if self.inventory[i] == "empty" then
-				self.inventory[i] = feature.GetDef().collectAs
+				self.inventory[i] = other.GetDef().collectAs
 				return true
 			end
 		end
@@ -66,13 +68,36 @@ local function ActionCallback(feature, action, item, success)
 		self.activeItem = false
 		return true
 	end
+	if action == "talk" then
+		DialogueHandler.EnterChat(other, api)
+	end
 end
 
-function api.GetViewRestriction()
-	return {{pos = util.Add(self.playerGuy.GetPos(), util.Mult(0.05, self.playerGuy.GetVelocity())), radius = 800}}
+function api.GetInventoryCount(item)
+	local count = 0
+	for i = 1, #self.inventory do
+		if self.inventory[i] == item then
+			count = count + 1
+		end
+	end
+	return count
 end
+
+function api.RemoveInventory(item, count)
+	for i = #self.inventory, 1, -1 do
+		if self.inventory[i] == item and count > 0 then
+			count = count - 1
+			self.inventory[i] = "empty"
+		end
+	end
+	return count
+end
+
 
 function api.Update(dt)
+	if self.playerGuy.IsDead() then
+		return
+	end
 	if self.heldSinceGroundGoal then
 		if love.mouse.isDown(self.heldSinceGroundGoal) then
 			self.playerGuy.SetMoveGoal(self.world.GetMousePosition(), 50)
@@ -88,7 +113,7 @@ function api.Update(dt)
 				local itemAction = ItemAction.GetItemAction(self.inventory[self.selectedItem], self.hoveredFeature)
 				if itemAction then
 					self.playerGuy.SetMoveGoal(
-						self.world.GetMousePosition(), self.hoveredFeature.GetRadius() + Global.DROP_LEEWAY,
+						self.hoveredFeature.GetPos(), self.hoveredFeature.GetRadius() + Global.DROP_LEEWAY,
 						self.hoveredFeature, itemAction, self.inventory[self.selectedItem], ActionCallback)
 					self.activeItem = self.selectedItem
 				end
@@ -104,7 +129,42 @@ function api.Update(dt)
 	self.playerGuy.Update(dt)
 end
 
+local function DropInventory(pos)
+	for i = 1, #self.inventory do
+		if self.inventory[i] ~= "empty" then
+			local toDrop = ItemDefs[self.inventory[i]].dropAs
+			if toDrop then
+				local dropPos = TerrainHandler.FindFreeSpaceFeature(pos, toDrop)
+				if dropPos then
+					-- Items could rarely be eaten here
+					TerrainHandler.SpawnFeature(toDrop, dropPos)
+				end
+				self.inventory[i] = "empty"
+			end
+		end
+	end
+end
+
+function api.HandlePlayerDeath(pos)
+	DropInventory(pos)
+	ChatHandler.AddMessage("You have been slain. Ctrl+R to restart.", 10, 1, {1, 0, 0, 1}, "chat_very_bad")
+end
+
+function api.GetGuy()
+	return self.playerGuy
+end
+
+function api.GetViewRestriction()
+	if self.playerGuy.IsDead() then
+		return
+	end
+	return {{pos = util.Add(self.playerGuy.GetPos(), util.Mult(0.05, self.playerGuy.GetVelocity())), radius = 800}}
+end
+
 function api.Draw(drawQueue)
+	if self.playerGuy.IsDead() then
+		return
+	end
 	self.playerGuy.Draw(drawQueue)
 end
 
@@ -122,9 +182,17 @@ function api.MousePressedInterface(mx, my, button)
 end
 
 function api.MousePressedWorld(mx, my, button)
-	if not self.hoveredFeature then
+	if self.playerGuy.IsDead() then
+		return
+	end
+	if not (self.hoveredFeature or self.hoveredNpc) then
 		self.playerGuy.SetMoveGoal({mx, my}, 50)
 		self.heldSinceGroundGoal = button
+		return
+	end
+	
+	if self.hoveredNpc then
+		self.playerGuy.SetMoveCharGoal(self.hoveredNpc, self.hoveredNpc.GetRadius() + Global.TALK_LEEWAY, "talk", false, ActionCallback)
 		return
 	end
 	
@@ -133,6 +201,18 @@ function api.MousePressedWorld(mx, my, button)
 		self.playerGuy.SetMoveGoal(featurePos, self.hoveredFeature.GetRadius() + Global.DROP_LEEWAY, self.hoveredFeature, "collect", false, ActionCallback)
 	else
 		self.playerGuy.SetMoveGoal(featurePos, self.hoveredFeature.GetRadius() + Global.DROP_LEEWAY)
+	end
+end
+
+local function DrawHoveredNpc()
+	local npc = NpcHandler.GetCharacterUnderMouse()
+	if npc then
+		local npcPos, npcWidth, npcHeight = npc.HitBoxToScreen()
+		love.graphics.setColor(1, 0.2, 0.2, 1)
+		love.graphics.setLineWidth(4)
+		love.graphics.rectangle("line", npcPos[1], npcPos[2], npcWidth, npcHeight, 0, 0, 5)
+		
+		self.hoveredNpc = npc
 	end
 end
 
@@ -149,12 +229,20 @@ local function DrawHoveredFeature()
 end
 
 function api.DrawInterface()
-	self.hoveredItem = InventoryUtil.DrawInventoryBar(self.world, self.inventory, self.selectedItem, self.activeItem, ItemDefs, 80, 15, 2, 8, 0.5, 0)
-	self.hoveredItem = InventoryUtil.DrawInventoryBar(self.world, self.inventory, self.selectedItem, self.activeItem, ItemDefs, 80, 15, 1, 1, 0, 0.5) or self.hoveredItem
+	local checkHover = not DialogueHandler.InChat()
+	self.hoveredItem = InventoryUtil.DrawInventoryBar(self.world, self.inventory, self.selectedItem, self.activeItem, ItemDefs, checkHover, 80, 15, 2, 8, 0.5, 0)
+	self.hoveredItem = InventoryUtil.DrawInventoryBar(self.world, self.inventory, self.selectedItem, self.activeItem, ItemDefs, checkHover, 80, 15, 1, 1, 0, 0.5) or self.hoveredItem
 	
 	self.hoveredFeature = false
+	self.hoveredNpc = false
+	if not checkHover then
+		return
+	end
 	if not self.hoveredItem then
-		DrawHoveredFeature()
+		DrawHoveredNpc()
+		if not self.hoveredNpc then
+			DrawHoveredFeature()
+		end
 	end
 	if self.selectedItem then
 		local mousePos = self.world.GetMousePositionInterface()
@@ -179,6 +267,7 @@ function api.Initialize(parentWorld)
 	
 	local guyData = {
 		pos = {200, 200},
+		def = CharacterDefs["firefly"],
 	}
 	self.playerGuy = NewGuy(guyData, self.world.GetPhysicsWorld(), self.world)
 end

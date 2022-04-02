@@ -1,14 +1,48 @@
 
-local api = {}
+local IterableMap = require("include/IterableMap")
+local util = require("include/util")
+
+local CharacterDefs = util.LoadDefDirectory("defs/characters")
+local characterPlacementDef = require("defs/characterPlacementDef")
+local NewGuy = require("objects/guy")
+
 local self = {}
-local world
+local api = {}
 
+function api.SpawnCharacter(name, pos, data)
+	local def = CharacterDefs[name]
+	data = data or {}
+	data.pos = pos
+	data.def = def
+	IterableMap.Add(self.characters, NewGuy(data, self.world.GetPhysicsWorld(), self.world))
+end
 
-function api.Initialize(parentWorld)
-	self = {}
-	world = parentWorld
+local function SetupInitialCharacters()
+	for i = 1, #characterPlacementDef do
+		local character = characterPlacementDef[i]
+		api.SpawnCharacter(character.name, character.pos)
+	end
+end
+
+function api.GetCharacterUnderMouse(mousePos)
+	return IterableMap.GetFirstSatisfies(self.characters, "MouseHitTest", self.world.GetMousePosition())
+end
+
+function api.Update(dt)
+	IterableMap.ApplySelf(self.characters, "Update", dt)
+end
+
+function api.Draw(drawQueue)
+	IterableMap.ApplySelf(self.characters, "Draw", drawQueue)
+end
+
+function api.Initialize(world)
+	self = {
+		characters = IterableMap.New(),
+		world = world,
+	}
 	
-	
+	SetupInitialCharacters()
 end
 
 return api

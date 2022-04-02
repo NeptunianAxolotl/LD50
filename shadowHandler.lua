@@ -28,10 +28,11 @@ function api.UpdateLightParams(light, pos, radius)
 	light.vision:SetRadius(radiusVision)
 end
 
-function api.AddLight()
+function api.AddLight(useStar, maxRadius)
+	maxRadius = maxRadius or 1000
 	local light = {
-		ground = Star:new(self.groundShadow, 800),
-		vision = Star:new(self.visionShadow, 600),
+		ground = ((useStar and Star) or Light):new(self.groundShadow, maxRadius),
+		vision = ((useStar and Star) or Light):new(self.visionShadow, maxRadius*1.3),
 	}
 	
 	light.ground:SetColor(255, 255, 255)

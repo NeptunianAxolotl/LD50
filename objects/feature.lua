@@ -22,7 +22,7 @@ local function NewFeature(self, physicsWorld, world)
 		self.shadow = ShadowHandler.AddCircleShadow(def.shadowRadius)
 	end
 	if def.lightFunc then
-		self.light = ShadowHandler.AddLight()
+		self.light = ShadowHandler.AddLight(def.bigLight)
 	end
 	
 	function self.GetPos()
@@ -46,22 +46,26 @@ local function NewFeature(self, physicsWorld, world)
 		if self.dead then
 			return false
 		end
+		self.body:destroy()
+		if self.shadow then
+			ShadowHandler.RemoveShadow(self.shadow)
+		end
+		if self.light then
+			ShadowHandler.RemoveLight(self.light)
+		end
 		self.dead = true
 		return true
 	end
 	
+	function self.GetType()
+		return "feature"
+	end
+	
 	function self.Update(dt)
-		self.animTime = self.animTime + dt
 		if self.dead then
-			self.body:destroy()
-			if self.shadow then
-				ShadowHandler.RemoveShadow(self.shadow)
-			end
-			if self.light then
-				ShadowHandler.RemoveLight(self.light)
-			end
 			return true
 		end
+		self.animTime = self.animTime + dt
 	end
 	
 	function self.MouseHitTest(pos)

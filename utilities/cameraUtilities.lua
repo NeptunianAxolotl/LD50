@@ -16,7 +16,7 @@ end
 local function UpdateCameraToViewPoints(dt, pointList, moveSmooth, scaleSmooth)
 	local left, right, top, bottom
 	
-	if #pointList > 0 then
+	if pointList and #pointList > 0 then
 		left, right = pointList[1].pos[1] - pointList[1].radius, pointList[1].pos[1] + pointList[1].radius
 		top, bottom = pointList[1].pos[2] - pointList[1].radius, pointList[1].pos[2] + pointList[1].radius
 		for i = 2, #pointList do
@@ -24,8 +24,9 @@ local function UpdateCameraToViewPoints(dt, pointList, moveSmooth, scaleSmooth)
 			top, bottom = math.min(top, pointList[i].pos[2] - pointList[i].radius), math.max(bottom, pointList[i].pos[2] + pointList[i].radius)
 		end
 	else
-		left, right, top, bottom = self.pinX[2], self.pinY[2], self.pinY[2], self.pinY[2]
+		left, right, top, bottom = self.oldLeft, self.oldRight, self.oldTop, self.oldBottom
 	end
+	self.oldLeft, self.oldRight, self.oldTop, self.oldBottom = left, right, top, bottom
 	
 	if self.pinY then
 		if self.pinY[2] == 1 then

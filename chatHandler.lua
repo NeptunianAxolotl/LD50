@@ -5,8 +5,6 @@ local Font = require("include/font")
 local EffectsHandler = require("effectsHandler")
 local Resources = require("resourceHandler")
 
-local chatProgression = require("defs/chatProgression")
-
 local self = {}
 local api = {}
 local world
@@ -38,27 +36,20 @@ function api.AddMessage(text, timer, turns, color, sound)
 	table.insert(self.lines, line)
 end
 
-function api.AddTurnMessageRaw(message)
+function api.AddTurnMessage(message, defaultColor, defaultTimer)
 	if self.hadLastChat then
 		return
 	end
 	local function AddFunc()
 		if message.text then
-			for i = #message.text, 1, -1 do
-				api.AddMessage(message.text[i], message.timer or 1.4, message.turns or 1, message.color, message.sound)
+			for i = 1, #message.text do
+				api.AddMessage(message.text[i], message.timer or defaultTimer, message.turns or 1, message.color or defaultColor, message.sound)
 			end
 		end
 	end
-	Delay.Add(message.delay or 0.7, AddFunc)
+	Delay.Add(message.delay or 0, AddFunc)
 	if message.last then
 		self.hadLastChat = true
-	end
-end
-
-function api.AddTurnMessage(messageName)
-	local message = chatProgression[messageName]
-	if message then
-		api.AddTurnMessageRaw(message)
 	end
 end
 
@@ -71,7 +62,7 @@ function api.ReportOnRecord(name, value, oldValue)
 	local lowerBound = util.Round(oldValue*100) + 1
 	for i = upperBound, lowerBound, -1 do
 		if chatData[i] then
-			api.AddTurnMessageRaw(chatData[i])
+			api.AddTurnMessage(chatData[i])
 			return
 		end
 	end
@@ -81,15 +72,15 @@ function api.AddGameOverMessage(name)
 	if not (chatProgression[name] and chatProgression[name][100]) then
 		return
 	end
-	api.AddTurnMessageRaw(chatProgression[name][100])
+	api.AddTurnMessage(chatProgression[name][100])
 end
 
 function api.DrawConsole()
 	local windowX, windowY = love.window.getMode()
-	local drawPos = world.ScreenToInterface({0, windowY*0.25})
-	local botPad = drawPos[2] + #self.lines*Global.LINE_SPACING
+	local drawPos = world.ScreenToInterface({0, windowY*0.5})
+	local topPad = drawPos[2] - #self.lines*Global.LINE_SPACING
 
-	for i = 1, #self.lines do
+	for i = #self.lines, 1, -1 do
 		local line = self.lines[i]
 		love.graphics.setColor(
 			line.consoleColorR,
@@ -99,7 +90,7 @@ function api.DrawConsole()
 		)
 		
 		Font.SetSize(0)
-		love.graphics.print(line.consoleText, 88, botPad - (i * Global.LINE_SPACING))
+		love.graphics.print(line.consoleText, 88, topPad + (i * Global.LINE_SPACING))
 	end
 	love.graphics.setColor(1, 1, 1)
 end
@@ -119,11 +110,20 @@ function api.ChatTurn()
 			end
 		end
 	end
-	
-	if chatProgression.onTurn[self.turn] then
-		local message = chatProgression.onTurn[self.turn]
-		api.AddTurnMessageRaw(message)
+end
+
+function api.FlushChatTurns()
+	self.turn = 0
+	for i = #self.lines, 1, -1 do
+		local line = self.lines[i]
+		if line.consoleTurnTimer then
+			line.consoleTurnTimer = false
+		end
 	end
+end
+
+function api.SetChatTurnEnabled(chatTurnEnabled)
+	self.chatTurnEnabled = chatTurnEnabled
 end
 
 --------------------------------------------------
@@ -134,7 +134,7 @@ function api.Update(dt)
 	if self.lines then
 		for i = #self.lines, 1, -1 do
 			local line = self.lines[i]
-			if line.consoleTimer and not line.consoleTurnTimer then
+			if (line.consoleTimer and not line.consoleTurnTimer) or (not self.chatTurnEnabled) then
 				line.consoleTimer = line.consoleTimer - dt
 				if line.consoleTimer < 0 then
 					api.RemoveMessage(i)

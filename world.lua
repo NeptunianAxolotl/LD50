@@ -6,6 +6,8 @@ EffectsHandler = require("effectsHandler")
 ComponentHandler = require("componentHandler")
 
 PlayerHandler = require("playerHandler")
+DialogueHandler = require("dialogueHandler")
+NpcHandler = require("npcHandler")
 TerrainHandler = require("terrainHandler")
 
 Camera = require("utilities/cameraUtilities")
@@ -84,6 +86,9 @@ function api.MousePressed(x, y, button)
 	if PlayerHandler.MousePressedInterface(uiX, uiY, button) then
 		return
 	end
+	if DialogueHandler.MousePressedInterface(uiX, uiY, button) then
+		return
+	end
 	if api.GetPaused() or api.GetGameOver() then
 		return
 	end
@@ -144,6 +149,8 @@ function api.Update(dt, realDt)
 	ComponentHandler.Update(dt)
 	TerrainHandler.Update(dt)
 	PlayerHandler.Update(dt)
+	NpcHandler.Update(dt)
+	DialogueHandler.Update(dt)
 	
 	PhysicsHandler.Update(math.min(0.04, dt))
 	ShadowHandler.Update(dt)
@@ -164,6 +171,7 @@ function api.Draw()
 	ComponentHandler.Draw(drawQueue)
 	TerrainHandler.Draw(drawQueue)
 	PlayerHandler.Draw(drawQueue)
+	NpcHandler.Draw(drawQueue)
 	EffectsHandler.Draw(drawQueue)
 	--ModuleTest.Draw(drawQueue)
 	
@@ -187,6 +195,7 @@ function api.Draw()
 	-- Draw interface
 	EffectsHandler.DrawInterface()
 	ChatHandler.DrawInterface()
+	DialogueHandler.DrawInterface()
 	GameHandler.DrawInterface()
 	PlayerHandler.DrawInterface()
 	
@@ -211,9 +220,11 @@ function api.Initialize()
 	SoundHandler.Initialize()
 	MusicHandler.Initialize(api)
 	ChatHandler.Initialize(api)
+	DialogueHandler.Initialize(api)
 	PhysicsHandler.Initialize(api)
 	TerrainHandler.Initialize(api)
 	PlayerHandler.Initialize(api)
+	NpcHandler.Initialize(api)
 	ComponentHandler.Initialize(api)
 	DeckHandler.Initialize(api)
 	GameHandler.Initialize(api)

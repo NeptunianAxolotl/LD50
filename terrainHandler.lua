@@ -17,6 +17,36 @@ function api.SpawnFeature(name, pos, data)
 	IterableMap.Add(self.features, NewFeature(data, self.world.GetPhysicsWorld(), self.world))
 end
 
+function api.GetClosetFeature(pos, featureType)
+	local function minFunc(feature)
+		if featureType and feature.def.name ~= featureType then
+			return false
+		end
+		local featurePos = feature.GetPos()
+		return util.DistSq(pos[1], pos[2], featurePos[1], featurePos[2])
+	end
+	
+	return IterableMap.GetMinimum(self.features, minFunc)
+end
+
+function api.FindFreeSpace(centre, freeRadius)
+	local searchRadius = 0
+	local freeRadiusSq = freeRadius^2
+	while searchRadius < 2000 do
+		local pos = util.Add(centre, util.RandomPointInCircle(searchRadius))
+		local _, closeDistSq = api.GetClosetFeature(pos, featureType)
+		if closeDistSq > freeRadiusSq then
+			return pos
+		end
+		searchRadius = searchRadius + 50
+	end
+	return false
+end
+
+function api.FindFreeSpaceFeature(centre, feature)
+	return api.FindFreeSpace(centre, FeatureDefs[feature].radius)
+end
+
 local function SetupTerrain()
 	for i = 1, #terrainDef do
 		local feature = terrainDef[i]

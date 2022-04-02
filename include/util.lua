@@ -598,11 +598,27 @@ end
 function util.LoadDefDirectory(dir)
 	local files = love.filesystem.getDirectoryItems(dir)
 	local defTable = {}
+	local nameList = {}
 	for i = 1, #files do
 		local name = string.sub(files[i], 0, -5)
+		nameList[#nameList + 1] = name
 		defTable[name] = love.filesystem.load(dir .. "/" .. name .. ".lua")()
 	end
-	return defTable
+	
+	-- Loop for multiple inheritence
+	local done = false
+	while not done do
+		done = true
+		for i = 1, #nameList do
+			local name = nameList[i]
+			if defTable[name].inheritFrom then
+				defTable[name] = util.CopyTable(defTable[defTable[name].inheritFrom], true, defTable[name])
+				defTable[name].inheritFrom = nil
+				done = false
+			end
+		end
+	end
+	return defTable, nameList
 end
 
 --------------------------------------------------

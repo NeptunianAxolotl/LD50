@@ -4,7 +4,7 @@ local Resources = require("resourceHandler")
 
 local api = {}
 
-function api.DrawInventoryBar(world, inventory, selectedItem, activeItem, ItemDefs, boxSize, boxSpacing, startIndex, endIndex, leadingBoxes, trailingBoxes)
+function api.DrawInventoryBar(world, inventory, selectedItem, activeItem, ItemDefs, checkHover, boxSize, boxSpacing, startIndex, endIndex, leadingBoxes, trailingBoxes)
 	local screenWidth, screenHeight = love.window.getMode()
 	local mousePos = world.GetMousePositionInterface()
 	
@@ -20,7 +20,7 @@ function api.DrawInventoryBar(world, inventory, selectedItem, activeItem, ItemDe
 	love.graphics.setLineWidth(4)
 	for i = startIndex, endIndex do
 		love.graphics.rectangle("fill", startX + i*(boxSize + boxSpacing) + 1, startY + 1, boxSize - 2, boxSize - 2, 0, 0, 5)
-		if util.PosInRectangle(mousePos, startX + i*(boxSize + boxSpacing), startY, boxSize, boxSize) then
+		if checkHover and util.PosInRectangle(mousePos, startX + i*(boxSize + boxSpacing), startY, boxSize, boxSize) then
 			hoveredItem = i
 		end
 	end

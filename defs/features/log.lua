@@ -1,4 +1,5 @@
 local def = {
+	name = "log",
 	radius = 42,
 	collide = false,
 	image = "log",

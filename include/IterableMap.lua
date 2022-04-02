@@ -154,6 +154,22 @@ function IterableMap.GetFirstSatisfies(self, funcName, ...)
 	end
 end
 
+function IterableMap.GetMinimum(self, minFunc)
+	local i = 1
+	local minItem = false
+	local minValue = false
+	while i <= self.indexMax do
+		local key = self.keyByIndex[i]
+		local itemValue = minFunc(self.dataByKey[key])
+		if itemValue and ((not minValue) or itemValue < minValue) then
+			minItem = self.dataByKey[key]
+			minValue = itemValue
+		end
+		i = i + 1
+	end
+	return minItem, minValue
+end
+
 function IterableMap.ApplySelf(self, funcName, ...)
 	local i = 1
 	while i <= self.indexMax do
