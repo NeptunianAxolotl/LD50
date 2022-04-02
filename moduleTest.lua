@@ -12,7 +12,7 @@ local self = {}
 local animDt = 0
 
 function api.Update(dt)
-	animDt = Resources.UpdateAnimation("test_anim", animDt, dt/5)
+	animDt = Resources.UpdateAnimation("test_anim", animDt, dt)
 	if math.random() < 0.03 then
 		SoundHandler.PlaySound("health_down")
 		EffectsHandler.SpawnEffect("health_down", {0, 0})
@@ -38,7 +38,7 @@ function api.Draw(drawQueue)
 	drawQueue:push({y=0; f=function()
 		Resources.DrawAnimation("test_anim", 500, 500, animDt)
 	end})
-	ShadowHandler.SetShadowPosition(self.guyShadow, {500, 650})
+	ShadowHandler.SetUpdateShadowParams(self.guyShadow, {500, 500}, 16)
 end
 
 function api.Initialize()

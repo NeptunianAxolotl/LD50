@@ -7,6 +7,8 @@ local globals = {
 	
 	LINE_SPACING = 36,
 	INC_OFFSET = -15,
+	
+	PHYSICS_SCALE = 300,
 }
 
 return globals

@@ -5,6 +5,8 @@ MusicHandler = require("musicHandler")
 EffectsHandler = require("effectsHandler")
 ComponentHandler = require("componentHandler")
 
+PlayerHandler = require("playerHandler")
+
 Camera = require("utilities/cameraUtilities")
 Delay = require("utilities/delay")
 
@@ -117,6 +119,11 @@ function api.GetMousePosition()
 	return api.ScreenToWorld({x, y})
 end
 
+function api.WorldScaleToScreenScale()
+	local m11 = self.cameraTransform:getMatrix()
+	return m11
+end
+
 function api.GetPhysicsWorld()
 	return PhysicsHandler.GetPhysicsWorld()
 end
@@ -129,10 +136,11 @@ function api.Update(dt, realDt)
 	end
 	
 	Delay.Update(dt)
+	ModuleTest.Update(dt)
+	ComponentHandler.Update(dt)
+	PlayerHandler.Update(dt)
 	
 	PhysicsHandler.Update(math.min(0.04, dt))
-	ComponentHandler.Update(dt)
-	ModuleTest.Update(dt)
 	ShadowHandler.Update(dt)
 
 	ChatHandler.Update(dt)
@@ -149,6 +157,7 @@ function api.Draw()
 	-- Draw world
 	love.graphics.replaceTransform(self.cameraTransform)
 	ComponentHandler.Draw(drawQueue)
+	PlayerHandler.Draw(drawQueue)
 	EffectsHandler.Draw(drawQueue)
 	ModuleTest.Draw(drawQueue)
 	
@@ -196,6 +205,7 @@ function api.Initialize()
 	MusicHandler.Initialize(api)
 	ChatHandler.Initialize(api)
 	PhysicsHandler.Initialize(api)
+	PlayerHandler.Initialize(api)
 	ComponentHandler.Initialize(api)
 	DeckHandler.Initialize(api)
 	GameHandler.Initialize(api)

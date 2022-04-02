@@ -53,10 +53,11 @@ end
 function api.Initialize(parentWorld)
 	self = {}
 	world = parentWorld
+	love.physics.setMeter(Global.PHYSICS_SCALE)
 	physicsWorld = love.physics.newWorld(0, 0, true) -- Last argument is whether sleep is allowed.
 	physicsWorld:setCallbacks(beginContact, endContact, preSolve, postSolve)
 	
-	physicsWorld:setGravity(0, 190)
+	physicsWorld:setGravity(0, 0)
 end
 
 return api

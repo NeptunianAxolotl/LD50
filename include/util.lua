@@ -201,6 +201,12 @@ function util.DirectionToCardinal(direction, start, segments)
 	return math.floor((direction + start + math.pi/segments) / (2*math.pi/segments)) % segments + 1
 end
 
+function util.CardinalToDirection(cardinal, start, segments)
+	start = start or 0
+	segments = segments or 4
+	return cardinal * 2 * math.pi/segments + start 
+end
+
 function util.AngleToCardinal(angle, cardinal, start, segments)
 	start = start or 0
 	segments = segments or 4

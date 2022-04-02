@@ -51,15 +51,20 @@ function api.ViewResize(width, height)
 	end
 end
 
-function api.SetShadowPosition(shadow, pos)
+function api.SetUpdateShadowParams(shadow, pos, radius)
 	pos = world.WorldToScreen(pos)
-	shadow:SetPosition(pos[1], pos[2])
+	shadow.circleShape:SetRadius(radius * world.WorldScaleToScreenScale())
+	shadow.body:SetPosition(pos[1], pos[2])
 end
 
 function api.AddCircleShadow(radius)
 	newBody = Body:new(self.groundShadow)
-	CircleShadow:new(newBody, 0, 0, radius)
-	return newBody
+	newCircle = CircleShadow:new(newBody, 0, 0, radius)
+	local data = {
+		body = newBody,
+		circleShape = newCircle
+	}
+	return data
 end
 
 function api.Initialize(parentWorld)
