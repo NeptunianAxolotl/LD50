@@ -3,6 +3,7 @@ local Resources = require("resourceHandler")
 local EffectsHandler = require("effectsHandler")
 local SoundHandler = require("soundHandler")
 local ChatHandler = require("chatHandler")
+local ComponentHandler = require("componentHandler")
 local util = require("include/util")
 
 local self = {}
@@ -31,9 +32,19 @@ function self.Update(dt)
 	end
 end
 
-
 function self.Draw()
 	Resources.DrawAnimation("test_anim", 500, 500, animDt)
+end
+
+function self.Initialize()
+	data = {
+		initVelocity = {140, 20}
+	}
+	ComponentHandler.SpawnComponent("", {200, 200}, data)
+	data = {
+		initVelocity = {-140, 20}
+	}
+	ComponentHandler.SpawnComponent("", {600, 200}, data)
 end
 
 return self

@@ -29,16 +29,6 @@ function api.Initialize(world)
 		animationTimer = 0,
 		world = world,
 	}
-	
-	-- Testing
-	data = {
-		initVelocity = {80, 80}
-	}
-	api.SpawnComponent("", {200, 200}, data)
-	data = {
-		initVelocity = {-80, 80}
-	}
-	api.SpawnComponent("", {600, 200}, data)
 end
 
 return api

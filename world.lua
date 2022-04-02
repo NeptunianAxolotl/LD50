@@ -3,6 +3,7 @@ local ModuleTest = require("moduleTest")
 SoundHandler = require("soundHandler")
 MusicHandler = require("musicHandler")
 EffectsHandler = require("effectsHandler")
+ComponentHandler = require("componentHandler")
 
 Camera = require("utilities/cameraUtilities")
 Delay = require("utilities/delay")
@@ -129,6 +130,7 @@ function api.Update(dt, realDt)
 	Delay.Update(dt)
 	
 	PhysicsHandler.Update(math.min(0.04, dt))
+	ComponentHandler.Update(dt)
 	ModuleTest.Update(dt)
 
 	ChatHandler.Update(dt)
@@ -145,6 +147,7 @@ function api.Draw()
 	local drawQueue = PriorityQueue.new(function(l, r) return l.y < r.y end)
 
 	-- Draw world
+	ComponentHandler.Draw(drawQueue)
 	EffectsHandler.Draw(drawQueue)
 	ModuleTest.Draw(dt)
 	
@@ -184,8 +187,10 @@ function api.Initialize()
 	MusicHandler.Initialize(api)
 	ChatHandler.Initialize(api)
 	PhysicsHandler.Initialize(api)
+	ComponentHandler.Initialize(api)
 	DeckHandler.Initialize(api)
 	GameHandler.Initialize(api)
+	ModuleTest.Initialize(api)
 	
 	-- Note that the camera pins only function for these particular second entries.
 	Camera.Initialize({
