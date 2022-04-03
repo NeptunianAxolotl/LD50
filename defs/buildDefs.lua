@@ -8,7 +8,6 @@ local buildDefs = {
 	},
 }
 
-local buildDefNames = {}
 for i = 1, #buildDefs do
 	local aggCostMap = {}
 	local costs = buildDefs[i].cost
@@ -16,7 +15,6 @@ for i = 1, #buildDefs do
 		aggCostMap[costs[j]] = (aggCostMap[costs[j]] or 0) + 1
 	end
 	buildDefs[i].aggCostMap = aggCostMap
-	buildDefNames[buildDefs[i].name] = buildDefs[i]
 end
 
-return buildDefs, buildDefNames
+return buildDefs

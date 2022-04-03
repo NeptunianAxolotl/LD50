@@ -26,4 +26,22 @@ return {
 		xOffset = 0,
 		yOffset = 0,
 	},
+	{
+		name = "close_button",
+		file = "resources/images/close_button.png",
+		form = "image",
+		xScale = 0.5,
+		yScale = 0.5,
+		xOffset = 0,
+		yOffset = 0,
+	},
+	{
+		name = "close_button_highlight",
+		file = "resources/images/close_button_highlight.png",
+		form = "image",
+		xScale = 0.5,
+		yScale = 0.5,
+		xOffset = 0,
+		yOffset = 0,
+	},
 }

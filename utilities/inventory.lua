@@ -98,6 +98,15 @@ function api.DrawBuildMenu(world, playerData)
 	love.graphics.setLineWidth(4)
 	love.graphics.rectangle("line", screenWidth*0.2, screenHeight*0.1, screenWidth*0.6, screenHeight*0.75, 0, 0, 5)
 	
+	local closeHover, buildHover = false, false
+	
+	if util.PosInRectangle(mousePos, screenWidth*0.8 - 104, screenHeight*0.1 + 20, 84, 84) then
+		closeHover = true
+		Resources.DrawImage("close_button_highlight", screenWidth*0.8 - 63, screenHeight*0.1 + 20)
+	else
+		Resources.DrawImage("close_button", screenWidth*0.8 - 63, screenHeight*0.1 + 20)
+	end
+	
 	local startX = screenWidth*0.2 + 90
 	local startY = screenHeight*0.2 + 40
 	
@@ -105,19 +114,28 @@ function api.DrawBuildMenu(world, playerData)
 	for i = 1, #BuildDefs do
 		local def = BuildDefs[i]
 		if unlocks[def.unlockReq] then
+			local canAfford = playerData.CanAffordBuilding(def)
+			local isHover = false
 			if util.PosInRectangle(mousePos, startX - 60, startY - 40, screenWidth*0.6 - 60, 80) then
-				love.graphics.setColor(1, 0.2, 0.2, 1)
+				if canAfford then
+					buildHover = def.name
+				end
+				isHover = true
+				love.graphics.setColor(1, 0.2, 0.2, (canAfford and 1) or 0.2)
 				love.graphics.setLineWidth(4)
 				love.graphics.rectangle("line", startX - 60, startY - 40, screenWidth*0.6 - 60, 80, 0, 0, 5)
 			end
-			Resources.DrawImage(def.buildImage, startX, startY)
+			Resources.DrawImage(def.buildImage, startX, startY, false, 1, false, (not canAfford) and {0.7, 0.7, 0.7})
+			local resourceCol = (not canAfford) and {isHover and 1 or 0.7, isHover and 0.2 or 0.7, isHover and 0.2 or 0.7}
 			for j = 1, #def.cost do
 				local item = ItemDefs[def.cost[j]]
-				Resources.DrawImage(item.image, startX + 20 + 90*j, startY)
+				Resources.DrawImage(item.image, startX + 20 + 90*j, startY, false, 1, false, resourceCol)
 			end
 			startY = startY + 120
 		end
 	end
+	
+	return closeHover, buildHover
 end
 
 return api

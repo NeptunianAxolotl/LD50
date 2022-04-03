@@ -22,6 +22,10 @@ function api.GetTerrainPos(i, j)
 	return {i * Global.TILE_WIDTH - (j%2 * Global.TILE_WIDTH * 0.5), j * Global.TILE_HEIGHT * 0.5}
 end
 
+function api.PositionHasGround(pos, radius)
+	return true -- TODO
+end
+
 function api.Update(dt)
 end
 
