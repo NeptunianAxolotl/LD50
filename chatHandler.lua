@@ -90,29 +90,36 @@ function api.DrawConsole()
 		)
 		
 		Font.SetSize(1)
+		textWidthLimit = 315
 		
 		--break up text to wrap consistently without manual intervention	
-		if love.graphics.getFont():getWidth(line.consoleText) > 100 then
-			--split string into words
+		if love.graphics.getFont():getWidth(line.consoleText) > textWidthLimit then --width limit in pixels
 			
+			--temp variable for text
 			currentLine = line.consoleText
 			tempLine = ""
 			
+			--split string into words
 			for w in currentLine:gmatch("%S+") 
 			do 
-				tempLine = tempLine.." "..w
+				--add word to temp line
+				tempLine = tempLine..w.." "
 				
-				if (string.len(tempLine) > 25) then			
+				--if temp line longer than specified width, print text and increment vertical positioning
+				if (love.graphics.getFont():getWidth(tempLine) > textWidthLimit) then			
 					love.graphics.print(tempLine, 50, topPad + (i * Global.LINE_SPACING))
 					i = i + 1
+					
+					--clear temp line
 					tempLine = ""
 				end
 			end
 			
+			--in case final line does not reach 25 characters
 			if (string.len(tempLine) > 0) then	
 				love.graphics.print(tempLine, 50, topPad + (i * Global.LINE_SPACING))
 			end		
-		else		
+		else 
 			love.graphics.print(line.consoleText, 50, topPad + (i * Global.LINE_SPACING))
 		end	
 
