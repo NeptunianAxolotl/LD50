@@ -35,7 +35,7 @@ local def = {
 							return player.ItemHasSpace("stick_item") and (self.items.stick_item or 0) > 0
 						end,
 						msg = {
-							text = {"Take a stick"},
+							text = "Take a stick",
 							sound = "chat_good",
 						},
 						leadsToFunc = function (self, player)
@@ -44,7 +44,7 @@ local def = {
 							return "hello"
 						end,
 						alternateReplyMsg = {
-							text = {"You take a stick"}
+							text = "You take a stick"
 						},
 					},
 					{
@@ -52,7 +52,7 @@ local def = {
 							return player.ItemHasSpace("log_item") and (self.items.log_item or 0) > 0
 						end,
 						msg = {
-							text = {"Take a log"},
+							text = "Take a log",
 							sound = "chat_good",
 						},
 						leadsToFunc = function (self, player)
@@ -61,7 +61,7 @@ local def = {
 							return "hello"
 						end,
 						alternateReplyMsg = {
-							text = {"You take a log"}
+							text = "You take a log"
 						},
 					},
 					{
@@ -70,7 +70,7 @@ local def = {
 							return logCount > 0 or stickCount > 0
 						end,
 						msg = {
-							text = {"Dump all my wood"},
+							text = "Dump all my wood",
 							sound = "chat_good",
 						},
 						leadsToFunc = function (self, player)
@@ -92,7 +92,7 @@ local def = {
 					},
 					{
 						msg = {
-							text = {"Leave"},
+							text = "Leave",
 							sound = "chat_good",
 						},
 						skipReplyChat = true

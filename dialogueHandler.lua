@@ -17,8 +17,7 @@ local function SetNextScene(scene, concludes)
 	for i = 1, #messages do
 		if messages[i].textFunc then
 			-- This overrides def data, which is pretty bad.
-			messages[i].text = messages[i].text or {}
-			messages[i].text[1] = messages[i].textFunc(self.chatGuy, PlayerHandler)
+			messages[i].text = messages[i].textFunc(self.chatGuy, PlayerHandler)
 		end
 		ChatHandler.AddTurnMessage(messages[i], false, (concludes and 5) or 2)
 	end
@@ -67,10 +66,9 @@ local function DrawConsole()
 			Font.SetSize(1)
 			if reply.msg.textFunc then
 				-- This overrides def data, which is pretty bad.
-				reply.msg.text = reply.msg.text or {}
-				reply.msg.text[1] = reply.msg.textFunc(self.chatGuy, PlayerHandler)
+				reply.msg.text = reply.msg.textFunc(self.chatGuy, PlayerHandler)
 			end
-			love.graphics.print(reply.msg.text[1], drawPos[1], drawPos[2] - (replyDrawPos * Global.REPLY_LINE_SPACING))
+			love.graphics.print(reply.msg.text, drawPos[1], drawPos[2] - (replyDrawPos * Global.REPLY_LINE_SPACING))
 			replyDrawPos = replyDrawPos + 1
 		end
 	end
@@ -90,15 +88,13 @@ local function CheckSelectReply()
 	if myReply.alternateReplyMsg then
 		if myReply.alternateReplyMsg.textFunc then
 			-- This overrides def data, which is pretty bad.
-			myReply.alternateReplyMsg.text = myReply.alternateReplyMsg.text or {}
-			myReply.alternateReplyMsg.text[1] = myReply.alternateReplyMsg.textFunc(self.chatGuy, PlayerHandler)
+			myReply.alternateReplyMsg.text = myReply.alternateReplyMsg.textFunc(self.chatGuy, PlayerHandler)
 		end
 		messageToAdd = myReply.alternateReplyMsg
 	elseif not myReply.skipReplyChat then
 		if myReply.msg.textFunc then
 			-- This overrides def data, which is pretty bad.
-			myReply.msg.text = myReply.msg.text or {}
-			myReply.msg.text[1] = myReply.msg.textFunc(self.chatGuy, PlayerHandler)
+			myReply.msg.text = myReply.msg.textFunc(self.chatGuy, PlayerHandler)
 		end
 		messageToAdd = myReply.msg
 	end

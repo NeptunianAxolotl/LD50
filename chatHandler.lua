@@ -76,9 +76,7 @@ function api.AddTurnMessage(message, defaultColor, defaultTimer)
 	end
 	local function AddFunc()
 		if message.text then
-			for i = 1, #message.text do
-				api.AddMessage(message.text[i], message.timer or defaultTimer, message.turns or 1, message.color or defaultColor, message.sound)
-			end
+			api.AddMessage(message.text, message.timer or defaultTimer, message.turns or 1, message.color or defaultColor, message.sound)
 		end
 	end
 	Delay.Add(message.delay or 0, AddFunc)

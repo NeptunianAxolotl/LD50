@@ -65,14 +65,14 @@ local def = {
 		scenes = {
 			hello = {
 				msg = {{
-					text = {"..."},
+					text = "...",
 					sound = "chat_good",
 				}},
 				replyDelay = 0.1,
 				replies = {
 					{
 						msg = {
-							text = {"Sure, here you go"},
+							text = "Sure, here you go",
 							sound = "chat_good",
 						},
 						leadsToFunc = function (self, player)
@@ -89,14 +89,14 @@ local def = {
 					},
 					{
 						msg = {
-							text = {"No, they are mine"},
+							text = "No, they are mine",
 							sound = "chat_good",
 						},
 						leadsTo = "are_you_sure",
 					},
 					{
 						msg = {
-							text = {"I don't have any"},
+							text = "I don't have any",
 							sound = "chat_good",
 						},
 						leadsToFunc = function (self, player)

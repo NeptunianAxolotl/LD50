@@ -2,22 +2,22 @@
 local chatProgression = {
 	onTurn = {
 		[1] = {
-			text = {" - Click and drag the windmill", "   onto the island to start making", "   power."},
+			text = " - Click and drag the windmill",
 			delay = 0,
 		},
 		[3] = {
-			text = {" - Place the fuel cell near the", "   reactor to generate tonnes of power."},
+			text = " - Place the fuel cell near the",
 			sound = "chat_good",
 			delay = 1.5,
 		},
 		[5] = {
-			text = {" - Add a research lab to unlock", "   better tech. Don't put those ", "   scientists too close to the", "   fuel cell!"},
+			text = " - Add a research lab to unlock"
 			sound = "chat_good",
 			delay = 1.5,
 		},
 	},
 	unlock_rope = {
-		text = {"The scientists have invented rope,", "to hold things together. They say", "they plan to invent the bicycle", "next."},
+		text = "The scientists have invented rope,",
 		sound = "chat_good",
 	},
 }
