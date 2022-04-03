@@ -67,7 +67,7 @@ local def = {
 					{
 						displayFunc = function (self, player)
 							local logCount, stickCount = player.GetConvertedWoodCounts()
-							return logCount > 0 or stickCount > 0
+							return true, not (logCount > 0 or stickCount > 0)
 						end,
 						msg = {
 							text = "Dump all my wood",

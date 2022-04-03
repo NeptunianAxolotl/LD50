@@ -55,8 +55,14 @@ local function DrawConsole()
 	local replyDrawPos = 1
 	for i = #replies, 1, -1 do
 		local reply = replies[i]
-		if (not reply.displayFunc) or reply.displayFunc(self.chatGuy, PlayerHandler) then
-			if util.PosInRectangle(mousePos, drawPos[1], drawPos[2] - (replyDrawPos * Global.REPLY_LINE_SPACING), 100000, Global.LINE_SPACING) then
+		local displayed, unclickable = true, false
+		if reply.displayFunc then
+			displayed, unclickable = reply.displayFunc(self.chatGuy, PlayerHandler)
+		end
+		if displayed then
+			if unclickable then
+				love.graphics.setColor(0.5, 0.5, 0.5, 1)
+			elseif util.PosInRectangle(mousePos, drawPos[1], drawPos[2] - (replyDrawPos * Global.REPLY_LINE_SPACING), 100000, Global.LINE_SPACING) then
 				love.graphics.setColor(1, 0.2, 0.2, 1)
 				self.hoveredReply = i
 			else
