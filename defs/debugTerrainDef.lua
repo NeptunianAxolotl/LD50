@@ -17,6 +17,14 @@ local terrain = {
 	},
 	{
 		name = "furnace",
+		pos = {-800, 900},
+	},
+	{
+		name = "furnace",
+		pos = {-500, -100},
+	},
+	{
+		name = "furnace",
 		pos = {200, 800},
 	},
 	{

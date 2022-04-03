@@ -18,6 +18,9 @@ local world
 
 function api.UpdateLightParams(light, pos, radius, color)
 	pos = world.WorldToScreen(pos)
+	if radius < 1 then
+		radius = 1
+	end
 	local radiusGround = radius * world.WorldScaleToScreenScale()
 	local radiusVision = (radius * 1.3) * world.WorldScaleToScreenScale()
 	
