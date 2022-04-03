@@ -59,6 +59,10 @@ local function NewFeature(self, physicsWorld, world)
 		return true
 	end
 	
+	function self.CanBeTalkedTo()
+		return def.chat and def.chat.acceptsChat(self)
+	end
+	
 	function self.GetType()
 		return "feature"
 	end
