@@ -33,7 +33,7 @@ local function DrawConsole()
 	
 	local mousePos = world.GetMousePositionInterface()
 	local windowX, windowY = love.window.getMode()
-	local drawPos = world.ScreenToInterface({windowX*0.65, windowY*0.5})
+	local drawPos = world.ScreenToInterface({windowX*0.75, windowY*0.65})
 
 	for i = 1, #replies do
 		local line = replies[i]
@@ -44,7 +44,7 @@ local function DrawConsole()
 			love.graphics.setColor(1, 1, 1, 1)
 		end
 		
-		Font.SetSize(0)
+		Font.SetSize(1)
 		love.graphics.print(line.msg.text[1], drawPos[1], drawPos[2] + (i * Global.REPLY_LINE_SPACING))
 	end
 	love.graphics.setColor(1, 1, 1)

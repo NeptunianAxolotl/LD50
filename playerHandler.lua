@@ -265,8 +265,8 @@ function api.Initialize(parentWorld)
 		inventory = {
 			"empty",
 			"log_item",
-			"log_item",
-			"log_item",
+			"stick_item",
+			"stick_item",
 		}
 	}
 	
