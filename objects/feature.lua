@@ -28,6 +28,9 @@ local function NewFeature(self, physicsWorld, world)
 	end
 	
 	function self.GetPos()
+		if self.dead then
+			return {0, 0} -- Hope this works
+		end
 		local bx, by = self.body:getPosition()
 		return {bx, by}
 	end
@@ -67,8 +70,39 @@ local function NewFeature(self, physicsWorld, world)
 		end
 	end
 	
+	function self.HasPower()
+		if not def.requiresPower then
+			return true
+		end
+		return TerrainHandler.GetPositionEnergy(self.GetPos(), def.toPowerRangeMult)
+	end
+	
+	function self.IsBusy()
+		return self.busyTimer
+	end
+	
+	function self.IsBusyOrTalking()
+		return self.busyTimer or self.talkingTo
+	end
+	
+	function self.SetBusy(newTimer)
+		self.busyTimer = newTimer
+	end
+	
+	function self.SetMoveTarget()
+		self.moveTarget = 0.5
+	end
+	
+	function self.IsMoveTarget()
+		return self.moveTarget
+	end
+	
 	function self.CanBeTalkedTo()
 		return def.chat and def.chat.acceptsChat(self)
+	end
+	
+	function self.SetTalkingTo(other)
+		self.talkingTo = other
 	end
 	
 	function self.GetType()
@@ -81,6 +115,18 @@ local function NewFeature(self, physicsWorld, world)
 		end
 		if def.updateFunc then
 			def.updateFunc(self, dt)
+		end
+		if self.busyTimer then
+			self.busyTimer = self.busyTimer - dt
+			if self.busyTimer <= 0 then
+				self.busyTimer = false
+			end
+		end
+		if self.moveTarget then
+			self.moveTarget = self.moveTarget - dt
+			if self.moveTarget <= 0 then
+				self.moveTarget = false
+			end
 		end
 		if self.shape and self.radiusScale < 1 then
 			self.radiusScale = self.radiusScale + dt

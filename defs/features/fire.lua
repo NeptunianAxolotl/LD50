@@ -7,7 +7,7 @@ local def = {
 	isEnergyProvider = true,
 	bigLight = true,
 	initData = {
-		fuelValue = 4000,
+		fuelValue = 800,
 		energyRadius = 10,
 		energyProvided = 1, -- In units of fires, so fire is permanently at 1.
 	},
@@ -17,7 +17,7 @@ local def = {
 	updateFunc = function (self, dt)
 		self.fuelValue = Global.LINEAR_FUEL_DRAIN*dt + self.fuelValue*math.exp(dt*Global.FUEL_DECAY_COEFF)
 		self.energyRadius = math.pow(self.fuelValue, 0.85) * 12
-		print(math.floor(self.energyRadius))
+		--print(math.floor(self.energyRadius), math.floor(self.fuelValue))
 	end,
 	mouseHit = {rx = -100, ry = -100, width = 200, height = 200},
 }

@@ -22,32 +22,40 @@ function api.UpdateLightParams(light, pos, radius, color)
 	local radiusVision = (radius * 1.3) * world.WorldScaleToScreenScale()
 	
 	if color then
-		light.ground:SetColor(color[1], color[2], color[3])
+		if light.ground then
+			light.ground:SetColor(color[1], color[2], color[3])
+		end
 		light.vision:SetColor(color[1], color[2], color[3])
 	end
 	
-	light.ground:SetPosition(pos[1], pos[2], 1)
-	light.ground:SetRadius(radiusGround)
+	if light.ground then
+		light.ground:SetPosition(pos[1], pos[2], 1)
+		light.ground:SetRadius(radiusGround)
+	end
 	
 	light.vision:SetPosition(pos[1], pos[2], 1)
 	light.vision:SetRadius(radiusVision)
 end
 
-function api.AddLight(useStar, maxRadius, color)
+function api.AddLight(useStar, maxRadius, color, visionOnly)
 	maxRadius = maxRadius or 1000
 	local light = {
-		ground = ((useStar and Star) or Light):new(self.groundShadow, maxRadius),
+		ground = (not visionOnly) and ((useStar and Star) or Light):new(self.groundShadow, maxRadius),
 		vision = ((useStar and Star) or Light):new(self.visionShadow, maxRadius*1.3),
 	}
 	
 	color = color or {255, 255, 255}
-	light.ground:SetColor(color[1], color[2], color[3])
+	if light.ground then
+		light.ground:SetColor(color[1], color[2], color[3])
+	end
 	light.vision:SetColor(color[1], color[2], color[3])
 	return light
 end
 
 function api.RemoveLight(light)
-	light.ground:Remove()
+	if light.ground then
+		light.ground:Remove()
+	end
 	light.vision:Remove()
 end
 

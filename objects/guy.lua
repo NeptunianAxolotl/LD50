@@ -23,7 +23,8 @@ local function DoMoveGoalAction(self)
 	elseif action == "collect" then
 		if (not ActionCallback) or ActionCallback(not feature.IsDead(), feature, action, item) then
 			feature.Destroy()
-			if self.def.isNpc then
+			if not self.def.isPlayer then
+				self.behaviourDelay = Global.NPC_PICKUP_TIME / (self.def.workMult or 1)
 				self.items = self.items or {}
 				self.items[feature.def.collectAs] = (self.items[feature.def.collectAs] or 0) + 1
 			end
@@ -33,17 +34,29 @@ local function DoMoveGoalAction(self)
 		if ActionCallback(canPlace, feature, action, item) and canPlace then
 			TerrainHandler.SpawnFeature(item, actionPos)
 		end
-	elseif feature and item and not feature.IsDead() then
-		if (not ActionCallback) or ActionCallback(not feature.IsDead(), feature, action, item) then
-			ItemAction.DoItemToFeature(feature, action, item)
+	elseif feature and not feature.IsDead() and action == "transform" and item then
+		local success = (feature.HasPower() and not feature.IsBusy())
+		ActionCallback(success, feature, action, item)
+		if success then
+			local itemDef = ItemDefs[item]
+			local busyTime = itemDef.craftingTime / (self.def.workMult or 1)
+			self.behaviourDelay = itemDef.craftingTime
+			feature.SetBusy(busyTime)
+			local createPos = self.GetPos()
+			local function CreateItem()
+				TerrainHandler.DropFeatureInFreeSpace(createPos, itemDef.dropAs, itemDef.dropMult)
+			end
+			Delay.Add(busyTime, CreateItem)
 		end
 	elseif other and not other.IsDead() and action == "talk" and other.CanBeTalkedTo() then
 		if ActionCallback then
 			ActionCallback(true, other, action, item)
 		end
 		self.SetTalkingTo(other)
-		if guy then
-			guy.SetTalkingTo(self)
+		other.SetTalkingTo(self)
+	elseif feature and item and not feature.IsDead() then
+		if (not ActionCallback) or ActionCallback(not feature.IsDead(), feature, action, item) then
+			ItemAction.DoItemToFeature(feature, action, item)
 		end
 	elseif ActionCallback then
 		ActionCallback(action == "self_handle", feature or guy, action, item)
@@ -74,7 +87,17 @@ local function CheckMoveGoal(self)
 		return
 	end
 	
-	self.MoveWithVector(util.SetLength(Global.MOVE_SPEED, util.Subtract(self.moveGoalPos, {bx, by})))
+	self.MoveWithVector(util.SetLength(Global.MOVE_SPEED*(self.def.speedMult or 1), util.Subtract(self.moveGoalPos, {bx, by})))
+	
+	if self.moveGoalAction and self.moveGoalAction.feature then
+		if self.moveGoalAction.feature.IsDead() then
+			if not self.def.isPlayer then
+				self.ClearMoveGoal()
+			end
+		else
+			self.moveGoalAction.feature.SetMoveTarget()
+		end
+	end
 end
 
 local function UpdateAnimDir(self)
@@ -112,7 +135,7 @@ local function NewGuy(self, physicsWorld, world)
 	
 	self.shadow = ShadowHandler.AddCircleShadow(def.shadowRadius)
 	if def.lightFunc then
-		self.light = ShadowHandler.AddLight(def.bigLight, 400 * (def.lightRadiusMult or 1), def.lightColor)
+		self.light = ShadowHandler.AddLight(def.bigLight, 200 * (def.lightRadiusMult or 1), def.lightColor, not def.isPlayer)
 	end
 	
 	function self.MoveWithVector(moveVec)
@@ -123,7 +146,7 @@ local function NewGuy(self, physicsWorld, world)
 	end
 	
 	function self.Move(direction, speed)
-		local force = util.PolarToCart(speed*Global.MOVE_SPEED, direction)
+		local force = util.PolarToCart(speed*Global.MOVE_SPEED*(def.speedMult or 1), direction)
 		self.MoveWithVector(force)
 	end
 	
@@ -176,7 +199,7 @@ local function NewGuy(self, physicsWorld, world)
 	end
 	
 	function self.SetTalkingTo(other)
-		if other and not def.isNpc then
+		if other and def.isPlayer then
 			DialogueHandler.EnterChat(other, PlayerHandler)
 		end
 		self.talkingTo = other
@@ -208,7 +231,7 @@ local function NewGuy(self, physicsWorld, world)
 		if self.dead then
 			return false
 		end
-		if not def.isNpc then
+		if def.isPlayer then
 			PlayerHandler.HandlePlayerDeath(self.GetPos())
 		end
 		self.body:destroy()
@@ -254,6 +277,9 @@ local function NewGuy(self, physicsWorld, world)
 	end
 	
 	function self.GetPos()
+		if self.dead then
+			return {0, 0} -- Hope this works
+		end
 		local bx, by = self.body:getPosition()
 		return {bx, by}
 	end

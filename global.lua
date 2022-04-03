@@ -1,7 +1,7 @@
 
 local globals = {
-	MASTER_VOLUME = 0.35,
-	MUSIC_VOLUME = 0.3,
+	MASTER_VOLUME = 0.75,
+	MUSIC_VOLUME = 0.01,
 	DEFAULT_MUSIC_DURATION = 174.69,
 	CROSSFADE_TIME = 0,
 	
@@ -11,10 +11,18 @@ local globals = {
 	
 	PHYSICS_SCALE = 300,
 	
+	USE_DEBUG_MAP = true,
+	UNLOCK_ALL_TECH = true,
 	DRAW_DEBUG = true,
+	
 	INVENTORY_SLOTS = 5,
 	
+	NPC_PICKUP_TIME = 0.2,
+	
 	MOVE_SPEED = 88,
+	APPROACH_LEEWAY = 350,
+	START_SPOT_SEARCH = 600,
+	SPOT_SEARCH_RANGE = 1100,
 	DROP_LEEWAY = 60,
 	TALK_LEEWAY = 160,
 	TILE_WIDTH = 1200,
@@ -30,6 +38,12 @@ local globals = {
 	
 	FIREFLY_FADE = 0.11,
 	FIREFLY_GAIN = 0.17,
+	
+	HAMMER_COST = 2,
+	PICK_COST = 3,
+	AXE_COST = 2,
+	SWORD_COST = 3,
+	ORE_TO_METAL = 3,
 }
 
 return globals

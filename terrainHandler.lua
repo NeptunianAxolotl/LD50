@@ -3,7 +3,7 @@ local IterableMap = require("include/IterableMap")
 local util = require("include/util")
 
 local FeatureDefs = util.LoadDefDirectory("defs/features")
-local terrainDef = require("defs/terrainDef")
+local terrainDef = (Global.USE_DEBUG_MAP and require("defs/debugTerrainDef")) or require("defs/terrainDef")
 local NewFeature = require("objects/feature")
 
 local self = {}
@@ -33,7 +33,6 @@ end
 
 function api.DropFeatureInFreeSpace(pos, toDrop, count)
 	count = count or 1
-	print("count", count)
 	for i = 1, count do
 		local dropPos = api.FindFreeSpaceFeature(pos, toDrop)
 		if dropPos then
@@ -43,11 +42,14 @@ function api.DropFeatureInFreeSpace(pos, toDrop, count)
 	end
 end
 
-function api.GetClosetFeature(pos, featureType, toSurface)
+function api.GetClosetFeature(pos, featureType, toSurface, requirePower, requireNotGoal, requireNotBusy)
 	local minFunc
 	if toSurface then
 		minFunc = function (feature)
-			if featureType and feature.def.name ~= featureType then
+			if (featureType and feature.def.name ~= featureType) or 
+					(requirePower and not feature.HasPower()) or 
+					(requireNotGoal and feature.IsMoveTarget()) or 
+					(requireNotBusy and feature.IsBusyOrTalking()) then
 				return false
 			end
 			local featurePos = feature.GetPos()
@@ -56,7 +58,10 @@ function api.GetClosetFeature(pos, featureType, toSurface)
 		end
 	else
 		minFunc = function (feature)
-			if featureType and feature.def.name ~= featureType then
+			if (featureType and feature.def.name ~= featureType) or 
+					(requirePower and not feature.HasPower()) or 
+					(requireNotGoal and feature.IsMoveTarget()) or 
+					(requireNotBusy and feature.IsBusyOrTalking()) then
 				return false
 			end
 			local featurePos = feature.GetPos()
@@ -84,7 +89,8 @@ function api.FindFreeSpace(centre, freeRadius)
 	return false
 end
 
-function api.GetPositionEnergy(pos)
+function api.GetPositionEnergy(pos, toPowerRangeMult)
+	toPowerRangeMult = toPowerRangeMult or 1
 	local retry = true
 	while retry do
 		retry = false
@@ -97,8 +103,8 @@ function api.GetPositionEnergy(pos)
 				retry = true
 				break
 			elseif not (maxEnergy and feature.energyProvided <= maxEnergy) then
-				local distSq = util.DistSqVectors(pos, feature.GetPos())
-				if distSq < feature.energyRadius^2 then
+				local dist = util.DistVectors(pos, feature.GetPos())
+				if dist < feature.energyRadius * toPowerRangeMult then
 					maxEnergy = feature.energyProvided
 				end
 			end

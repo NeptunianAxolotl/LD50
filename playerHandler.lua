@@ -30,16 +30,6 @@ local function FeatureToBuildDef(featureName)
 	return false
 end
 
-function api.GetInventoryCount(item)
-	local count = 0
-	for i = 1, #self.inventory do
-		if self.inventory[i] == item then
-			count = count + 1
-		end
-	end
-	return count
-end
-
 local function DropInventory(pos)
 	for i = 1, #self.inventory do
 		if self.inventory[i] ~= "empty" then
@@ -99,6 +89,16 @@ function api.SetItemCount(item, count)
 	end
 end
 
+function api.GetInventoryCount(item)
+	local count = 0
+	for i = 1, #self.inventory do
+		if self.inventory[i] == item then
+			count = count + 1
+		end
+	end
+	return count
+end
+
 function api.GetConvertedWoodCounts()
 	local logs = api.GetInventoryCount("log_bundle_item") * Global.LOG_BUNDLE + api.GetInventoryCount("log_item")
 	local sticks = api.GetInventoryCount("stick_bundle_item") * Global.STICK_BUNDLE + api.GetInventoryCount("stick_item")
@@ -118,6 +118,18 @@ function api.SpendOnBuilding(buildDef)
 	for key, value in pairs(buildDef.aggCostMap) do
 		api.RemoveInventory(key, value)
 	end
+end
+
+--------------------------------------------------
+-- Technology
+--------------------------------------------------
+
+function api.HasTech(name)
+	return Global.UNLOCK_ALL_TECH or self.unlocks[name]
+end
+
+function api.GetUnlocks()
+	return self.unlocks
 end
 
 --------------------------------------------------
@@ -201,9 +213,6 @@ function api.GetViewRestriction()
 	return {{pos = util.Add(self.playerGuy.GetPos(), util.Mult(0.05, self.playerGuy.GetVelocity())), radius = 800}}
 end
 
-function api.GetUnlocks()
-	return self.unlocks
-end
 
 --------------------------------------------------
 -- Input
@@ -409,9 +418,11 @@ function api.Initialize(parentWorld)
 		world = parentWorld,
 		inventory = {
 			"empty",
-			"log_item",
-			"stick_item",
-			"stick_item",
+			"empty",
+			"empty",
+			"empty",
+			"empty",
+			"empty",
 		},
 		unlocks = {
 			wood_pile = true,

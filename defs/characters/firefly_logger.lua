@@ -7,8 +7,7 @@ local def = {
 		items = {
 			log_item = 0,
 		}
-	},
-	isNpc = true,
+	},
 	behaviour = function (self, world, dt)
 		if self.items.log_item > 0 and not self.moveGoalPos then
 			local function UseLog(success)

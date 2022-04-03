@@ -10,7 +10,7 @@ local world
 -- Internals
 --------------------------------------------------
 
-local function SetNextScene(scene, concludes)
+local function SetNextScene(scene, concludes, sceneDelay)
 	self.currentScene = scene
 	
 	local messages = self.chatDef.scenes[self.currentScene].msg
@@ -19,10 +19,12 @@ local function SetNextScene(scene, concludes)
 			-- This overrides def data, which is pretty bad.
 			messages[i].text = messages[i].textFunc(self.chatGuy, PlayerHandler)
 		end
-		ChatHandler.AddTurnMessage(messages[i], false, (concludes and 5) or 2)
+		ChatHandler.AddTurnMessage(messages[i], false, (concludes and 5) or 2, sceneDelay)
 	end
 	self.hoveredReply = false
-	self.replyDelay = self.chatDef.scenes[self.currentScene].replyDelay or 0
+	
+	local scene = self.chatDef.scenes[self.currentScene]
+	self.replyDelay = (scene.replyDelay or 0) + (sceneDelay or 0)
 	
 	if (self.chatGuy.friendly) then
 		self.portrate = self.chatGuy.GetDef().portraitHappy
@@ -122,14 +124,14 @@ local function CheckSelectReply()
 	
 	-- Lead to after the message has been computed.
 	if myReply.leadsTo then
-		SetNextScene(myReply.leadsTo, concludes)
+		SetNextScene(myReply.leadsTo, concludes, myReply.delayNextScene)
 		if myReply.concludes then
 			api.ConcludeChat()
 		end
 	elseif myReply.leadsToFunc then
 		local leadsTo, concludes = myReply.leadsToFunc(self.chatGuy, PlayerHandler)
 		if leadsTo then
-			SetNextScene(leadsTo, concludes)
+			SetNextScene(leadsTo, concludes, myReply.delayNextScene)
 		end
 		if concludes or (not leadsTo) then
 			api.ConcludeChat()
@@ -170,10 +172,10 @@ function api.ConcludeChat()
 	end
 	ChatHandler.FlushChatTurns()
 	ChatHandler.SetChatTurnEnabled(false)
-	if self.chatGuy.SetTalkingTo then
+	if self.chatGuy.ClearMoveGoal then
 		self.chatGuy.ClearMoveGoal()
-		self.chatGuy.SetTalkingTo(false)
 	end
+	self.chatGuy.SetTalkingTo(false)
 	PlayerHandler.GetGuy().ClearMoveGoal()
 	PlayerHandler.GetGuy().SetTalkingTo(false)
 	

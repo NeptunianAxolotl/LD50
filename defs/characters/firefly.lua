@@ -18,7 +18,7 @@ local def = {
 		return {0.5 + 0.5*intensity, 0.5 + 0.5*intensity, 0}
 	end,
 	lightFunc = function (self)
-		return math.pow(self.lightValue * (0.5 + 0.03*math.random()), 0.6) * 800
+		return math.pow(self.lightValue * (0.5 + 0.03*math.random()), 0.6) * 450
 	end,
 	lightColorFunc = function (self)
 		if self.lightValue < 1 or self.colorNeedUpdate then
@@ -31,7 +31,7 @@ local def = {
 		end
 	end,
 	updateFunc = function (self, world, dt)
-		local randMult = (self.def.isNpc and 0.25) or 1
+		local randMult = (self.def.isPlayer and 1) or 0.2
 		if math.random() < randMult then
 			local inLight = TerrainHandler.GetPositionEnergy(self.GetPos())
 			self.inLight = inLight
@@ -50,7 +50,7 @@ local def = {
 		if self.lightValue < 0.6 then
 			
 		end
-		if not self.def.isNpc then
+		if self.def.isPlayer then
 			--print( self.lightValue)
 		end
 	end,

@@ -24,6 +24,10 @@ function api.AddMessage(text, timer, turns, color, sound, noLineSpace)
 	if sound then
 		SoundHandler.PlaySound(sound)
 	end
+	
+	if not text then
+		return -- Maybe we just wanted to play a sound
+	end
 
 	local realLines = {}
 	local textWidthLimit = 315
@@ -71,7 +75,7 @@ function api.AddMessage(text, timer, turns, color, sound, noLineSpace)
 	end
 end
 
-function api.AddTurnMessage(message, defaultColor, defaultTimer)
+function api.AddTurnMessage(message, defaultColor, defaultTimer, extraDelay)
 	if self.hadLastChat then
 		return
 	end
@@ -80,7 +84,7 @@ function api.AddTurnMessage(message, defaultColor, defaultTimer)
 			api.AddMessage(message.text, message.timer or defaultTimer, message.turns or 1, message.color or defaultColor, message.sound)
 		end
 	end
-	Delay.Add(message.delay or 0, AddFunc)
+	Delay.Add((message.delay or 0) + (extraDelay or 0), AddFunc)
 	if message.last then
 		self.hadLastChat = true
 	end

@@ -1,6 +1,7 @@
 local def = {
 	inheritFrom = "firefly",
-	lightRadiusMult = 1.5
+	lightRadiusMult = 2.5,
+	isPlayer = true,
 }
 
 return def
