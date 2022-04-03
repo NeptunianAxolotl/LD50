@@ -77,6 +77,21 @@ local function CheckMoveGoal(self)
 	self.MoveWithVector(util.SetLength(Global.MOVE_SPEED, util.Subtract(self.moveGoalPos, {bx, by})))
 end
 
+local function UpdateAnimDir(self)
+	if not self.body then
+		return
+	end
+	local vx, vy = self.body:getLinearVelocity()
+	if (not vx) or (not vy) then
+		return
+	end
+	local speed, angle = util.CartToPolar({vx, vy})
+	if speed < 100 then
+		return
+	end
+	self.animDir = angle
+end
+
 local function NewGuy(self, physicsWorld, world)
 	-- pos
 	local def = self.def
@@ -85,6 +100,7 @@ local function NewGuy(self, physicsWorld, world)
 	end
 	self.animTime = 0
 	self.health = 100
+	self.animDir = math.random()*2*math.pi
 	
 	self.body = love.physics.newBody(physicsWorld, self.pos[1], self.pos[2], "dynamic")
 	if def.collide then
@@ -227,6 +243,7 @@ local function NewGuy(self, physicsWorld, world)
 		if def.behaviour then
 			def.behaviour(self, world, dt)
 		end
+		UpdateAnimDir(self)
 		CheckMoveGoal(self)
 	end
 	
@@ -263,7 +280,7 @@ local function NewGuy(self, physicsWorld, world)
 		end
 		local bx, by = self.body:getPosition()
 		drawQueue:push({y=by; f=function()
-			Resources.DrawIsoAnimation(def.animation, bx, by, self.animTime, 0)
+			Resources.DrawIsoAnimation(def.animation, bx, by, self.animTime, self.animDir)
 		end})
 		ShadowHandler.UpdateShadowParams(self.shadow, {bx, by}, def.shadowRadius)
 		if Global.DRAW_DEBUG then

@@ -3,8 +3,8 @@ return {
 	xScale = 2,
 	yScale = 2,
 	yOffset = 0.76,
-	width = 16,
-	duration = 0.5,
+	width = 90,
+	duration = 0.2,
 	firstDir = 0,
 	files = {
 		"resources/images/playersheet_e.png",
