@@ -23,21 +23,23 @@ local function SetNextScene(scene, concludes)
 	end
 	self.hoveredReply = false
 	self.replyDelay = self.chatDef.scenes[self.currentScene].replyDelay or 0
+	
+	if (self.chatGuy.friendly) then
+		self.portrate = self.chatGuy.GetDef().portraitHappy
+	else
+		self.portrate = self.chatGuy.GetDef().portraitNeutral
+	end
 end
 
 local function DrawConsole()
+	local windowX, windowY = love.window.getMode()
+	if self.portraitAlpha then
+		Resources.DrawImage(self.portrate, math.sin(self.portraitAlpha*math.pi/2)*150, windowY * 0.77, false, self.portraitAlpha)
+	end
+	
 	if (not self.currentScene) or self.replyDelay then
 		return
 	end
-	
-	local windowX, windowY = love.window.getMode()
-	
-	if (self.chatGuy.friendly) then
-		Resources.DrawImage(self.chatGuy.GetDef().portraitHappy, 150, windowY * 0.77)
-	else
-		Resources.DrawImage(self.chatGuy.GetDef().portraitNeutral, 150, windowY * 0.77)
-	end
-	
 	
 	local replies = self.chatDef.scenes[self.currentScene].replies
 	if not replies then
@@ -136,6 +138,17 @@ function api.Update(dt)
 	if self.chatGuy and self.chatGuy.IsDead() then
 		api.ConcludeChat()
 	end
+	if self.chatGuy then
+		self.portraitAlpha = (self.portraitAlpha or 0) + dt*Global.PORTRAIT_SPEED
+		if self.portraitAlpha > 1 then
+			self.portraitAlpha = 1
+		end
+	elseif self.portraitAlpha then
+		self.portraitAlpha = self.portraitAlpha - dt*Global.PORTRAIT_SPEED
+		if self.portraitAlpha < 0 then
+			self.portraitAlpha = false
+		end
+	end
 	if self.replyDelay then
 		self.replyDelay = self.replyDelay - dt
 		if self.replyDelay <= 0 then
@@ -151,6 +164,8 @@ end
 function api.Initialize(parentWorld)
 	self = {}
 	self.lines = {}
+	self.portraitAlpha = false
+	self.portrate = false
 	world = parentWorld
 end
 
