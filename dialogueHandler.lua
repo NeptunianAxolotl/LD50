@@ -15,6 +15,10 @@ local function SetNextScene(scene, concludes)
 	
 	local messages = self.chatDef.scenes[self.currentScene].msg
 	for i = 1, #messages do
+		if messages[i].textFunc then
+			-- This overrides def data, which is pretty bad.
+			messages[i].text = messages[i].textFunc(self.chatGuy, self.playerData)
+		end
 		ChatHandler.AddTurnMessage(messages[i], false, (concludes and 5) or 2)
 	end
 	self.hoveredReply = false
@@ -54,6 +58,10 @@ local function DrawConsole()
 		end
 		
 		Font.SetSize(1)
+		if line.msg.textFunc then
+			-- This overrides def data, which is pretty bad.
+			line.msg.text = line.msg.textFunc(self.chatGuy, self.playerData)
+		end
 		love.graphics.print(line.msg.text[1], drawPos[1], drawPos[2] - ((#replies - i) * Global.REPLY_LINE_SPACING))
 	end
 	love.graphics.setColor(1, 1, 1)
@@ -79,7 +87,8 @@ local function CheckSelectReply()
 			api.ConcludeChat()
 		end
 	end
-	ChatHandler.AddTurnMessage(myReply.msg, {0.5, 0.8, 0.6, 1})
+	
+	ChatHandler.AddTurnMessage(myReply.msg, {0.5, 0.8, 0.6, 1}, 2)
 	return true
 end
 
