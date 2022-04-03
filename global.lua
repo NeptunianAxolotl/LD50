@@ -12,7 +12,7 @@ local globals = {
 	PHYSICS_SCALE = 300,
 	
 	DRAW_DEBUG = true,
-	INVENTORY_SLOTS = 7,
+	INVENTORY_SLOTS = 5,
 	
 	MOVE_SPEED = 88,
 	DROP_LEEWAY = 60,
