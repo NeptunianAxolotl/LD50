@@ -621,6 +621,15 @@ function util.LoadDefDirectory(dir)
 	return defTable, nameList
 end
 
+function util.LoadDefNames(path)
+	local defs = love.filesystem.load(path .. ".lua")()
+	local defNames = {}
+	for i = 1, #defs do
+		defNames[defs[i].name] = defs[i]
+	end
+	return defs, defNames
+end
+
 --------------------------------------------------
 --------------------------------------------------
 

@@ -13,7 +13,7 @@ local world
 -- API
 --------------------------------------------------
 
-function api.AddMessage(text, timer, turns, color, sound)
+function api.AddMessage(text, timer, turns, color, sound, noLineSpace)
 	if timer == nil then
 		timer = 5
 	end
@@ -25,15 +25,49 @@ function api.AddMessage(text, timer, turns, color, sound)
 		SoundHandler.PlaySound(sound)
 	end
 
-	local line = {
-		consoleText = text,
-		consoleTimer = timer,
-		consoleTurnTimer = turns,
-		consoleColorR = (color and color[1]) or 1,
-		consoleColorG = (color and color[2]) or 1,
-		consoleColorB = (color and color[3]) or 1,
-	}
-	table.insert(self.lines, line)
+	local realLines = {}
+	local textWidthLimit = 315
+	--break up text to wrap consistently without manual intervention
+	if love.graphics.getFont():getWidth(text) > textWidthLimit then --width limit in pixels
+		--temp variable for text
+		currentLine = text
+		tempLine = ""
+		
+		--split string into words
+		for w in currentLine:gmatch("%S+") do 
+			--add word to temp line
+			tempLine = tempLine..w.." "
+			
+			--if temp line longer than specified width, print text and increment vertical positioning
+			if (love.graphics.getFont():getWidth(tempLine) > textWidthLimit) then
+				realLines[#realLines + 1] = tempLine
+				tempLine = ""
+			end
+		end
+		
+		--in case final line does not reach 25 characters
+		if (string.len(tempLine) > 0) then
+			realLines[#realLines + 1] = tempLine
+		end
+	else
+		realLines[1] = {text}
+	end
+	
+	if not noLineSpace then
+		realLines[#realLines + 1] = ""
+	end
+	
+	for i = 1, #realLines do
+		local line = {
+			consoleText = realLines[i],
+			consoleTimer = timer,
+			consoleTurnTimer = turns,
+			consoleColorR = (color and color[1]) or 1,
+			consoleColorG = (color and color[2]) or 1,
+			consoleColorB = (color and color[3]) or 1,
+		}
+		table.insert(self.lines, line)
+	end
 end
 
 function api.AddTurnMessage(message, defaultColor, defaultTimer)
@@ -91,21 +125,7 @@ function api.DrawConsole()
 		
 		Font.SetSize(1)
 		
-		--break up text to wrap consistently without manual intervention
-		
-		
-		
 		love.graphics.print(line.consoleText, 50, topPad + (i * Global.LINE_SPACING))
-		
-		
-		
-		
-		
-		
-		
-		
-		
-
 	end
 	love.graphics.setColor(1, 1, 1)
 end

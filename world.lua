@@ -172,11 +172,6 @@ function api.Draw()
 	-- Draw world
 	love.graphics.replaceTransform(self.cameraTransform)
 	GroundHandler.Draw(preShadowQueue)
-	ComponentHandler.Draw(drawQueue)
-	TerrainHandler.Draw(drawQueue)
-	PlayerHandler.Draw(drawQueue)
-	NpcHandler.Draw(drawQueue)
-	EffectsHandler.Draw(drawQueue)
 	--ModuleTest.Draw(drawQueue)
 	
 	love.graphics.replaceTransform(self.cameraTransform)
@@ -185,6 +180,12 @@ function api.Draw()
 		if not d then break end
 		d.f()
 	end
+	
+	ComponentHandler.Draw(drawQueue)
+	TerrainHandler.Draw(drawQueue)
+	PlayerHandler.Draw(drawQueue)
+	NpcHandler.Draw(drawQueue)
+	EffectsHandler.Draw(drawQueue)
 	
 	ShadowHandler.DrawGroundShadow(self.cameraTransform)
 	love.graphics.replaceTransform(self.cameraTransform)

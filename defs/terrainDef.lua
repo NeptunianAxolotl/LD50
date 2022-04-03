@@ -12,6 +12,10 @@ local terrain = {
 		pos = {500, 500},
 	},
 	{
+		name = "wood_pile",
+		pos = {-500, 0},
+	},
+	{
 		name = "tree_test",
 		pos = {800, 200},
 	},

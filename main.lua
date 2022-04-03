@@ -2,7 +2,7 @@
 local Font = require("include/font")
 Global = require("global")
 local World = require("world")
-local Resources = require("resourceHandler")
+Resources = require("resourceHandler")
 
 --------------------------------------------------
 -- Draw
@@ -59,7 +59,7 @@ function love.load(arg)
 	local major, minor, revision, codename = love.getVersion()
 	print(string.format("Version %d.%d.%d - %s", major, minor, revision, codename))
 
-	love.graphics.setBackgroundColor(150/255, 150/225, 150/255, 1)
+	love.graphics.setBackgroundColor(0/255, 0/225, 0/255, 1)
 
 	love.keyboard.setKeyRepeat(true)
 	math.randomseed(os.clock())

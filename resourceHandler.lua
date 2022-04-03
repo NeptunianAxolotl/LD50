@@ -242,6 +242,7 @@ function api.DrawAnimInternal(data, x, y, progress, rotation, alpha, scale, colo
 	
 	scale = scale or 1
 	rotation = rotation or 0
+	progress = progress or 0
 	
 	local quadToDraw = math.floor((progress%data.duration) / data.duration * data.frames) + 1
 	
@@ -276,7 +277,6 @@ function api.DrawIsoAnimation(name, x, y, progress, direction, alpha, scale, col
 	
 	api.DrawAnimInternal(data.dirAnim[drawDir], x, y, progress, rotation, alpha, scale, color)
 end
-
 
 --------------------------------------------------
 -- Drawing Functions

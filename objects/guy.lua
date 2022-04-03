@@ -1,6 +1,5 @@
 
 local util = require("include/util")
-local Resources = require("resourceHandler")
 local Font = require("include/font")
 local ShadowHandler = require("shadowHandler")
 local ItemDefs = util.LoadDefDirectory("defs/items")
@@ -30,6 +29,11 @@ local function DoMoveGoalAction(self)
 				self.items = self.items or {}
 				self.items[feature.def.collectAs] = (self.items[feature.def.collectAs] or 0) + 1
 			end
+		end
+	elseif action == "build" then
+		local canPlace = TerrainHandler.CheckFeaturePlace(item, actionPos)
+		if ActionCallback(canPlace, feature, action, item) and canPlace then
+			TerrainHandler.SpawnFeature(item, actionPos)
 		end
 	elseif feature and item and not feature.IsDead() then
 		if (not ActionCallback) or ActionCallback(not feature.IsDead(), feature, action, item) then

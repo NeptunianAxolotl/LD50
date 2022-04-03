@@ -58,6 +58,31 @@ function api.FindFreeSpace(centre, freeRadius)
 	return false
 end
 
+function api.CheckFeaturePlace(featureName, pos)
+	local def = FeatureDefs[featureName]
+	if not def.placementRadius then
+		return false
+	end
+	if not GroundHandler.PositionHasGround(pos, def.placementRadius) then
+		return false
+	end
+	local _, closeDist = api.GetClosetFeature(pos, false, true)
+	return (not closeDist) or (closeDist > def.placementRadius), def
+end
+
+function api.DrawFeatureBlueprint(featureName, pos)
+	local worldPos = self.world.ScreenToWorld(pos)
+	local canPlace = api.CheckFeaturePlace(featureName, worldPos)
+	local def = FeatureDefs[featureName]
+	local scale = self.world.WorldScaleToScreenScale()
+	if canPlace then
+		Resources.DrawImage(def.image, pos[1], pos[2], false, 0.75, scale, {0.6, 1, 0.6})
+	else
+		local otherCol = (love.mouse.isDown(1) and 0.4) or 0.6
+		Resources.DrawImage(def.image, pos[1], pos[2], false, 0.75, scale, {1, otherCol, otherCol})
+	end
+end
+
 function api.FindFreeSpaceFeature(centre, feature)
 	return api.FindFreeSpace(centre, FeatureDefs[feature].radius)
 end
