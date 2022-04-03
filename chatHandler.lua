@@ -27,6 +27,7 @@ function api.AddMessage(text, timer, turns, color, sound, noLineSpace)
 
 	local realLines = {}
 	local textWidthLimit = 315
+	Font.SetSize(1)
 	--break up text to wrap consistently without manual intervention
 	if love.graphics.getFont():getWidth(text) > textWidthLimit then --width limit in pixels
 		--temp variable for text
@@ -122,7 +123,6 @@ function api.DrawConsole()
 		)
 		
 		Font.SetSize(1)
-		
 		love.graphics.print(line.consoleText, 30, topPad + (i * Global.LINE_SPACING))
 	end
 	love.graphics.setColor(1, 1, 1)
