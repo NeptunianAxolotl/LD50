@@ -93,9 +93,12 @@ function api.RemoveInventory(item, count)
 	return count
 end
 
+function api.GetUnlocks()
+	return self.unlocks
+end
 
 function api.Update(dt)
-	if self.playerGuy.IsDead() then
+	if self.playerGuy.IsDead() or self.buildMenuOpen then
 		return
 	end
 	if self.heldSinceGroundGoal then
@@ -169,6 +172,18 @@ function api.Draw(drawQueue)
 end
 
 function api.MousePressedInterface(mx, my, button)
+	if self.hoveredBuildOpt then
+		self.buildMenuOpen = false
+		
+		return true
+	end
+	if self.hoveredBuildMenu then
+		self.buildMenuOpen = not self.buildMenuOpen
+		if self.buildMenuOpen and not self.playerGuy.IsDead() then
+			self.playerGuy.ClearMoveGoal()
+		end
+		return true
+	end
 	if not self.hoveredItem then
 		return
 	end
@@ -182,7 +197,7 @@ function api.MousePressedInterface(mx, my, button)
 end
 
 function api.MousePressedWorld(mx, my, button)
-	if self.playerGuy.IsDead() then
+	if self.playerGuy.IsDead() or self.buildMenuOpen then
 		return
 	end
 	if not (self.hoveredFeature or self.hoveredNpc) then
@@ -229,16 +244,23 @@ local function DrawHoveredFeature()
 end
 
 function api.DrawInterface()
-	local checkHover = not DialogueHandler.InChat()
-	self.hoveredItem = InventoryUtil.DrawInventoryBar(self.world, self.inventory, self.selectedItem, self.activeItem, ItemDefs, checkHover, 80, 15, 2, 8, 0.5, 0)
+	local checkHover = (not DialogueHandler.InChat()) and (not self.buildMenuOpen)
+	self.hoveredItem = InventoryUtil.DrawInventoryBar(self.world, self.inventory, self.selectedItem, self.activeItem, ItemDefs, checkHover, 80, 15, 2, Global.INVENTORY_SLOTS + 1, 0.5, 0)
 	self.hoveredItem = InventoryUtil.DrawInventoryBar(self.world, self.inventory, self.selectedItem, self.activeItem, ItemDefs, checkHover, 80, 15, 1, 1, 0, 0.5) or self.hoveredItem
+	
+	self.hoveredBuildMenu = InventoryUtil.DrawBuild(self.world, Global.INVENTORY_SLOTS + 1, (not DialogueHandler.InChat()), self.buildMenuOpen, 80, 15, 0.5, 120, 70)
 	
 	self.hoveredFeature = false
 	self.hoveredNpc = false
+	
+	if self.buildMenuOpen then
+		self.hoveredBuildOpt = InventoryUtil.DrawBuildMenu(self.world, api)
+	end
+	
 	if not checkHover then
 		return
 	end
-	if not self.hoveredItem then
+	if not (self.hoveredItem or self.buildMenuOpen or self.hoveredBuildMenu) then
 		DrawHoveredNpc()
 		if not self.hoveredNpc then
 			DrawHoveredFeature()
@@ -246,7 +268,9 @@ function api.DrawInterface()
 	end
 	if self.selectedItem then
 		local mousePos = self.world.GetMousePositionInterface()
-		Resources.DrawImage(ItemDefs[self.inventory[self.selectedItem]].image, mousePos[1], mousePos[2], false, 0.6)
+		if self.inventory[self.selectedItem] ~= "empty" then
+			Resources.DrawImage(ItemDefs[self.inventory[self.selectedItem]].image, mousePos[1], mousePos[2], false, 0.6)
+		end
 	end
 end
 
@@ -256,14 +280,19 @@ function api.Initialize(parentWorld)
 		inventory = {
 			"empty",
 			"log_item",
-			"log_item",
-			"log_item",
-			"empty",
-			"empty",
-			"empty",
-			"empty",
+			"stick_item",
+			"stick_item",
+		},
+		unlocks = {
+			wood_pile = true,
 		}
 	}
+	
+	for i = 1, Global.INVENTORY_SLOTS + 1 do
+		if not self.inventory[i] then
+			self.inventory[i] = "empty"
+		end
+	end
 	
 	local guyData = {
 		pos = {200, 200},

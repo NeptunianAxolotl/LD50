@@ -3,6 +3,7 @@ local def = {
 	initData = {
 		pissed = false,
 		friendly = false,
+		mood = 0,
 		items = {
 			log_item = 0,
 		}

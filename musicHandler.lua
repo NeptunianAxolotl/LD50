@@ -12,19 +12,19 @@ local font = love.graphics.newFont(70)
 
 -- First eligible tracks are used as start music
 local trackList = {
-	'01_drums',
+	'LD50_bgm',
 }
 
 local fallbackTrack = {
-	'01_solo_fake',
-	'01_solo_fake',
-	'01_solo_fake',
+	'LD50_bgm',
+	'LD50_bgm',
+	'LD50_bgm',
 }
 
 local currentTrack = {}
 local trackRunning = false
 local initialDelay = true
-local currentTrackRemaining = 0
+local currentTrackRemaining = 1
 local trackParity = 1
 
 local function GetTracks()

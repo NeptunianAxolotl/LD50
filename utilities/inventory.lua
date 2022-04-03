@@ -1,6 +1,8 @@
 
 local util = require("include/util")
 local Resources = require("resourceHandler")
+local BuildDefs = require("defs/buildDefs")
+local ItemDefs = util.LoadDefDirectory("defs/items")
 
 local api = {}
 
@@ -62,6 +64,60 @@ function api.DrawInventoryBar(world, inventory, selectedItem, activeItem, ItemDe
 	end
 	
 	return hoveredItem
+end
+
+function api.DrawBuild(world, inventorySlots, checkHover, inBuildMenu, boxSize, boxSpacing, inventorySpacing, buildSize, buildSpacing)
+	local screenWidth, screenHeight = love.window.getMode()
+	local mousePos = world.GetMousePositionInterface()
+
+	local startX = (screenWidth - boxSize*(inventorySlots + 2) - boxSpacing*(inventorySlots + 1)) * 0.5
+	startX = startX + (inventorySlots + 1)*(boxSize + boxSpacing)
+	local startY = screenHeight - boxSize - boxSpacing*0.6
+	
+	local buildHighlight = false
+	if checkHover and util.PosInRectangle(mousePos, startX + buildSpacing, startY, buildSize, boxSize) then
+		Resources.DrawImage("build_button_highlight", startX + buildSpacing - 2, startY - 2)
+		buildHighlight = true
+	elseif inBuildMenu then
+		Resources.DrawImage("build_button_open", startX + buildSpacing - 2, startY - 2)
+	else
+		Resources.DrawImage("build_button", startX + buildSpacing - 2, startY - 2)
+	end
+	return buildHighlight
+end
+
+function api.DrawBuildMenu(world, playerData)
+	local screenWidth, screenHeight = love.window.getMode()
+	local mousePos = world.GetMousePositionInterface()
+
+	love.graphics.setColor(0.6*1.1, 0.7*1.1, 0.7*1.1, 1)
+	love.graphics.setLineWidth(4)
+	love.graphics.rectangle("fill", screenWidth*0.2, screenHeight*0.1, screenWidth*0.6, screenHeight*0.75, 0, 0, 5)
+	
+	love.graphics.setColor(0.7, 0.9, 0.9, 1)
+	love.graphics.setLineWidth(4)
+	love.graphics.rectangle("line", screenWidth*0.2, screenHeight*0.1, screenWidth*0.6, screenHeight*0.75, 0, 0, 5)
+	
+	local startX = screenWidth*0.2 + 90
+	local startY = screenHeight*0.2 + 40
+	
+	local unlocks = playerData.GetUnlocks()
+	for i = 1, #BuildDefs do
+		local def = BuildDefs[i]
+		if unlocks[def.unlockReq] then
+			if util.PosInRectangle(mousePos, startX - 60, startY - 40, screenWidth*0.6 - 60, 80) then
+				love.graphics.setColor(1, 0.2, 0.2, 1)
+				love.graphics.setLineWidth(4)
+				love.graphics.rectangle("line", startX - 60, startY - 40, screenWidth*0.6 - 60, 80, 0, 0, 5)
+			end
+			Resources.DrawImage(def.buildImage, startX, startY)
+			for j = 1, #def.cost do
+				local item = ItemDefs[def.cost[j]]
+				Resources.DrawImage(item.image, startX + 20 + 90*j, startY)
+			end
+			startY = startY + 120
+		end
+	end
 end
 
 return api

@@ -8,6 +8,7 @@ ComponentHandler = require("componentHandler")
 PlayerHandler = require("playerHandler")
 DialogueHandler = require("dialogueHandler")
 NpcHandler = require("npcHandler")
+GroundHandler = require("groundHandler")
 TerrainHandler = require("terrainHandler")
 
 Camera = require("utilities/cameraUtilities")
@@ -147,6 +148,7 @@ function api.Update(dt, realDt)
 	Delay.Update(dt)
 	--ModuleTest.Update(dt)
 	ComponentHandler.Update(dt)
+	GroundHandler.Update(dt)
 	TerrainHandler.Update(dt)
 	PlayerHandler.Update(dt)
 	NpcHandler.Update(dt)
@@ -164,16 +166,25 @@ function api.Update(dt, realDt)
 end
 
 function api.Draw()
+	local preShadowQueue = PriorityQueue.new(function(l, r) return l.y < r.y end)
 	local drawQueue = PriorityQueue.new(function(l, r) return l.y < r.y end)
 
 	-- Draw world
 	love.graphics.replaceTransform(self.cameraTransform)
+	GroundHandler.Draw(preShadowQueue)
 	ComponentHandler.Draw(drawQueue)
 	TerrainHandler.Draw(drawQueue)
 	PlayerHandler.Draw(drawQueue)
 	NpcHandler.Draw(drawQueue)
 	EffectsHandler.Draw(drawQueue)
 	--ModuleTest.Draw(drawQueue)
+	
+	love.graphics.replaceTransform(self.cameraTransform)
+	while true do
+		local d = preShadowQueue:pop()
+		if not d then break end
+		d.f()
+	end
 	
 	ShadowHandler.DrawGroundShadow(self.cameraTransform)
 	love.graphics.replaceTransform(self.cameraTransform)
@@ -222,6 +233,7 @@ function api.Initialize()
 	ChatHandler.Initialize(api)
 	DialogueHandler.Initialize(api)
 	PhysicsHandler.Initialize(api)
+	GroundHandler.Initialize(api)
 	TerrainHandler.Initialize(api)
 	PlayerHandler.Initialize(api)
 	NpcHandler.Initialize(api)
