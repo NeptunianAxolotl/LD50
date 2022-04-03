@@ -263,7 +263,7 @@ local function NewGuy(self, physicsWorld, world)
 		end
 		local bx, by = self.body:getPosition()
 		drawQueue:push({y=by; f=function()
-			Resources.DrawAnimation(def.animation, bx, by, self.animTime)
+			Resources.DrawIsoAnimation(def.animation, bx, by, self.animTime, 0)
 		end})
 		ShadowHandler.UpdateShadowParams(self.shadow, {bx, by}, def.shadowRadius)
 		if Global.DRAW_DEBUG then
