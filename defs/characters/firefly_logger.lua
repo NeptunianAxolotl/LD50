@@ -63,14 +63,14 @@ local def = {
 		scenes = {
 			hello = {
 				msg = {{
-					text = {"Hello, give me all your logs", ""},
+					text = {"Hello, give me all your logs"},
 					sound = "chat_good",
 				}},
 				replyDelay = 0.5,
 				replies = {
 					{
 						msg = {
-							text = {"Sure, here you go", ""},
+							text = {"Sure, here you go"},
 							sound = "chat_good",
 						},
 						leadsToFunc = function (self, player)
@@ -87,14 +87,14 @@ local def = {
 					},
 					{
 						msg = {
-							text = {"No, they are mine", ""},
+							text = {"No, they are mine"},
 							sound = "chat_good",
 						},
 						leadsTo = "are_you_sure",
 					},
 					{
 						msg = {
-							text = {"I don't have any", ""},
+							text = {"I don't have any"},
 							sound = "chat_good",
 						},
 						leadsToFunc = function (self, player)
@@ -111,14 +111,14 @@ local def = {
 			},
 			are_you_sure = {
 				msg = {{
-					text = {"Are you sure? I have a sword", ""},
+					text = {"Are you sure? I have a sword"},
 					sound = "chat_good",
 				}},
 				replyDelay = 0.5,
 				replies = {
 					{
 						msg = {
-							text = {"Yes", ""},
+							text = {"Yes"},
 							sound = "chat_good",
 						},
 						leadsToFunc = function (self, player)
@@ -128,7 +128,7 @@ local def = {
 					},
 					{
 						msg = {
-							text = {"Fine, take them", ""},
+							text = {"Fine, take them"},
 							sound = "chat_good",
 						},
 						leadsToFunc = function (self, player)
@@ -148,12 +148,12 @@ local def = {
 			behind_you = {
 				msg = {
 					{
-						text = {"Right...", ""},
+						text = {"Right..."},
 						sound = "chat_good",
 						delay = 1
 					},
 					{
-						text = {"Then what is that you're carrying?", ""},
+						text = {"Then what is that you're carrying?"},
 						sound = "chat_good",
 						delay = 2.6
 					},
@@ -162,7 +162,7 @@ local def = {
 				replies = {
 					{
 						msg = {
-							text = {"Braised ham", ""},
+							text = {"Braised ham"},
 							sound = "chat_good",
 						},
 						leadsToFunc = function (self, player)
@@ -172,7 +172,7 @@ local def = {
 					},
 					{
 						msg = {
-							text = {"Fine, take them", ""},
+							text = {"Fine, take them"},
 							sound = "chat_good",
 						},
 						leadsToFunc = function (self, player)
@@ -188,48 +188,48 @@ local def = {
 			},
 			die = {
 				msg = {{
-					text = {"Then die, hoarder!", ""},
+					text = {"Then die, hoarder!"},
 					sound = "chat_bad",
 				}},
 			},
 			die_lie = {
 				msg = {{
-					text = {"Sigh...", ""},
+					text = {"Sigh..."},
 					sound = "chat_good",
 				},{
-					text = {"I'll just have to take them from your corpse!", ""},
+					text = {"I'll just have to take them from your corpse!"},
 					sound = "chat_bad",
 					delay = 1.2
 				}},
 			},
 			thanks = {
 				msg = {{
-					text = {"Thanks, the fire always needs more logs!", ""},
+					text = {"Thanks, the fire always needs more logs!"},
 					sound = "chat_good",
 				}},
 			},
 			hang_on_no_logs = {
 				msg = {{
-					text = {"Hang on, you don't even have any logs! Go find some.", ""},
+					text = {"Hang on, you don't even have any logs! Go find some."},
 					sound = "chat_bad",
 				}}
 			},
 			no_logs = {
 				msg = {{
-					text = {"Well go get me some! The fire needs more logs!", ""},
+					text = {"Well go get me some! The fire needs more logs!"},
 					sound = "chat_good",
 				}},
 			},
 			hello_friendly = {
 				msg = {{
-					text = {"Hello, found any more logs?", ""},
+					text = {"Hello, found any more logs?"},
 					sound = "chat_good",
 				}},
 				replyDelay = 0.5,
 				replies = {
 					{
 						msg = {
-							text = {"Sure, here you go", ""},
+							text = {"Sure, here you go"},
 							sound = "chat_good",
 						},
 						leadsToFunc = function (self, player)
@@ -246,7 +246,7 @@ local def = {
 					},
 					{
 						msg = {
-							text = {"Not yet", ""},
+							text = {"Not yet"},
 							sound = "chat_good",
 						},
 						leadsTo = "keep_looking",
@@ -255,7 +255,7 @@ local def = {
 			},
 			keep_looking = {
 				msg = {{
-					text = {"Well keep looking, we always need more logs.", ""},
+					text = {"Well keep looking, we always need more logs."},
 					sound = "chat_good",
 				}},
 			},
