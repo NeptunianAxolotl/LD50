@@ -171,7 +171,8 @@ function api.Update(dt)
 			local line = self.lines[i]
 			if (line.consoleTimer and not line.consoleTurnTimer) or (not self.chatTurnEnabled) then
 				line.consoleTimer = line.consoleTimer - dt
-				if line.consoleTimer < 0 then
+				if line.consoleTimer < 0 and i == 1 then
+					-- Only remove top line, prevents dropdowns.
 					api.RemoveMessage(i)
 				end
 			end
