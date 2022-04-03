@@ -79,6 +79,9 @@ local function NewFeature(self, physicsWorld, world)
 		if self.dead then
 			return true
 		end
+		if def.updateFunc then
+			def.updateFunc(self, dt)
+		end
 		if self.shape and self.radiusScale < 1 then
 			self.radiusScale = self.radiusScale + dt
 			if self.radiusScale > 1 then

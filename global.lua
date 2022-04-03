@@ -24,6 +24,9 @@ local globals = {
 	
 	LOG_BUNDLE = 3,
 	STICK_BUNDLE = 5,
+	
+	LINEAR_FUEL_DRAIN = -5,
+	FUEL_DECAY_COEFF = -0.005,
 }
 
 return globals
