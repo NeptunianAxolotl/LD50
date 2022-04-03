@@ -7,7 +7,7 @@ local ShadowHandler = require("shadowHandler")
 local function NewFeature(self, physicsWorld, world)
 	-- pos
 	self.animTime = 0
-	self.radiusScale = 0.02
+	self.radiusScale = 0.02 -- Push characters out of newly created features. Maybe restrict to those with placementRadius set
 	local def = self.def
 	if def.initData then
 		self = util.CopyTable(def.initData, true, self)
@@ -15,7 +15,8 @@ local function NewFeature(self, physicsWorld, world)
 	
 	self.body = love.physics.newBody(physicsWorld, self.pos[1], self.pos[2], "static")
 	if def.collide then
-		self.shape = love.physics.newCircleShape(def.radius * self.radiusScale)
+		self.shape = love.physics.newCircleShape(def.radius)
+		self.shape:setRadius(def.radius * self.radiusScale)
 		self.fixture = love.physics.newFixture(self.body, self.shape)
 	end
 	
@@ -72,6 +73,8 @@ local function NewFeature(self, physicsWorld, world)
 				self.radiusScale = 1
 			end
 			self.shape:setRadius(def.radius * self.radiusScale)
+			self.fixture:destroy()
+			self.fixture = love.physics.newFixture(self.body, self.shape)
 		end
 		self.animTime = self.animTime + dt
 	end
