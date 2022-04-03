@@ -17,6 +17,8 @@ local globals = {
 	MOVE_SPEED = 88,
 	DROP_LEEWAY = 60,
 	TALK_LEEWAY = 160,
+	TILE_WIDTH = 1200,
+	TILE_HEIGHT = 600,
 }
 
 return globals

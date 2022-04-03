@@ -251,7 +251,9 @@ function api.DrawInterface()
 	end
 	if self.selectedItem then
 		local mousePos = self.world.GetMousePositionInterface()
-		Resources.DrawImage(ItemDefs[self.inventory[self.selectedItem]].image, mousePos[1], mousePos[2], false, 0.6)
+		if self.inventory[self.selectedItem] ~= "empty" then
+			Resources.DrawImage(ItemDefs[self.inventory[self.selectedItem]].image, mousePos[1], mousePos[2], false, 0.6)
+		end
 	end
 	
 
