@@ -64,15 +64,28 @@ function api.DrawInventoryBar(world, inventory, selectedItem, activeItem, ItemDe
 	return hoveredItem
 end
 
-function api.DrawBuild(world, inventorySlots, checkHover, boxSize, boxSpacing, inventorySpacing, buildSpacing)
+function api.DrawBuild(world, inventorySlots, checkHover, boxSize, boxSpacing, inventorySpacing, buildSize, buildSpacing)
 	local screenWidth, screenHeight = love.window.getMode()
 	local mousePos = world.GetMousePositionInterface()
 
 	local startX = (screenWidth - boxSize*(inventorySlots + 2) - boxSpacing*(inventorySlots + 1)) * 0.5
 	startX = startX + (inventorySlots + 1)*(boxSize + boxSpacing)
 	local startY = screenHeight - boxSize - boxSpacing*0.6
+	
+	local buildHighlight = false
+	if util.PosInRectangle(mousePos, startX + buildSpacing, startY, buildSize, boxSize) then
+		Resources.DrawImage("build_button_highlight", startX + buildSpacing - 2, startY - 2)
+		buildHighlight = true
+	else
+		Resources.DrawImage("build_button", startX + buildSpacing - 2, startY - 2)
+	end
+	return buildHighlight
+end
 
-	Resources.DrawImage("build_button", startX + buildSpacing - 2, startY - 2)
+function api.DrawBuildMenu(world)
+	local screenWidth, screenHeight = love.window.getMode()
+	local mousePos = world.GetMousePositionInterface()
+
 end
 
 return api

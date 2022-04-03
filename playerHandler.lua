@@ -169,6 +169,9 @@ function api.Draw(drawQueue)
 end
 
 function api.MousePressedInterface(mx, my, button)
+	if self.hoveredBuild then
+		return true
+	end
 	if not self.hoveredItem then
 		return
 	end
@@ -233,7 +236,7 @@ function api.DrawInterface()
 	self.hoveredItem = InventoryUtil.DrawInventoryBar(self.world, self.inventory, self.selectedItem, self.activeItem, ItemDefs, checkHover, 80, 15, 2, Global.INVENTORY_SLOTS + 1, 0.5, 0)
 	self.hoveredItem = InventoryUtil.DrawInventoryBar(self.world, self.inventory, self.selectedItem, self.activeItem, ItemDefs, checkHover, 80, 15, 1, 1, 0, 0.5) or self.hoveredItem
 	
-	self.hoveredBuild = InventoryUtil.DrawBuild(self.world, Global.INVENTORY_SLOTS + 1, checkHover, 80, 15, 0.5, 70)
+	self.hoveredBuild = InventoryUtil.DrawBuild(self.world, Global.INVENTORY_SLOTS + 1, checkHover, 80, 15, 0.5, 120, 70)
 	
 	self.hoveredFeature = false
 	self.hoveredNpc = false
