@@ -7,10 +7,10 @@ for i = 1, #itemNames do
 		name = itemNames[i],
 		file = "resources/images/items/" .. itemNames[i] .. ".png",
 		form = "image",
-		xScale = 1,
-		yScale = 1,
-		xOffset = 0,
-		yOffset = 0,
+		xScale = 0.16,
+		yScale = 0.16,
+		xOffset = 0.5,
+		yOffset = 0.5,
 	}
 end
 

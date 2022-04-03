@@ -30,6 +30,7 @@ end
 
 function api.DropFeatureInFreeSpace(pos, toDrop, count)
 	count = count or 1
+	print("count", count)
 	for i = 1, count do
 		local dropPos = api.FindFreeSpaceFeature(pos, toDrop)
 		if dropPos then

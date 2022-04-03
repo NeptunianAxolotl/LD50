@@ -49,6 +49,24 @@ local def = {
 					},
 					{
 						displayFunc = function (self, player)
+							local visible = (player.ItemHasSpace("stick_item") and (self.items.stick_item or 0) > 0)
+							return visible, (self.items.stick_item or 0) < 5
+						end,
+						msg = {
+							text = "Take a bundle of five sticks",
+							sound = "chat_good",
+						},
+						leadsToFunc = function (self, player)
+							self.items.stick_item = self.items.stick_item - 5
+							player.AddItem("stick_bundle_item")
+							return "hello"
+						end,
+						alternateReplyMsg = {
+							text = "You take a bundle of sticks"
+						},
+					},
+					{
+						displayFunc = function (self, player)
 							return player.ItemHasSpace("log_item") and (self.items.log_item or 0) > 0
 						end,
 						msg = {
@@ -62,6 +80,24 @@ local def = {
 						end,
 						alternateReplyMsg = {
 							text = "You take a log"
+						},
+					},
+					{
+						displayFunc = function (self, player)
+							local visible = (player.ItemHasSpace("log_item") and (self.items.log_item or 0) > 0)
+							return visible, (self.items.log_item or 0) < 3
+						end,
+						msg = {
+							text = "Take a bundle of three logs",
+							sound = "chat_good",
+						},
+						leadsToFunc = function (self, player)
+							self.items.log_item = self.items.log_item - 3
+							player.AddItem("log_bundle_item")
+							return "hello"
+						end,
+						alternateReplyMsg = {
+							text = "You take a bundle of logs"
 						},
 					},
 					{

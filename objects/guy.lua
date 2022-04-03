@@ -17,12 +17,8 @@ local function DoMoveGoalAction(self)
 	
 	if action == "drop" then
 		if (not ActionCallback) or ActionCallback(true, feature, action, item) then
-			local toDrop = ItemDefs[item].dropAs
-			local dropPos = TerrainHandler.FindFreeSpaceFeature(actionPos, toDrop)
-			if dropPos then
-				-- Items could rarely be eaten here
-				TerrainHandler.SpawnFeature(toDrop, dropPos)
-			end
+			local itemDef = ItemDefs[item]
+			TerrainHandler.DropFeatureInFreeSpace(actionPos, itemDef.dropAs, itemDef.dropMult)
 		end
 	elseif action == "collect" then
 		if (not ActionCallback) or ActionCallback(not feature.IsDead(), feature, action, item) then
