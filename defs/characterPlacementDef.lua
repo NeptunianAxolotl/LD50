@@ -9,7 +9,7 @@ local characters = {
 	},
 	{
 		name = "firefly_mute",
-		pos = {-200, -200},
+		pos = {-500, -200},
 	},
 }
 

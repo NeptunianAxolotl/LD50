@@ -85,7 +85,7 @@ local def = {
 					},
 					{
 						msg = {
-							text = "[spend a while in companionable silence]",
+							text = "[spend a while together in silence]",
 						},
 						leadsTo = "silence3"
 					},
@@ -93,30 +93,36 @@ local def = {
 				}
 			},
 			silence1 = {
-					msg = {{
+				msg = {
+				{
 					text = "...",
-				}},		
-				replyDelay = 3,
+					delay = 3,
+				},
+				},
+				replyDelay = 6
 			},
 			silence2 = {
-				msg = {{
+				msg = {
+				{
 					text = "...",
-				}},		
-				replyDelay = 2,
+					delay = 3,
+				},
+				},
+				replyDelay = 6,
 				replies = {
 					{
 						msg = {
-							text = "I remember you fondly from when I was young.",
+							text = "Do you mind it if I stay a while, and talk?",
 							sound = "chat_good",
 						},
-						leadsTo = "silence21"
+						leadsTo = "silence21",
 					},
 					{
 						msg = {
 							text = "I worry about you.  You don't look so good.  Come closer to the fire.",
 							sound = "chat_good",
 						},
-						leadsTo = "silence22"
+						leadsTo = "silence22",
 					},
 					{
 						msg = {
@@ -125,57 +131,205 @@ local def = {
 					},
 				},
 			},
-			silence21 = {
-				msg = {{
-					text = ".....",
-				}},
-				replyDelay = 2,
-					replies = {
+			silence21 = {	
+				msg = {
+				{
+					text = "...",
+					delay = 4,
+				},
+				},		
+				replyDelay = 6.6,
+				replies = {
 					{
 						msg = {
-							text = "",
+							text = "I remember you fondly from when I was young.",
 							sound = "chat_good",
 						},
-						leadsTo = "silence211"
+						leadsTo = "silence211",
+					},
+					{
+						msg = {
+							text = "[leave]",
+						},
 					},
 				},
 			},
 			silence211 = {
 				msg = {{
-					text = ".....",
+					text = "...",
+					delay = 2.6,
 				}},
-				replyDelay = 2,
+				replyDelay = 4,
 					replies = {
 					{
 						msg = {
-							text = "",
+							text = "I'm glad you're still around.",
 							sound = "chat_good",
 						},
-						leadsTo = "silence211"
+						leadsTo = "silence2111",
+					},
+					{
+						msg = {
+							text = "...I miss you.",
+							sound = "chat_good",
+						},
+						leadsTo = "silence2112",
+					},
+					{
+						msg = {
+							text = "[leave]",
+						},
 					},
 				},
 			},
-			silence22 = {
-				msg = {{
-					text = ".....",
-				}},
-				replyDelay = 2,
+			silence2111 = {
+				msg = {
+				{
+					text = "...",
+					delay = 3,
+				},
+				},
+				replyDelay = 5,
 					replies = {
 					{
 						msg = {
-							text = "",
-							sound = "chat_good",
+							text = "[leave]",
 						},
-						leadsTo = "silence221"
 					},
 				},
+			},
+			silence2112 = {
+				msg = {
+				{
+					text = "...",
+					delay = 3,
+				},
+				{
+					text = "(The aging bug shrugs.)",
+					delay = 7,
+				},
+				},
+				replyDelay = 9,
+			},
+			silence22 = {
+				msg = {
+				{
+					text = "...",
+					delay = 2,
+				},
+				{
+					text = "...mm.",
+					sound = "chat_good",
+					delay = 4.5,
+				},
+				},
+				replyDelay = 6,
+				--moves closer to the fire
 			},
 			silence3 = {
 				msg = {{
 					text = "...",
+					delay = 3,
 				}},		
-				replyDelay = 3,
+				replyDelay = 6,
+				replies = {
+					{
+						msg = {
+							text = "...",
+						},
+						leadsTo = "silence31",
+					},
+					{
+						msg = {
+							text = "[leave]",
+						},
+					},
 			},
+			},
+			silence31 = {
+				msg = {
+				{
+					text = "...",
+					delay = 3,
+				},
+				{
+					text = "...you've grown up, little flickerlight.",
+					sound = "chat_good",
+					delay = 6.5,
+				},
+				{
+					text = "I am sorry that so little remains here for you.",
+					sound = "chat_good",
+					delay = 11,
+				},
+				},	
+				replyDelay = 13,
+				replies = {
+					{
+						msg = {
+							text = "(shrug)",
+						},
+						leadsTo = "silence32",
+					},
+					{
+						msg = {
+							text = "...it's okay, I guess.  At least we still have this.",
+							sound = "chat_good",
+						},
+						leadsTo = "silence33",
+					},
+					{
+						msg = {
+							text = "[leave]",
+						},
+					},				
+			},
+			},
+			silence32 = {
+				msg = {
+				{
+					text = "...hmph.",
+					sound = "chat_good",
+					delay = 3,
+				},
+				{
+					text = "Go.",			
+					sound = "chat_good",
+					delay = 4.5,
+				},
+				{
+					text = "Run along.",
+					sound = "chat_good",			
+					delay = 6.2,
+				},
+				{
+					text = "Live.",
+					sound = "chat_good",	
+					delay = 10,
+				},
+				},	
+				replyDelay = 12,
+			},
+			silence33 = {
+				msg = {
+				{
+					text = "Hm.",
+					sound = "chat_good",
+					delay = 3,
+				},
+				{
+					text = "Thank you, flickerlight, for granting me a moment of your precious time.",
+					sound = "chat_good",
+					delay = 6.5,
+				},
+				{
+					text = "I wish you whatever luck remains.",
+					sound = "chat_good",
+					delay = 12,
+				},
+				},	
+				replyDelay = 15,
+			},	
 		},
 	}
 }
