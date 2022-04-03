@@ -230,8 +230,10 @@ end
 
 function api.DrawInterface()
 	local checkHover = not DialogueHandler.InChat()
-	self.hoveredItem = InventoryUtil.DrawInventoryBar(self.world, self.inventory, self.selectedItem, self.activeItem, ItemDefs, checkHover, 80, 15, 2, 8, 0.5, 0)
+	self.hoveredItem = InventoryUtil.DrawInventoryBar(self.world, self.inventory, self.selectedItem, self.activeItem, ItemDefs, checkHover, 80, 15, 2, Global.INVENTORY_SLOTS + 1, 0.5, 0)
 	self.hoveredItem = InventoryUtil.DrawInventoryBar(self.world, self.inventory, self.selectedItem, self.activeItem, ItemDefs, checkHover, 80, 15, 1, 1, 0, 0.5) or self.hoveredItem
+	
+	self.hoveredBuild = InventoryUtil.DrawBuild(self.world, Global.INVENTORY_SLOTS + 1, checkHover, 80, 15, 0.5, 70)
 	
 	self.hoveredFeature = false
 	self.hoveredNpc = false
@@ -248,6 +250,8 @@ function api.DrawInterface()
 		local mousePos = self.world.GetMousePositionInterface()
 		Resources.DrawImage(ItemDefs[self.inventory[self.selectedItem]].image, mousePos[1], mousePos[2], false, 0.6)
 	end
+	
+
 end
 
 function api.Initialize(parentWorld)
@@ -258,12 +262,14 @@ function api.Initialize(parentWorld)
 			"log_item",
 			"log_item",
 			"log_item",
-			"empty",
-			"empty",
-			"empty",
-			"empty",
 		}
 	}
+	
+	for i = 1, Global.INVENTORY_SLOTS + 1 do
+		if not self.inventory[i] then
+			self.inventory[i] = "empty"
+		end
+	end
 	
 	local guyData = {
 		pos = {200, 200},
