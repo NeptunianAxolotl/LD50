@@ -43,13 +43,9 @@ end
 local function DropInventory(pos)
 	for i = 1, #self.inventory do
 		if self.inventory[i] ~= "empty" then
-			local toDrop = ItemDefs[self.inventory[i]].dropAs
-			if toDrop then
-				local dropPos = TerrainHandler.FindFreeSpaceFeature(pos, toDrop)
-				if dropPos then
-					-- Items could rarely be eaten here
-					TerrainHandler.SpawnFeature(toDrop, dropPos)
-				end
+			local itemDef = ItemDefs[self.inventory[i]]
+			if itemDef then
+				TerrainHandler.DropFeatureInFreeSpace(pos, itemDef.dropAs, itemDef.dropMult)
 				self.inventory[i] = "empty"
 			end
 		end
@@ -68,6 +64,9 @@ function api.AddItem(item)
 		self.inventory[1] = item
 		return true
 	end
+	local itemDef = ItemDefs[item]
+	TerrainHandler.DropFeatureInFreeSpace(self.playerGuy.GetPos(), itemDef.dropAs, itemDef.dropMult)
+	return false
 end
 
 function api.ItemHasSpace(item)

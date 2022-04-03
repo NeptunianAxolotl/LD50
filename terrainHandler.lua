@@ -9,6 +9,10 @@ local NewFeature = require("objects/feature")
 local self = {}
 local api = {}
 
+function api.FindFreeSpaceFeature(centre, feature)
+	return api.FindFreeSpace(centre, FeatureDefs[feature].radius)
+end
+
 function api.SpawnFeature(name, pos, items)
 	local def = FeatureDefs[name]
 	local data = {}
@@ -20,6 +24,17 @@ function api.SpawnFeature(name, pos, items)
 	if items then
 		for name, count in pairs(items) do
 			feature.AddItems(name, count)
+		end
+	end
+end
+
+function api.DropFeatureInFreeSpace(pos, toDrop, count)
+	count = count or 1
+	for i = 1, count do
+		local dropPos = api.FindFreeSpaceFeature(pos, toDrop)
+		if dropPos then
+			-- Items could rarely be eaten here
+			api.SpawnFeature(toDrop, dropPos)
 		end
 	end
 end
@@ -88,10 +103,6 @@ function api.DrawFeatureBlueprint(featureName, pos)
 		local otherCol = (love.mouse.isDown(1) and 0.4) or 0.6
 		Resources.DrawImage(def.image, pos[1], pos[2], false, 0.75, scale, {1, otherCol, otherCol})
 	end
-end
-
-function api.FindFreeSpaceFeature(centre, feature)
-	return api.FindFreeSpace(centre, FeatureDefs[feature].radius)
 end
 
 local function SetupTerrain()
