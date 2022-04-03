@@ -35,7 +35,7 @@ end
 local function DrawConsole()
 	local windowX, windowY = love.window.getMode()
 	if self.portraitAlpha and self.portrate then
-		Resources.DrawImage(self.portrate, math.sin(self.portraitAlpha*math.pi/2)*150, windowY * 0.77, false, self.portraitAlpha)
+		Resources.DrawImage(self.portrate, math.sin(self.portraitAlpha*math.pi/2)*150, windowY - 185, false, self.portraitAlpha)
 	end
 	
 	self.hoveredReply = false
@@ -50,7 +50,7 @@ local function DrawConsole()
 	end
 	
 	local mousePos = world.GetMousePositionInterface()
-	local scalePos = world.ScreenToInterface({windowX*0.52, windowY*0.83})
+	local scalePos = world.ScreenToInterface({620, windowY - 100})
 	local drawPos = util.Average(scalePos, {240, windowY - 120})
 	
 	local replyDrawPos = 1

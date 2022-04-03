@@ -55,7 +55,7 @@ local def = {
 		scenes = {
 			hello = {
 				msg = {{
-					text = {"Hello, give me all your logs"},
+					text = {"Hey, sexy.  Give me all your logs."},
 					sound = "chat_good",
 				}},
 				replyDelay = 0.5,

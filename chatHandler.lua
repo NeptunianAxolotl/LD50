@@ -111,7 +111,7 @@ end
 
 function api.DrawConsole()
 	local windowX, windowY = love.window.getMode()
-	local drawPos = world.ScreenToInterface({0, windowY*0.5})
+	local drawPos = world.ScreenToInterface({0, windowY - 400})
 	local topPad = drawPos[2] - #self.lines*Global.LINE_SPACING
 
 	for i = #self.lines, 1, -1 do
