@@ -33,11 +33,11 @@ local function DrawConsole()
 	
 	local mousePos = world.GetMousePositionInterface()
 	local windowX, windowY = love.window.getMode()
-	local drawPos = world.ScreenToInterface({windowX*0.75, windowY*0.65})
-
+	local drawPos = world.ScreenToInterface({windowX*0.75, windowY*0.83})
+	
 	for i = 1, #replies do
 		local line = replies[i]
-		if util.PosInRectangle(mousePos, drawPos[1], drawPos[2] + (i * Global.REPLY_LINE_SPACING), 100000, Global.LINE_SPACING) then
+		if util.PosInRectangle(mousePos, drawPos[1], drawPos[2] - ((#replies - i) * Global.REPLY_LINE_SPACING), 100000, Global.LINE_SPACING) then
 			love.graphics.setColor(1, 0.2, 0.2, 1)
 			self.hoveredReply = i
 		else
@@ -45,7 +45,7 @@ local function DrawConsole()
 		end
 		
 		Font.SetSize(1)
-		love.graphics.print(line.msg.text[1], drawPos[1], drawPos[2] + (i * Global.REPLY_LINE_SPACING))
+		love.graphics.print(line.msg.text[1], drawPos[1], drawPos[2] - ((#replies - i) * Global.REPLY_LINE_SPACING))
 	end
 	love.graphics.setColor(1, 1, 1)
 end
