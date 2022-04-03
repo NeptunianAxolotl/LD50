@@ -39,7 +39,7 @@ function api.GetClosetFeature(pos, featureType, toSurface)
 	end
 	
 	local feature, featureDist = IterableMap.GetMinimum(self.features, minFunc)
-	if not toSurface then
+	if featureDist and not toSurface then
 		featureDist = math.sqrt(featureDist)
 	end
 	return feature, featureDist

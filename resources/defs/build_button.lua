@@ -17,4 +17,13 @@ return {
 		xOffset = 0,
 		yOffset = 0,
 	},
+	{
+		name = "build_button_open",
+		file = "resources/images/build_button_open.png",
+		form = "image",
+		xScale = 1,
+		yScale = 1,
+		xOffset = 0,
+		yOffset = 0,
+	},
 }
