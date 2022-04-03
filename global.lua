@@ -6,7 +6,7 @@ local globals = {
 	CROSSFADE_TIME = 0,
 	
 	LINE_SPACING = 20,
-	REPLY_LINE_SPACING = 34,
+	REPLY_LINE_SPACING = 38,
 	INC_OFFSET = -15,
 	
 	PHYSICS_SCALE = 300,
@@ -21,6 +21,9 @@ local globals = {
 	TILE_HEIGHT = 600,
 	
 	PORTRAIT_SPEED = 4,
+	
+	LOG_BUNDLE = 3,
+	STICK_BUNDLE = 5,
 }
 
 return globals

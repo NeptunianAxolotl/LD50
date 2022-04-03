@@ -9,12 +9,19 @@ local NewFeature = require("objects/feature")
 local self = {}
 local api = {}
 
-function api.SpawnFeature(name, pos, data)
+function api.SpawnFeature(name, pos, items)
 	local def = FeatureDefs[name]
-	data = data or {}
+	local data = {}
 	data.pos = pos
 	data.def = def
-	IterableMap.Add(self.features, NewFeature(data, self.world.GetPhysicsWorld(), self.world))
+	local feature = NewFeature(data, self.world.GetPhysicsWorld(), self.world)
+	IterableMap.Add(self.features, feature)
+	
+	if items then
+		for name, count in pairs(items) do
+			feature.AddItems(name, count)
+		end
+	end
 end
 
 function api.GetClosetFeature(pos, featureType, toSurface)
@@ -90,7 +97,7 @@ end
 local function SetupTerrain()
 	for i = 1, #terrainDef do
 		local feature = terrainDef[i]
-		api.SpawnFeature(feature.name, feature.pos)
+		api.SpawnFeature(feature.name, feature.pos, feature.items)
 	end
 end
 

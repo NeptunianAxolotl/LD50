@@ -45,7 +45,6 @@ local function DoMoveGoalAction(self)
 		if ActionCallback then
 			ActionCallback(true, other, action, item)
 		end
-		print(SetTalkingTo)
 		self.SetTalkingTo(other)
 		if guy then
 			guy.SetTalkingTo(self)
