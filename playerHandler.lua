@@ -56,6 +56,29 @@ local function DropInventory(pos)
 	end
 end
 
+function api.AddItem(item)
+	local start = (ItemDefs[item].isTool and 1) or 2
+	for i = start, #self.inventory do
+		if self.inventory[i] == "empty" then
+			self.inventory[i] = item
+			return true
+		end
+	end
+	if self.inventory[1] == "empty" then
+		self.inventory[1] = item
+		return true
+	end
+end
+
+function api.ItemHasSpace(item)
+	for i = 1, #self.inventory do
+		if self.inventory[i] == "empty" then
+			return true
+		end
+	end
+	return false
+end
+
 function api.RemoveInventory(item, count)
 	for i = #self.inventory, 1, -1 do
 		if self.inventory[i] == item and count > 0 then
@@ -64,6 +87,23 @@ function api.RemoveInventory(item, count)
 		end
 	end
 	return count
+end
+
+function api.SetItemCount(item, count)
+	local diff = count - api.GetInventoryCount(item)
+	if diff < 0 then
+		api.RemoveInventory(item, -diff)
+	else
+		for i = 1, diff do
+			api.AddItem(item)
+		end
+	end
+end
+
+function api.GetConvertedWoodCounts()
+	local logs = api.GetInventoryCount("log_bundle_item") * Global.LOG_BUNDLE + api.GetInventoryCount("log_item")
+	local sticks = api.GetInventoryCount("stick_bundle_item") * Global.STICK_BUNDLE + api.GetInventoryCount("stick_item")
+	return logs, sticks
 end
 
 function api.CanAffordBuilding(buildDef)
@@ -123,13 +163,8 @@ local function ActionCallback(success, other, action, item)
 		return true
 	end
 	if action == "collect" then
-		for i = 2, #self.inventory do
-			if self.inventory[i] == "empty" then
-				self.inventory[i] = other.GetDef().collectAs
-				return true
-			end
-		end
-		return false
+		api.AddItem(other.GetDef().collectAs)
+		return true
 	elseif action == "build" then
 		if api.CanAffordBuilding(FeatureToBuildDef(item)) then
 			api.SpendOnBuilding(FeatureToBuildDef(item))

@@ -17,7 +17,8 @@ local function SetNextScene(scene, concludes)
 	for i = 1, #messages do
 		if messages[i].textFunc then
 			-- This overrides def data, which is pretty bad.
-			messages[i].text = messages[i].textFunc(self.chatGuy, self.playerData)
+			messages[i].text = messages[i].text or {}
+			messages[i].text[1] = messages[i].textFunc(self.chatGuy, PlayerHandler)
 		end
 		ChatHandler.AddTurnMessage(messages[i], false, (concludes and 5) or 2)
 	end
@@ -33,10 +34,11 @@ end
 
 local function DrawConsole()
 	local windowX, windowY = love.window.getMode()
-	if self.portraitAlpha then
+	if self.portraitAlpha and self.portrate then
 		Resources.DrawImage(self.portrate, math.sin(self.portraitAlpha*math.pi/2)*150, windowY * 0.77, false, self.portraitAlpha)
 	end
 	
+	self.hoveredReply = false
 	if (not self.currentScene) or self.replyDelay then
 		return
 	end
@@ -48,23 +50,29 @@ local function DrawConsole()
 	end
 	
 	local mousePos = world.GetMousePositionInterface()
-	local drawPos = world.ScreenToInterface({windowX*0.77, windowY*0.83})
+	local scalePos = world.ScreenToInterface({windowX*0.52, windowY*0.83})
+	local drawPos = util.Average(scalePos, {240, windowY - 120})
 	
-	for i = 1, #replies do
-		local line = replies[i]
-		if util.PosInRectangle(mousePos, drawPos[1], drawPos[2] - ((#replies - i) * Global.REPLY_LINE_SPACING), 100000, Global.LINE_SPACING) then
-			love.graphics.setColor(1, 0.2, 0.2, 1)
-			self.hoveredReply = i
-		else
-			love.graphics.setColor(1, 1, 1, 1)
+	local replyDrawPos = 1
+	for i = #replies, 1, -1 do
+		local reply = replies[i]
+		if (not reply.displayFunc) or reply.displayFunc(self.chatGuy, PlayerHandler) then
+			if util.PosInRectangle(mousePos, drawPos[1], drawPos[2] - (replyDrawPos * Global.REPLY_LINE_SPACING), 100000, Global.LINE_SPACING) then
+				love.graphics.setColor(1, 0.2, 0.2, 1)
+				self.hoveredReply = i
+			else
+				love.graphics.setColor(1, 1, 1, 1)
+			end
+			
+			Font.SetSize(1)
+			if reply.msg.textFunc then
+				-- This overrides def data, which is pretty bad.
+				reply.msg.text = reply.msg.text or {}
+				reply.msg.text[1] = reply.msg.textFunc(self.chatGuy, PlayerHandler)
+			end
+			love.graphics.print(reply.msg.text[1], drawPos[1], drawPos[2] - (replyDrawPos * Global.REPLY_LINE_SPACING))
+			replyDrawPos = replyDrawPos + 1
 		end
-		
-		Font.SetSize(1)
-		if line.msg.textFunc then
-			-- This overrides def data, which is pretty bad.
-			line.msg.text = line.msg.textFunc(self.chatGuy, self.playerData)
-		end
-		love.graphics.print(line.msg.text[1], drawPos[1], drawPos[2] - ((#replies - i) * Global.REPLY_LINE_SPACING))
 	end
 	love.graphics.setColor(1, 1, 1)
 end
@@ -77,20 +85,47 @@ local function CheckSelectReply()
 	local replies = self.chatDef.scenes[self.currentScene].replies
 	local myReply = replies[self.hoveredReply]
 	
+	-- Compute the message at the start, before the reply function changes states.
+	local messageToAdd = false
+	if myReply.alternateReplyMsg then
+		if myReply.alternateReplyMsg.textFunc then
+			-- This overrides def data, which is pretty bad.
+			myReply.alternateReplyMsg.text = myReply.alternateReplyMsg.text or {}
+			myReply.alternateReplyMsg.text[1] = myReply.alternateReplyMsg.textFunc(self.chatGuy, PlayerHandler)
+		end
+		messageToAdd = myReply.alternateReplyMsg
+	elseif not myReply.skipReplyChat then
+		if myReply.msg.textFunc then
+			-- This overrides def data, which is pretty bad.
+			myReply.msg.text = myReply.msg.text or {}
+			myReply.msg.text[1] = myReply.msg.textFunc(self.chatGuy, PlayerHandler)
+		end
+		messageToAdd = myReply.msg
+	end
+	
+	-- Lead to after the message has been computed.
 	if myReply.leadsTo then
 		SetNextScene(myReply.leadsTo, concludes)
 		if myReply.concludes then
 			api.ConcludeChat()
 		end
-	else
-		local leadsTo, concludes = myReply.leadsToFunc(self.chatGuy, self.playerData)
-		SetNextScene(leadsTo, concludes)
-		if concludes then
+	elseif myReply.leadsToFunc then
+		local leadsTo, concludes = myReply.leadsToFunc(self.chatGuy, PlayerHandler)
+		if leadsTo then
+			SetNextScene(leadsTo, concludes)
+		end
+		if concludes or (not leadsTo) then
 			api.ConcludeChat()
 		end
+	else
+		api.ConcludeChat()
 	end
 	
-	ChatHandler.AddTurnMessage(myReply.msg, {0.5, 0.8, 0.6, 1}, 2)
+	-- Print message after leadTo, so that it appears after the replay (if instant)
+	if messageToAdd then
+		ChatHandler.AddTurnMessage(messageToAdd, {0.5, 0.8, 0.6, 1}, 2)
+	end
+	
 	return true
 end
 
@@ -99,9 +134,10 @@ end
 --------------------------------------------------
 
 function api.EnterChat(chatGuy, playerData)
+	api.ConcludeChat()
 	ChatHandler.FlushChatTurns()
 	ChatHandler.SetChatTurnEnabled(true)
-	self.playerData = playerData
+	
 	self.chatGuy = chatGuy
 	self.chatDef = chatGuy.GetDef().chat
 	SetNextScene(self.chatDef.getEntry(chatGuy, playerData))
@@ -112,13 +148,19 @@ function api.InChat()
 end
 
 function api.ConcludeChat()
+	if not self.chatGuy then
+		return
+	end
 	ChatHandler.FlushChatTurns()
 	ChatHandler.SetChatTurnEnabled(false)
-	self.chatGuy.SetTalkingTo(false)
-	self.playerData.GetGuy().SetTalkingTo(false)
+	if self.chatGuy.SetTalkingTo then
+		self.chatGuy.ClearMoveGoal()
+		self.chatGuy.SetTalkingTo(false)
+	end
+	PlayerHandler.GetGuy().ClearMoveGoal()
+	PlayerHandler.GetGuy().SetTalkingTo(false)
 	
 	-- Maybe just self = {}?
-	self.playerData = false
 	self.chatGuy = false
 	self.chatDef = false
 	self.currentScene = false

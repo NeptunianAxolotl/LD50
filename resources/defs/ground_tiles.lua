@@ -1,7 +1,7 @@
 return {
 	{
 		name = "ground_11",
-		file = "resources/images/grass test.png",
+		file = "resources/images/tile set/grass 1.png",
 		form = "image",
 		xScale = 1,
 		yScale = 1,

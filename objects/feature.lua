@@ -59,6 +59,14 @@ local function NewFeature(self, physicsWorld, world)
 		return true
 	end
 	
+	function self.AddItems(item, toAdd)
+		self.items = self.items or {}
+		self.items[item] = (self.items[item] or 0) + toAdd
+		if self.items[item] < 0 then
+			self.items[item] = 0
+		end
+	end
+	
 	function self.CanBeTalkedTo()
 		return def.chat and def.chat.acceptsChat(self)
 	end
