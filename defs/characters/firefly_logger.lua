@@ -197,26 +197,26 @@ local def = {
 					text = {"Sigh...", ""},
 					sound = "chat_good",
 				},{
-					text = {"I'll just have to take them from", "your corpse!", ""},
+					text = {"I'll just have to take them from your corpse!", ""},
 					sound = "chat_bad",
 					delay = 1.2
 				}},
 			},
 			thanks = {
 				msg = {{
-					text = {"Thanks, the fire always needs more", "logs!", ""},
+					text = {"Thanks, the fire always needs more logs!", ""},
 					sound = "chat_good",
 				}},
 			},
 			hang_on_no_logs = {
 				msg = {{
-					text = {"Hang on, you don't even have any", "logs! Go find some.", ""},
+					text = {"Hang on, you don't even have any logs! Go find some.", ""},
 					sound = "chat_bad",
 				}}
 			},
 			no_logs = {
 				msg = {{
-					text = {"Well go get me some! The fire", "needs more logs!", ""},
+					text = {"Well go get me some! The fire needs more logs!", ""},
 					sound = "chat_good",
 				}},
 			},
@@ -255,7 +255,7 @@ local def = {
 			},
 			keep_looking = {
 				msg = {{
-					text = {"Well keep looking, we always need", "more logs.", ""},
+					text = {"Well keep looking, we always need more logs.", ""},
 					sound = "chat_good",
 				}},
 			},

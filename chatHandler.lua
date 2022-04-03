@@ -91,20 +91,30 @@ function api.DrawConsole()
 		
 		Font.SetSize(1)
 		
-		--break up text to wrap consistently without manual intervention
-		
-		
-		
-		love.graphics.print(line.consoleText, 50, topPad + (i * Global.LINE_SPACING))
-		
-		
-		
-		
-		
-		
-		
-		
-		
+		--break up text to wrap consistently without manual intervention	
+		if love.graphics.getFont():getWidth(line.consoleText) > 100 then
+			--split string into words
+			
+			currentLine = line.consoleText
+			tempLine = ""
+			
+			for w in currentLine:gmatch("%S+") 
+			do 
+				tempLine = tempLine.." "..w
+				
+				if (string.len(tempLine) > 25) then			
+					love.graphics.print(tempLine, 50, topPad + (i * Global.LINE_SPACING))
+					i = i + 1
+					tempLine = ""
+				end
+			end
+			
+			if (string.len(tempLine) > 0) then	
+				love.graphics.print(tempLine, 50, topPad + (i * Global.LINE_SPACING))
+			end		
+		else		
+			love.graphics.print(line.consoleText, 50, topPad + (i * Global.LINE_SPACING))
+		end	
 
 	end
 	love.graphics.setColor(1, 1, 1)
