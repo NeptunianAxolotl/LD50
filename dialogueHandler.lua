@@ -25,6 +25,16 @@ local function DrawConsole()
 	if (not self.currentScene) or self.replyDelay then
 		return
 	end
+	
+	local windowX, windowY = love.window.getMode()
+	
+	if (self.chatGuy.friendly) then
+		Resources.DrawImage(self.chatGuy.GetDef().portraitHappy, 150, windowY * 0.77)
+	else
+		Resources.DrawImage(self.chatGuy.GetDef().portraitNeutral, 150, windowY * 0.77)
+	end
+	
+	
 	local replies = self.chatDef.scenes[self.currentScene].replies
 	if not replies then
 		api.ConcludeChat()
@@ -32,8 +42,7 @@ local function DrawConsole()
 	end
 	
 	local mousePos = world.GetMousePositionInterface()
-	local windowX, windowY = love.window.getMode()
-	local drawPos = world.ScreenToInterface({windowX*0.75, windowY*0.83})
+	local drawPos = world.ScreenToInterface({windowX*0.77, windowY*0.83})
 	
 	for i = 1, #replies do
 		local line = replies[i]

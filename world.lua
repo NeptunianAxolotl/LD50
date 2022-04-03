@@ -206,8 +206,8 @@ function api.Draw()
 	
 	-- Draw interface
 	EffectsHandler.DrawInterface()
-	ChatHandler.DrawInterface()
 	DialogueHandler.DrawInterface()
+	ChatHandler.DrawInterface()
 	GameHandler.DrawInterface()
 	PlayerHandler.DrawInterface()
 	
