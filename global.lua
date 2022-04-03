@@ -11,7 +11,7 @@ local globals = {
 	
 	PHYSICS_SCALE = 300,
 	
-	DRAW_DEBUG = true,
+	--DRAW_DEBUG = true,
 	INVENTORY_SLOTS = 5,
 	
 	MOVE_SPEED = 88,
@@ -25,8 +25,11 @@ local globals = {
 	LOG_BUNDLE = 3,
 	STICK_BUNDLE = 5,
 	
-	LINEAR_FUEL_DRAIN = -5,
-	FUEL_DECAY_COEFF = -0.005,
+	LINEAR_FUEL_DRAIN = -2.5,
+	FUEL_DECAY_COEFF = -0.0038,
+	
+	FIREFLY_FADE = 0.11,
+	FIREFLY_GAIN = 0.17,
 }
 
 return globals

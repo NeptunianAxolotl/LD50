@@ -426,7 +426,7 @@ function api.Initialize(parentWorld)
 	
 	local guyData = {
 		pos = {200, 200},
-		def = CharacterDefs["firefly"],
+		def = CharacterDefs["firefly_player"],
 	}
 	self.playerGuy = NewGuy(guyData, self.world.GetPhysicsWorld(), self.world)
 end

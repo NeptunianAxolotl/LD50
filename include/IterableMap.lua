@@ -28,7 +28,6 @@ function IterableMap.Add(self, key, data)
 	if not data then
 		data = key
 		key = IterableMap.GetUnusedKey(self)
-	data.index = key
 	end
 	if self.indexByKey[key] then
 		-- Overwrites

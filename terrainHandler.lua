@@ -20,6 +20,9 @@ function api.SpawnFeature(name, pos, items)
 	data.def = def
 	local feature = NewFeature(data, self.world.GetPhysicsWorld(), self.world)
 	IterableMap.Add(self.features, feature)
+	if def.isEnergyProvider then
+		IterableMap.Add(self.energyFeature, feature)
+	end
 	
 	if items then
 		for name, count in pairs(items) do
@@ -81,6 +84,29 @@ function api.FindFreeSpace(centre, freeRadius)
 	return false
 end
 
+function api.GetPositionEnergy(pos)
+	local retry = true
+	while retry do
+		retry = false
+		local maxEnergy = false
+		local count, keyByIndex, dataByKey = IterableMap.GetBarbarianData(self.energyFeature)
+		for i = 1, count do
+			local feature = dataByKey[keyByIndex[i]]
+			if feature.IsDead() then
+				IterableMap.Remove(self, i) -- This should be rare
+				retry = true
+				break
+			elseif not (maxEnergy and feature.energyProvided <= maxEnergy) then
+				local distSq = util.DistSqVectors(pos, feature.GetPos())
+				if distSq < feature.energyRadius^2 then
+					maxEnergy = feature.energyProvided
+				end
+			end
+		end
+		return maxEnergy
+	end
+end
+
 function api.CheckFeaturePlace(featureName, pos)
 	local def = FeatureDefs[featureName]
 	if not def.placementRadius then
@@ -128,6 +154,7 @@ end
 function api.Initialize(world)
 	self = {
 		features = IterableMap.New(),
+		energyFeature = IterableMap.New(),
 		world = world,
 	}
 	

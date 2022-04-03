@@ -111,6 +111,9 @@ local function NewGuy(self, physicsWorld, world)
 	self.body:setLinearDamping(22)
 	
 	self.shadow = ShadowHandler.AddCircleShadow(def.shadowRadius)
+	if def.lightFunc then
+		self.light = ShadowHandler.AddLight(def.bigLight, 400 * (def.lightRadiusMult or 1), def.lightColor)
+	end
 	
 	function self.MoveWithVector(moveVec)
 		if self.talkingTo then
@@ -243,8 +246,11 @@ local function NewGuy(self, physicsWorld, world)
 		if def.behaviour then
 			def.behaviour(self, world, dt)
 		end
-		UpdateAnimDir(self)
 		CheckMoveGoal(self)
+		UpdateAnimDir(self)
+		if def.updateFunc then
+			def.updateFunc(self, world, dt)
+		end
 	end
 	
 	function self.GetPos()
@@ -281,8 +287,16 @@ local function NewGuy(self, physicsWorld, world)
 		local bx, by = self.body:getPosition()
 		drawQueue:push({y=by; f=function()
 			Resources.DrawIsoAnimation(def.animation, bx, by, self.animTime, self.animDir)
+			if def.animationOverlay then
+				local color = def.overAnimColorFunc(self)
+				Resources.DrawIsoAnimation(def.animationOverlay, bx, by, self.animTime, self.animDir, false, false, color)
+			end
 		end})
 		ShadowHandler.UpdateShadowParams(self.shadow, {bx, by}, def.shadowRadius)
+		if self.light then
+			local lightGround = def.lightFunc(self) * (def.lightRadiusMult or 1)
+			ShadowHandler.UpdateLightParams(self.light, {bx, by}, lightGround, def.lightColorFunc and def.lightColorFunc(self))
+		end
 		if Global.DRAW_DEBUG then
 			love.graphics.setColor(1, 1, 1, 1)
 			love.graphics.circle('line', bx, by, def.radius)

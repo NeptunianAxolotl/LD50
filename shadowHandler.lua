@@ -16,10 +16,15 @@ local world
 -- Light Handling
 --------------------------------------------------
 
-function api.UpdateLightParams(light, pos, radius)
+function api.UpdateLightParams(light, pos, radius, color)
 	pos = world.WorldToScreen(pos)
 	local radiusGround = radius * world.WorldScaleToScreenScale()
 	local radiusVision = (radius * 1.3) * world.WorldScaleToScreenScale()
+	
+	if color then
+		light.ground:SetColor(color[1], color[2], color[3])
+		light.vision:SetColor(color[1], color[2], color[3])
+	end
 	
 	light.ground:SetPosition(pos[1], pos[2], 1)
 	light.ground:SetRadius(radiusGround)
@@ -28,15 +33,16 @@ function api.UpdateLightParams(light, pos, radius)
 	light.vision:SetRadius(radiusVision)
 end
 
-function api.AddLight(useStar, maxRadius)
+function api.AddLight(useStar, maxRadius, color)
 	maxRadius = maxRadius or 1000
 	local light = {
 		ground = ((useStar and Star) or Light):new(self.groundShadow, maxRadius),
 		vision = ((useStar and Star) or Light):new(self.visionShadow, maxRadius*1.3),
 	}
 	
-	light.ground:SetColor(255, 255, 255)
-	light.vision:SetColor(255, 255, 255)
+	color = color or {255, 255, 255}
+	light.ground:SetColor(color[1], color[2], color[3])
+	light.vision:SetColor(color[1], color[2], color[3])
 	return light
 end
 
@@ -114,7 +120,7 @@ function api.Initialize(parentWorld)
 	self.groundShadow:SetColor(20, 20, 20)
 	self.visionShadow:SetColor(20, 20, 20)
 
-	self.mouseLight = api.AddLight()
+	self.mouseLight = api.AddLight(false, 300, {120, 120, 120})
 end
 
 return api

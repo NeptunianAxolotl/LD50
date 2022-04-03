@@ -133,6 +133,11 @@ local function NewFeature(self, physicsWorld, world)
 		if Global.DRAW_DEBUG then
 			love.graphics.setColor(1, 1, 1, 1)
 			love.graphics.circle('line', bx, by, def.radius)
+			
+			if self.energyRadius then
+				love.graphics.setColor(1, 0, 0, 1)
+				love.graphics.circle('line', bx, by, self.energyRadius)
+			end
 		end
 	end
 	
