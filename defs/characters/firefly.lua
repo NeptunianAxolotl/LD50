@@ -24,9 +24,9 @@ local def = {
 		if self.lightValue < 1 or self.colorNeedUpdate then
 			self.colorNeedUpdate = (self.lightValue < 1)
 			if self.inLight then
-				return {190 - (1 - self.lightValue)*70, 190, 190 - (1 - self.lightValue)*70}
+				return {180 - (1 - self.lightValue)*70, 180, 180 - (1 - self.lightValue)*70}
 			else
-				return {145 - (1 - self.lightValue)*70, 190, 145 - (1 - self.lightValue)*70}
+				return {140 - (1 - self.lightValue)*70, 180, 140 - (1 - self.lightValue)*70}
 			end
 		end
 	end,
@@ -54,7 +54,7 @@ local def = {
 			--print( self.lightValue)
 		end
 	end,
-	lightColor = {190, 190, 190}
+	lightColor = {180, 180, 180}
 }
 
 return def
