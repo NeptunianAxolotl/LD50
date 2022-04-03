@@ -1,7 +1,7 @@
 local terrain = {
 	{
 		name = "tree_test",
-		pos = {100, 100},
+		pos = {450, 100},
 	},
 	{
 		name = "tree_test",
@@ -13,7 +13,7 @@ local terrain = {
 	},
 	{
 		name = "wood_pile",
-		pos = {-500, 0},
+		pos = {-250, 30},
 		items = {
 			log_item = 3,
 			stick_item = 6
@@ -25,7 +25,7 @@ local terrain = {
 	},
 	{
 		name = "fire",
-		pos = {200, 800},
+		pos = {0, 0},
 	},
 	{
 		name = "log",

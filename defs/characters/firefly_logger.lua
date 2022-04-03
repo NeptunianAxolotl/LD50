@@ -55,14 +55,14 @@ local def = {
 		scenes = {
 			hello = {
 				msg = {{
-					text = "Hey, sexy.  Give me all your logs.",
+					text = "What're you talking to me fer?  Go git some wood for the fire!",
 					sound = "chat_good",
 				}},
 				replyDelay = 0.5,
 				replies = {
 					{
 						msg = {
-							text = "Sure, here you go",
+							text = "Yeah, yeah.",
 							sound = "chat_good",
 						},
 						leadsToFunc = function (self, player)
@@ -79,25 +79,17 @@ local def = {
 					},
 					{
 						msg = {
-							text = "No, they are mine",
+							text = "Stuff it, old man.  The fire can wait.",
 							sound = "chat_good",
 						},
 						leadsTo = "are_you_sure",
 					},
 					{
 						msg = {
-							text = "I don't have any",
-							sound = "chat_good",
+							text = "[leave]"
 						},
-						leadsToFunc = function (self, player)
-							local logCount = player.GetInventoryCount("log_item")
-							if logCount > 0 then
-								return "behind_you"
-							else
-								return "no_logs", true
-							end
-						end
 					},
+
 					
 				}
 			},

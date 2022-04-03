@@ -66,50 +66,115 @@ local def = {
 			hello = {
 				msg = {{
 					text = "...",
-					sound = "chat_good",
 				}},
 				replyDelay = 0.1,
 				replies = {
 					{
 						msg = {
-							text = "Sure, here you go",
+							text = "Hi.",
 							sound = "chat_good",
 						},
-						leadsToFunc = function (self, player)
-							local logCount = player.GetInventoryCount("log_item")
-							if logCount > 0 then
-								player.RemoveInventory("log_item", logCount)
-								self.friendly = true
-								self.items.log_item = logCount
-								return "thanks", true
-							else
-								return "hang_on_no_logs", true
-							end
-						end
+						leadsTo = "silence1"
 					},
 					{
 						msg = {
-							text = "No, they are mine",
+							text = "I haven't seen much of you lately.  Are you doing okay?",
 							sound = "chat_good",
 						},
-						leadsTo = "are_you_sure",
+						leadsTo = "silence2"
 					},
 					{
 						msg = {
-							text = "I don't have any",
-							sound = "chat_good",
+							text = "[spend a while in companionable silence]",
 						},
-						leadsToFunc = function (self, player)
-							local logCount = player.GetInventoryCount("log_item")
-							if logCount > 0 then
-								return "behind_you"
-							else
-								return "no_logs", true
-							end
-						end
+						leadsTo = "silence3"
 					},
 					
 				}
+			},
+			silence1 = {
+					msg = {{
+					text = "...",
+				}},		
+				replyDelay = 3,
+			},
+			silence2 = {
+				msg = {{
+					text = "...",
+				}},		
+				replyDelay = 2,
+				replies = {
+					{
+						msg = {
+							text = "I remember you fondly from when I was young.",
+							sound = "chat_good",
+						},
+						leadsTo = "silence21"
+					},
+					{
+						msg = {
+							text = "I worry about you.  You don't look so good.  Come closer to the fire.",
+							sound = "chat_good",
+						},
+						leadsTo = "silence22"
+					},
+					{
+						msg = {
+							text = "[leave]",
+						},
+					},
+				},
+			},
+			silence21 = {
+				msg = {{
+					text = ".....",
+				}},
+				replyDelay = 2,
+					replies = {
+					{
+						msg = {
+							text = "",
+							sound = "chat_good",
+						},
+						leadsTo = "silence211"
+					},
+				},
+			},
+			silence211 = {
+				msg = {{
+					text = ".....",
+				}},
+				replyDelay = 2,
+					replies = {
+					{
+						msg = {
+							text = "",
+							sound = "chat_good",
+						},
+						leadsTo = "silence211"
+					},
+				},
+			},
+			silence22 = {
+				msg = {{
+					text = ".....",
+				}},
+				replyDelay = 2,
+					replies = {
+					{
+						msg = {
+							text = "",
+							sound = "chat_good",
+						},
+						leadsTo = "silence221"
+					},
+				},
+			},
+			silence3 = {
+				msg = {{
+					text = "...",
+				}},		
+				replyDelay = 3,
 			},
 		},
 	}
