@@ -518,6 +518,17 @@ function util.UpdateProportion(dt, value, speed)
 	return value
 end
 
+function util.UpdateTimer(timer, dt)
+	if not timer then
+		return false
+	end
+	timer = timer - dt
+	if timer < 0 then
+		return false
+	end
+	return timer
+end
+
 --------------------------------------------------
 --------------------------------------------------
 -- Table Utilities

@@ -7,7 +7,7 @@ local def = {
 	isEnergyProvider = true,
 	bigLight = true,
 	initData = {
-		fuelValue = 800,
+		fuelValue = 1500,
 		energyRadius = 10,
 		energyProvided = 1, -- In units of fires, so fire is permanently at 1.
 	},

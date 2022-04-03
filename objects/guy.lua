@@ -258,13 +258,9 @@ local function NewGuy(self, physicsWorld, world)
 			return true
 		end
 		self.animTime = self.animTime + dt
+		self.behaviourDelay = util.UpdateTimer(self.behaviourDelay, dt * (def.workMult or 1))
 		if self.behaviourDelay then
-			self.behaviourDelay = self.behaviourDelay - dt * (def.workMult or 1)
-			if self.behaviourDelay < 0 then
-				self.behaviourDelay = false
-			else
-				return
-			end
+			return
 		end
 		if def.behaviour then
 			def.behaviour(self, world, dt)

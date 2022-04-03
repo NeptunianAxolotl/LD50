@@ -28,6 +28,7 @@ local globals = {
 	TILE_WIDTH = 1200,
 	TILE_HEIGHT = 600,
 	
+	LIGHT_SLOW_UPDATE = 1.5,
 	PORTRAIT_SPEED = 4,
 	
 	LOG_BUNDLE = 3,

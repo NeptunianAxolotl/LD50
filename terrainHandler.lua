@@ -42,11 +42,12 @@ function api.DropFeatureInFreeSpace(pos, toDrop, count)
 	end
 end
 
-function api.GetClosetFeature(pos, featureType, toSurface, requirePower, requireNotGoal, requireNotBusy, skipChance)
+function api.GetClosetFeature(pos, featureType, toSurface, requireLight, requirePower, requireNotGoal, requireNotBusy, skipChance)
 	local minFunc
 	if toSurface then
 		minFunc = function (feature)
 			if (featureType and feature.def.name ~= featureType) or 
+					(requireLight and not feature.HasLight()) or 
 					(requirePower and not feature.HasPower()) or 
 					(requireNotGoal and feature.IsMoveTarget()) or 
 					(requireNotBusy and feature.IsBusyOrTalking()) then
@@ -62,6 +63,7 @@ function api.GetClosetFeature(pos, featureType, toSurface, requirePower, require
 	else
 		minFunc = function (feature)
 			if (featureType and feature.def.name ~= featureType) or 
+					(requireLight and not feature.HasLight()) or 
 					(requirePower and not feature.HasPower()) or 
 					(requireNotGoal and feature.IsMoveTarget()) or 
 					(requireNotBusy and feature.IsBusyOrTalking()) then

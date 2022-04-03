@@ -13,6 +13,10 @@ local function NewFeature(self, physicsWorld, world)
 		self = util.CopyTable(def.initData, true, self)
 	end
 	
+	self.hasePower = false
+	self.hasLight = false
+	self.lightUpdateDt = false
+	
 	self.body = love.physics.newBody(physicsWorld, self.pos[1], self.pos[2], "static")
 	if def.collide then
 		self.shape = love.physics.newCircleShape(def.radius)
@@ -70,11 +74,27 @@ local function NewFeature(self, physicsWorld, world)
 		end
 	end
 	
+	function self.HasLight()
+		if not self.lightUpdateDt then
+			self.hasLight = TerrainHandler.GetPositionEnergy(self.GetPos())
+			if def.toPowerRangeMult then
+				self.hasPower = TerrainHandler.GetPositionEnergy(self.GetPos(), def.toPowerRangeMult)
+			end
+			self.lightUpdateDt = Global.LIGHT_SLOW_UPDATE
+		end
+		return self.hasLight
+	end
+	
 	function self.HasPower()
 		if not def.requiresPower then
 			return true
 		end
-		return TerrainHandler.GetPositionEnergy(self.GetPos(), def.toPowerRangeMult)
+		if not self.lightUpdateDt then
+			self.hasLight = TerrainHandler.GetPositionEnergy(self.GetPos())
+			self.hasPower = TerrainHandler.GetPositionEnergy(self.GetPos(), def.toPowerRangeMult)
+			self.lightUpdateDt = Global.LIGHT_SLOW_UPDATE
+		end
+		return self.hasPower
 	end
 	
 	function self.IsBusy()
@@ -116,18 +136,9 @@ local function NewFeature(self, physicsWorld, world)
 		if def.updateFunc then
 			def.updateFunc(self, dt)
 		end
-		if self.busyTimer then
-			self.busyTimer = self.busyTimer - dt
-			if self.busyTimer <= 0 then
-				self.busyTimer = false
-			end
-		end
-		if self.moveTarget then
-			self.moveTarget = self.moveTarget - dt
-			if self.moveTarget <= 0 then
-				self.moveTarget = false
-			end
-		end
+		self.busyTimer = util.UpdateTimer(self.busyTimer, dt)
+		self.moveTarget = util.UpdateTimer(self.moveTarget, dt)
+		self.lightUpdateDt = util.UpdateTimer(self.lightUpdateDt, dt)
 		if self.shape and self.radiusScale < 1 then
 			self.radiusScale = self.radiusScale + dt
 			if self.radiusScale > 1 then

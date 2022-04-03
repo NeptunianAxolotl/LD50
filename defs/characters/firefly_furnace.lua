@@ -18,18 +18,18 @@ local def = {
 				end
 				return true
 			end
-			local feature, distance = TerrainHandler.GetClosetFeature(self.GetPos(), "furnace", false, true, false, false)
+			local feature, distance = TerrainHandler.GetClosetFeature(self.GetPos(), "furnace", false, true, true, false, false)
 			if feature then
 				if distance > Global.START_SPOT_SEARCH then
 					self.SetMoveGoal(feature.GetPos(), feature.GetRadius() + Global.APPROACH_LEEWAY * (math.random()*0.4 + 0.4))
 				else
-					feature, distance = TerrainHandler.GetClosetFeature(self.GetPos(), "furnace", false, true, true, true)
+					feature, distance = TerrainHandler.GetClosetFeature(self.GetPos(), "furnace", false, true, true, true, true)
 					if feature and distance < Global.SPOT_SEARCH_RANGE then
 						self.SetMoveGoal(feature.GetPos(), feature.GetRadius() + Global.DROP_LEEWAY, feature, "transform", "metal_item", UseItem)
 					elseif math.random() > 0.5 then
 						self.behaviourDelay = math.random()*2 + 2.5
 					else
-						feature, distance = TerrainHandler.GetClosetFeature(self.GetPos(), "furnace", false, true, false, false, 0.5)
+						feature, distance = TerrainHandler.GetClosetFeature(self.GetPos(), "furnace", false, true, true, false, false, 0.5)
 						if feature and distance < Global.SPOT_SEARCH_RANGE then
 							self.SetMoveGoal(feature.GetPos(), feature.GetRadius() + Global.APPROACH_LEEWAY * (math.random()*0.4 + 0.4))
 						end
@@ -39,12 +39,12 @@ local def = {
 			return
 		end
 		
-		local feature, distance = TerrainHandler.GetClosetFeature(self.GetPos(), "ore", false, true, false, false)
+		local feature, distance = TerrainHandler.GetClosetFeature(self.GetPos(), "ore", false, true, true, false, false)
 		if feature then
 			if distance > Global.START_SPOT_SEARCH then
 				self.SetMoveGoal(feature.GetPos(), feature.GetRadius() + Global.APPROACH_LEEWAY * (math.random()*0.4 + 0.4))
 			else
-				local newFeature, newDistance = TerrainHandler.GetClosetFeature(self.GetPos(), "ore", false, true, true, true)
+				local newFeature, newDistance = TerrainHandler.GetClosetFeature(self.GetPos(), "ore", false, true, true, true, true)
 				if newFeature then
 					self.SetMoveGoal(newFeature.GetPos(), newFeature.GetRadius() + Global.DROP_LEEWAY, newFeature, "collect", false)
 				else
