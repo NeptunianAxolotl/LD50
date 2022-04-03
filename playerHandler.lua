@@ -145,9 +145,6 @@ local function ActionCallback(success, other, action, item)
 		self.activeItem = false
 		return true
 	end
-	if action == "talk" then
-		DialogueHandler.EnterChat(other, api)
-	end
 end
 
 --------------------------------------------------
@@ -249,6 +246,8 @@ function api.MousePressedWorld(mx, my, button)
 	local featurePos = self.hoveredFeature.GetPos()
 	if self.hoveredFeature.GetDef().collectAs then
 		self.playerGuy.SetMoveGoal(featurePos, self.hoveredFeature.GetRadius() + Global.DROP_LEEWAY, self.hoveredFeature, "collect", false, ActionCallback)
+	elseif self.hoveredFeature.CanBeTalkedTo() then
+		self.playerGuy.SetMoveGoal(featurePos, self.hoveredFeature.GetRadius() + Global.DROP_LEEWAY, self.hoveredFeature, "talk", false, ActionCallback)
 	else
 		self.playerGuy.SetMoveGoal(featurePos, self.hoveredFeature.GetRadius() + Global.DROP_LEEWAY)
 	end

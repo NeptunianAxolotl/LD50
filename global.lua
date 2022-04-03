@@ -19,6 +19,8 @@ local globals = {
 	TALK_LEEWAY = 160,
 	TILE_WIDTH = 1200,
 	TILE_HEIGHT = 600,
+	
+	PORTRAIT_SPEED = 4,
 }
 
 return globals

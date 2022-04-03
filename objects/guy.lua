@@ -13,6 +13,8 @@ local function DoMoveGoalAction(self)
 	local item = self.moveGoalAction.item
 	local ActionCallback = self.moveGoalAction.ActionCallback
 	
+	local other = guy or feature
+	
 	if action == "drop" then
 		if (not ActionCallback) or ActionCallback(true, feature, action, item) then
 			local toDrop = ItemDefs[item].dropAs
@@ -39,12 +41,15 @@ local function DoMoveGoalAction(self)
 		if (not ActionCallback) or ActionCallback(not feature.IsDead(), feature, action, item) then
 			ItemAction.DoItemToFeature(feature, action, item)
 		end
-	elseif guy and not guy.IsDead() and action == "talk" and guy.CanBeTalkedTo() then
+	elseif other and not other.IsDead() and action == "talk" and other.CanBeTalkedTo() then
 		if ActionCallback then
-			ActionCallback(true, guy, action, item)
+			ActionCallback(true, other, action, item)
 		end
-		self.SetTalkingTo(guy)
-		guy.SetTalkingTo(self)
+		print(SetTalkingTo)
+		self.SetTalkingTo(other)
+		if guy then
+			guy.SetTalkingTo(self)
+		end
 	elseif ActionCallback then
 		ActionCallback(action == "self_handle", feature or guy, action, item)
 	end
@@ -157,6 +162,9 @@ local function NewGuy(self, physicsWorld, world)
 	end
 	
 	function self.SetTalkingTo(other)
+		if other and not def.isNpc then
+			DialogueHandler.EnterChat(other, PlayerHandler)
+		end
 		self.talkingTo = other
 	end
 	
@@ -213,6 +221,14 @@ local function NewGuy(self, physicsWorld, world)
 			return true
 		end
 		self.animTime = self.animTime + dt
+		if self.behaviourDelay then
+			self.behaviourDelay = self.behaviourDelay - dt * (def.workMult or 1)
+			if self.behaviourDelay < 0 then
+				self.behaviourDelay = false
+			else
+				return
+			end
+		end
 		if def.behaviour then
 			def.behaviour(self, world, dt)
 		end

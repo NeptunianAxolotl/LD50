@@ -111,7 +111,7 @@ end
 
 function api.DrawConsole()
 	local windowX, windowY = love.window.getMode()
-	local drawPos = world.ScreenToInterface({0, windowY*0.85})
+	local drawPos = world.ScreenToInterface({0, windowY*0.5})
 	local topPad = drawPos[2] - #self.lines*Global.LINE_SPACING
 
 	for i = #self.lines, 1, -1 do
@@ -125,7 +125,7 @@ function api.DrawConsole()
 		
 		Font.SetSize(1)
 		
-		love.graphics.print(line.consoleText, 50, topPad + (i * Global.LINE_SPACING))
+		love.graphics.print(line.consoleText, 30, topPad + (i * Global.LINE_SPACING))
 	end
 	love.graphics.setColor(1, 1, 1)
 end
@@ -171,7 +171,8 @@ function api.Update(dt)
 			local line = self.lines[i]
 			if (line.consoleTimer and not line.consoleTurnTimer) or (not self.chatTurnEnabled) then
 				line.consoleTimer = line.consoleTimer - dt
-				if line.consoleTimer < 0 then
+				if line.consoleTimer < 0 and i == 1 then
+					-- Only remove top line, prevents dropdowns.
 					api.RemoveMessage(i)
 				end
 			end

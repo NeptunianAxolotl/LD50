@@ -10,14 +10,6 @@ local def = {
 	},
 	isNpc = true,
 	behaviour = function (self, world, dt)
-		if self.behaviourDelay then
-			self.behaviourDelay = self.behaviourDelay - dt
-			if self.behaviourDelay < 0 then
-				self.behaviourDelay = false
-			else
-				return
-			end
-		end
 		if self.items.log_item > 0 and not self.moveGoalPos then
 			local function UseLog(success)
 				if success then
