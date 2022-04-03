@@ -12,13 +12,13 @@ local font = love.graphics.newFont(70)
 
 -- First eligible tracks are used as start music
 local trackList = {
-	'LD50_bgm',
+	'bgm',
 }
 
 local fallbackTrack = {
-	'LD50_bgm',
-	'LD50_bgm',
-	'LD50_bgm',
+	'bgm',
+	'bgm',
+	'bgm',
 }
 
 local currentTrack = {}
