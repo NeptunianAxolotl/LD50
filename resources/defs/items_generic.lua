@@ -3,7 +3,11 @@ local itemNames = util.GetDefDirList("resources/images/items")
 local data = {}
 
 local scales = {
-	metal_item = 2, -- example
+	axe_item   = 12,
+	coal_item  = 12,
+	metal_item = 12,
+	ore_item   = 12,
+	rock_item  = 12,
 }
 
 for i = 1, #itemNames do
@@ -11,8 +15,8 @@ for i = 1, #itemNames do
 		name = itemNames[i] .. "_inventory",
 		file = "resources/images/items/" .. itemNames[i] .. ".png",
 		form = "image",
-		xScale = 0.18 * (scales[itemNames[i]] or 1),
-		yScale = 0.18 * (scales[itemNames[i]] or 1),
+		xScale = 0.165 * (scales[itemNames[i]] or 1),
+		yScale = 0.165 * (scales[itemNames[i]] or 1),
 		xOffset = 0.5,
 		yOffset = 0.5,
 	}
