@@ -40,10 +40,14 @@ end
 -- Update
 --------------------------------------------------
 
+local longFrames = 0
+local frames = 0
 function love.update(dt)
 	local realDt = dt
+	frames = frames + 1
 	if dt > 0.05 then
-		print(dt)
+		longFrames = longFrames + 1
+		print(math.floor(frames *100 / longFrames), dt)
 	end
 	if dt > 0.1 then
 		dt = 0.1

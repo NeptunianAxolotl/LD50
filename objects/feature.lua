@@ -32,11 +32,15 @@ local function NewFeature(self, physicsWorld, world)
 	end
 	
 	function self.GetPos()
+		if self.cachedPos then
+			return self.cachedPos
+		end
 		if self.dead then
 			return {0, 0} -- Hope this works
 		end
 		local bx, by = self.body:getPosition()
-		return {bx, by}
+		self.cachedPos = {bx, by}
+		return self.cachedPos
 	end
 	
 	function self.GetRadius()
@@ -155,45 +159,48 @@ local function NewFeature(self, physicsWorld, world)
 		if self.dead then
 			return
 		end
-		local bx, by = self.body:getPosition()
+		local bodyPos = self.GetPos()
 		local hit = def.mouseHit
-		return util.PosInRectangle(pos, bx + hit.rx, by + hit.ry, hit.width, hit.height)
+		return util.PosInRectangle(pos, bodyPos[1] + hit.rx, bodyPos[2] + hit.ry, hit.width, hit.height)
 	end
 	
 	function self.HitBoxToScreen()
-		local bx, by = self.body:getPosition()
+		local bodyPos = self.GetPos()
 		local hit = def.mouseHit
-		local pos = world.WorldToScreen({bx + hit.rx, by + hit.ry})
+		local pos = world.WorldToScreen({bodyPos[1] + hit.rx, bodyPos[2] + hit.ry})
 		local scale = world.WorldScaleToScreenScale()
 		return pos, hit.width * scale, hit.height * scale
 	end
 	
-	function self.Draw(drawQueue)
+	function self.Draw(drawQueue, left, top, right, bot)
 		if self.dead then
 			return
 		end
-		local bx, by = self.body:getPosition()
-		drawQueue:push({y=by; f=function()
-			if def.image then
-				Resources.DrawImage(def.image, bx, by)
-			elseif def.animation then
-				Resources.DrawAnimation(def.animation, bx, by, self.animTime)
-			end
-		end})
+		local pos = self.GetPos()
+		
+		if pos[1] > left and pos[2] > top and pos[1] < right and pos[2] < bot then
+			drawQueue:push({y=pos[2]; f=function()
+				if def.image then
+					Resources.DrawImage(def.image, pos[1], pos[2])
+				elseif def.animation then
+					Resources.DrawAnimation(def.animation, pos[1], pos[2], self.animTime)
+				end
+			end})
+		end
 		if self.shadow then
-			ShadowHandler.UpdateShadowParams(self.shadow, {bx, by}, def.shadowRadius)
+			ShadowHandler.UpdateShadowParams(self.shadow, {pos[1], pos[2]}, def.shadowRadius)
 		end
 		if self.light then
 			local lightGround = def.lightFunc(self)
-			ShadowHandler.UpdateLightParams(self.light, {bx, by}, lightGround)
+			ShadowHandler.UpdateLightParams(self.light, {pos[1], pos[2]}, lightGround)
 		end
 		if Global.DRAW_DEBUG then
 			love.graphics.setColor(1, 1, 1, 1)
-			love.graphics.circle('line', bx, by, def.radius)
+			love.graphics.circle('line', pos[1], pos[2], def.radius)
 			
 			if self.energyRadius then
 				love.graphics.setColor(1, 0, 0, 1)
-				love.graphics.circle('line', bx, by, self.energyRadius)
+				love.graphics.circle('line', pos[1], pos[2], self.energyRadius)
 			end
 		end
 	end
