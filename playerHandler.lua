@@ -441,8 +441,10 @@ end
 
 function api.DrawInterface()
 	local checkHover = (not DialogueHandler.InChat()) and (not self.buildMenuOpen)
-	self.hoveredItem, startX, startY = InventoryUtil.DrawInventoryBar(self.world, self.inventory, self.selectedItem, self.activeItem, ItemDefs, checkHover, 80, 15, 2, Global.INVENTORY_SLOTS, 0, 0)
-	self.hoveredItem = InventoryUtil.DrawInventoryBar(self.world, self.inventory, self.selectedItem, self.activeItem, ItemDefs, checkHover, 80, 15, 1, 1, 0, 0) or self.hoveredItem
+	local hoveredItem, startX, startY = InventoryUtil.DrawInventoryBar(
+		self.world, self.inventory, self.selectedItem, self.activeItem, ItemDefs,
+		checkHover, 80, 15, 2, Global.INVENTORY_SLOTS, 0, 0)
+	self.hoveredItem = InventoryUtil.DrawInventoryBar(self.world, self.inventory, self.selectedItem, self.activeItem, ItemDefs, checkHover, 80, 15, 1, 1, 0, 0) or hoveredItem
 	
 	self.hoveredBuildMenu = InventoryUtil.DrawBuild(self.world, api, Global.INVENTORY_SLOTS, (not DialogueHandler.InChat()), self.buildMenuOpen, 80, 15, 0, 120, 70)
 	

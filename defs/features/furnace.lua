@@ -9,6 +9,7 @@ local def = {
 	placementRadius = 260,
 	portraitNeutral = "furnace_portrait",
 	humanName = "Furnace",
+	desc = "Smelt ore",
 	voidDestroys = true,
 	mouseHit = {rx = -170, ry = -215, width = 340, height = 380},
 	initData = {

@@ -64,7 +64,7 @@ function api.DrawInventoryBar(world, inventory, selectedItem, activeItem, ItemDe
 		end
 	end
 	
-	return hoveredIte, startX, startY
+	return hoveredItem, startX, startY
 end
 
 function api.DrawBuild(world, playerData, inventorySlots, checkHover, inBuildMenu, boxSize, boxSpacing, inventorySpacing, buildSize, buildSpacing)
