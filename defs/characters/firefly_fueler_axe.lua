@@ -27,7 +27,7 @@ local def = {
 		scenes = {
 			options = {
 				msg = {{
-					text = "HELP OPTIONS PLACEHOLDER",
+					text = "Hello!  How can I help?",
 					sound = "chat_good",
 				}},			
 				replyDelay = 2,
