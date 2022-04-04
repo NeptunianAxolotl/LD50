@@ -27,7 +27,7 @@ local def = {
 			hello = {
 				msg = {{
 					textFunc = function (self, player)
-						if player.GetInventoryCount("ore_item") > 2 then
+						if player.GetInventoryCount("ore_item") >= Global.ORE_TO_METAL then
 							return "The furnace is ready to recieve ore."
 						else
 							return "You approach the furnace, but have insufficient ore to sate it."
