@@ -1,6 +1,6 @@
 local characters = {
 	{
-		name = "firefly_furnace",
+		name = "firefly_fueler",
 		pos = {-100, 120},
 	},
 	{

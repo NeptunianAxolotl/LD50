@@ -97,6 +97,10 @@ local function NewFeature(self, physicsWorld, world)
 		end
 	end
 	
+	function self.GetItems(item)
+		return (self.items and self.items[item]) or 0
+	end
+	
 	function self.HasLight()
 		if not self.lightUpdateDt then
 			self.hasLight = TerrainHandler.GetPositionEnergy(self.GetPos())
@@ -106,6 +110,10 @@ local function NewFeature(self, physicsWorld, world)
 			self.lightUpdateDt = Global.LIGHT_SLOW_UPDATE
 		end
 		return self.hasLight
+	end
+	
+	function self.HasStock()
+		return (not def.stockCheckFunc) or def.stockCheckFunc(self)
 	end
 	
 	function self.HasPower()
@@ -152,7 +160,10 @@ local function NewFeature(self, physicsWorld, world)
 		return self.IsDead() or self.busyTimer
 	end
 	
-	function self.IsBusyOrTalking()
+	function self.IsBusyOrTalking(ignorePile)
+		if ignorePile and def.isPile then
+			return self.IsDead()
+		end
 		return self.IsDead() or self.busyTimer or self.talkingTo or ((self.mineCapacity or 1) == 0)
 	end
 	
@@ -164,7 +175,10 @@ local function NewFeature(self, physicsWorld, world)
 		self.moveTarget = 0.5
 	end
 	
-	function self.IsMoveTarget()
+	function self.IsMoveTarget(ignorePile)
+		if ignorePile and def.isPile then
+			return self.IsDead()
+		end
 		return self.moveTarget
 	end
 	

@@ -762,10 +762,10 @@ local def = {
 				msg = {		
 				{
 					text = "...",
-					delay = 1,
+					delay = 0,
 				}
 				},
-				replyDelay = 4,
+				replyDelay = 2.5,
 			},
 			looking = {
 				msg = {		

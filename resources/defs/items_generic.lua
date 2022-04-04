@@ -8,6 +8,13 @@ local scales = {
 	metal_item = 12,
 	ore_item   = 12,
 	rock_item  = 12,
+	emerald_item = 12,
+	log_bundle_item   = 12,
+	metal_frame_item  = 12,
+	pick_item  = 12,
+	prybar_item  = 12,
+	ruby_item  = 12,
+	stick_bundle_item  = 12,
 }
 
 for i = 1, #itemNames do
