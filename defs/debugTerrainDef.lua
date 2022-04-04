@@ -34,14 +34,6 @@ local terrain = {
 		pos = {300, 300},
 	},
 	{
-		name = "wood_pile",
-		pos = {-250, -120},
-		items = {
-			log_item = 3,
-			stick_item = 6
-		}
-	},
-	{
 		name = "tree",
 		pos = {-500, 1000},
 	},
@@ -70,54 +62,68 @@ for i = 1, 10 do
 end
 
 local placeList = {
-	"emerald_mine",
-	"metal_frame",
+	--"fire", -- already got one
+	
+	--Tools
+	"prybar",
+	"hammer",
+	"sword",
+	"pick",
+	"axe",
+	
+	-- Resources
 	"metal",
-	"anvil",
-	"furnace",
+	"metal_frame",
 	"rock",
 	"ore",
-	"ruby_mine",
 	"ruby",
-	"saphire_mine",
 	"saphire",
-	"stone_mine",
-	--"fire",
 	"stick",
+	"corpse",
+	"log",
+	"emerald",
+	"coal",
+	
+	"workshop",
+	"anvil",
+	"furnace",
+	
+	-- Piles
+	"wood_pile",
+	"coal_bin",
+	
+	
+	-- Advanced
+	"big_digger",
 	"lamp_wood",
 	"tele_metal",
 	"tele_wood",
-	"workshop",
-	"prybar",
-	"metal_hut",
-	"big_digger",
-	"wood_pile",
 	"miner_metal",
-	"hammer",
-	"wood_hut",
-	"miner_wood",
-	"big_wood_hut",
-	"sword",
-	"log",
-	"tree",
-	"ore_mine",
-	"axe",
-	"tele_in",
-	"coal",
-	"coal_mine",
-	"pick",
-	"emerald",
-	"lamp_metal",
-	"corpse",
 	"big_teleport",
-	"coal_bin",
+	"miner_wood",
+	"lamp_metal",
+	"tele_in",
+	
+	-- Huts
+	"metal_hut",
+	"wood_hut",
+	"big_wood_hut",
+	
+	-- Mines - tested
+	"emerald_mine",
+	"saphire_mine",
+	"ruby_mine",
+	"ore_mine",
+	"stone_mine",
+	"coal_mine",
+	"tree",
 }
 
 local angle = math.pi
 for i = 1, #placeList do
 	terrain[#terrain + 1] = {
 		name = placeList[i],
-		pos = {-1200 + 300*((i - 1)%8), -400 - 400*(math.floor((i - 1)/8))}
+		pos = {-1200 + 400*((i - 1)%8), -120 - 400*(math.floor((i - 1)/8))}
 	}
 end
 

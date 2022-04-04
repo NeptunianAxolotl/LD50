@@ -379,10 +379,10 @@ end
 
 function api.DrawInterface()
 	local checkHover = (not DialogueHandler.InChat()) and (not self.buildMenuOpen)
-	self.hoveredItem = InventoryUtil.DrawInventoryBar(self.world, self.inventory, self.selectedItem, self.activeItem, ItemDefs, checkHover, 80, 15, 2, Global.INVENTORY_SLOTS + 1, 0, 0)
+	self.hoveredItem = InventoryUtil.DrawInventoryBar(self.world, self.inventory, self.selectedItem, self.activeItem, ItemDefs, checkHover, 80, 15, 2, Global.INVENTORY_SLOTS, 0, 0)
 	self.hoveredItem = InventoryUtil.DrawInventoryBar(self.world, self.inventory, self.selectedItem, self.activeItem, ItemDefs, checkHover, 80, 15, 1, 1, 0, 0) or self.hoveredItem
 	
-	self.hoveredBuildMenu = InventoryUtil.DrawBuild(self.world, Global.INVENTORY_SLOTS + 1, (not DialogueHandler.InChat()), self.buildMenuOpen, 80, 15, 0, 120, 70)
+	self.hoveredBuildMenu = InventoryUtil.DrawBuild(self.world, Global.INVENTORY_SLOTS, (not DialogueHandler.InChat()), self.buildMenuOpen, 80, 15, 0, 120, 70)
 	
 	self.hoveredFeature = false
 	self.hoveredNpc = false
@@ -427,16 +427,13 @@ function api.Initialize(parentWorld)
 			"empty",
 			"empty",
 			"empty",
-			"empty",
-			"empty",
-			"empty",
 		},
 		unlocks = {
 			wood_pile = true,
 		}
 	}
 	
-	for i = 1, Global.INVENTORY_SLOTS + 1 do
+	for i = 1, Global.INVENTORY_SLOTS do
 		if not self.inventory[i] then
 			self.inventory[i] = "empty"
 		end
