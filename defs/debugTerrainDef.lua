@@ -82,7 +82,7 @@ local placeList = {
 	"saphire_mine",
 	"saphire",
 	"stone_mine",
-	"fire",
+	--"fire",
 	"stick",
 	"lamp_wood",
 	"tele_metal",
@@ -114,18 +114,11 @@ local placeList = {
 }
 
 local angle = math.pi
-local distance = 800
 for i = 1, #placeList do
 	terrain[#terrain + 1] = {
 		name = placeList[i],
-		pos = util.PolarToCart(distance, angle),
+		pos = {-1200 + 300*((i - 1)%8), -400 - 400*(math.floor((i - 1)/8))}
 	}
-	angle = angle + math.pi*0.08
-	if distance > 900 then
-		distance = 800
-	else
-		distance = 1100
-	end
 end
 
 return terrain
