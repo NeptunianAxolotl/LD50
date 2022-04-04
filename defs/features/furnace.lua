@@ -5,14 +5,14 @@ local def = {
 	name = "furnace",
 	radius = 80,
 	collide = true,
-	requiresPower = true,
 	image = "furnace",
 	placementRadius = 130,
 	portraitNeutral = "furnace",
-	toPowerRangeMult = 0.75,
 	mouseHit = {rx = -100, ry = -100, width = 200, height = 200},
 	initData = {
 	},
+	requiresPower = true,
+	toPowerRangeMult = 0.75,
 	chat = {
 		acceptsChat = function(self)
 			return true

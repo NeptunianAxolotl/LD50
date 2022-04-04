@@ -111,7 +111,7 @@ local function NewFeature(self, physicsWorld, world)
 			self.hasPower = TerrainHandler.GetPositionEnergy(self.GetPos(), def.toPowerRangeMult)
 			self.lightUpdateDt = Global.LIGHT_SLOW_UPDATE
 		end
-		return (not self.IsDead()) or self.hasPower
+		return (not self.IsDead()) and self.hasPower
 	end
 	
 	function self.DoMine(guy, createPos)

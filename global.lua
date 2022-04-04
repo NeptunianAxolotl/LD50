@@ -13,7 +13,7 @@ local globals = {
 	
 	DEBUG_CAMERA_ZOOM = 3,
 	DEBUG_PLAYER_SPEED = 1,
-	DEBUG_FIRE_OVERRIDE = 20000,
+	DEBUG_FIRE_OVERRIDE = 2000,
 	USE_DEBUG_MAP = true,
 	UNLOCK_ALL_TECH = true,
 	DRAW_DEBUG = false,
@@ -58,6 +58,7 @@ local globals = {
 	
 	BIG_DIG_RADIUS = 2400,
 	BIG_DIG_DAMAGE = 1,
+	BIG_DIG_FUEL_PER_SECOND = 5,
 }
 
 return globals

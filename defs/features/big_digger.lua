@@ -35,6 +35,8 @@ local function DigTile(self, dt)
 	local dug, dead = GroundHandler.DealTileDamage(self.digTileX, self.digTileY, dt*Global.BIG_DIG_DAMAGE)
 	if dead then
 		self.digTileX, self.digTileY = false, false
+	else
+		TerrainHandler.GetHomeFire().UseFuel(dt*Global.BIG_DIG_FUEL_PER_SECOND) 
 	end
 	if dug then
 		ChatHandler.AddMessage("make goodies")
@@ -54,7 +56,13 @@ local def = {
 	initData = {
 		behaviourDelay = 0
 	},
+	requiresPower = true,
+	toPowerRangeMult = 0.75,
 	updateFunc = function (self, dt)
+		if not self.HasPower() then
+			return
+		end
+		
 		if not self.digTileX then
 			self.searchDigTimer = util.UpdateTimer(self.searchDigTimer, dt) 
 			if not self.searchDigTimer then
