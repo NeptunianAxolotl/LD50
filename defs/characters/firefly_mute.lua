@@ -237,12 +237,12 @@ local def = {
 				{
 					text = "(The firefly decides to help you out.)",
 					sound = "chat_good",
-					delay = 2.5,
+					delay = 6.5,
 				},
 				{
 					text = "(Talk to him again for options.)",
 					sound = "chat_good",
-					delay = 4,
+					delay = 8.5,
 				},
 				},
 				onSceneFunc = function (self, player)
@@ -250,8 +250,7 @@ local def = {
 					--ChatHandler.AddMessage("SCENE FUNC")
 					self.friendly = true
 				end,
-				replyDelay = 6,
-				--moves closer to the fire
+				replyDelay = 10,
 			},
 			silence3 = {
 				msg = {{
@@ -352,17 +351,17 @@ local def = {
 				{
 					text = "I wish you whatever luck remains.",
 					sound = "chat_good",
-					delay = 12,
+					delay = 10,
 				},
 				{
 					text = "(The firefly decides to help you out.)",
 					sound = "chat_good",
-					delay = 2.5,
+					delay = 12,
 				},
 				{
 					text = "(Talk to him again for options.)",
 					sound = "chat_good",
-					delay = 4,
+					delay = 14,
 				},
 				},	
 				onSceneFunc = function (self, player)
@@ -370,7 +369,7 @@ local def = {
 					--ChatHandler.AddMessage("SCENE FUNC")
 					self.friendly = true
 				end,
-				replyDelay = 15,
+				replyDelay = 15.5,
 			},	
 		},
 	}
