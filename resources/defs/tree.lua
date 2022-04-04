@@ -1,5 +1,5 @@
 return {
-	name = "tree_test",
+	name = "tree",
 	file = "resources/images/tree_test.png",
 	form = "image",
 	xScale = 0.5,

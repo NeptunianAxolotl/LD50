@@ -11,6 +11,10 @@ local globals = {
 	
 	PHYSICS_SCALE = 300,
 	
+	DEBUG_CAMERA_ZOOM = 10,
+	DEBUG_PLAYER_SPEED = 1,
+	DEBUG_FIRE_OVERRIDE = 8000,
+	
 	USE_DEBUG_MAP = true,
 	UNLOCK_ALL_TECH = true,
 	DRAW_DEBUG = true,

@@ -1,9 +1,10 @@
 local def = {
-	name = "tree_test",
+	name = "tree",
 	radius = 42,
 	collide = true,
-	image = "tree_test",
+	image = "tree",
 	shadowRadius = 27,
+	placementRadius = 90,
 	mouseHit = {rx = -45, ry = -220, width = 90, height = 260},
 }
 
