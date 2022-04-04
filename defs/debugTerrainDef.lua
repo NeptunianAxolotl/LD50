@@ -93,7 +93,6 @@ local placeList = {
 	
 	-- Mines
 	"emerald_mine",
-	"saphire_mine",
 	"ruby_mine",
 	"ore_mine",
 	"stone_mine",
@@ -125,20 +124,6 @@ local placeList = {
 	"log",
 	"emerald",
 	"coal",
-	
-	
-	-- DROPPING?
-	"sword",
-	"big_teleport",
-	"tele_metal",
-	"tele_wood",
-	"tele_in",
-	
-	-- Dropping to replace with placing base gem on the ground?
-	"miner_metal",
-	"miner_wood",
-	"lamp_wood",
-	"lamp_metal",
 }
 
 local angle = math.pi
