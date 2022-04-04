@@ -130,7 +130,6 @@ local function NewGuy(self, physicsWorld, world)
 	end
 	self.animTime = 0
 	self.health = 100
-	self.animDir = math.random()*2*math.pi
 	
 	self.body = love.physics.newBody(physicsWorld, self.pos[1], self.pos[2], "dynamic")
 	if def.collide then

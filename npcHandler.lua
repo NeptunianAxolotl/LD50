@@ -20,7 +20,7 @@ end
 local function SetupInitialCharacters()
 	for i = 1, #characterPlacementDef do
 		local character = characterPlacementDef[i]
-		api.SpawnCharacter(character.name, character.pos)
+		api.SpawnCharacter(character.name, character.pos, character.data)
 	end
 end
 
