@@ -5,6 +5,7 @@ local def = {
 	name = "workshop",
 	radius = 80,
 	collide = true,
+	desc = "Use workshop",
 	image = "workshop",
 	placementRadius = 130,
 	portraitNeutral = "workshop_portrait",

@@ -3,6 +3,7 @@ local def = {
 	radius = 25,
 	collide = false,
 	image = "ore_item",
+	desc = "Take ore",
 	collectAs = "ore_item",
 	voidMoves = true,
 	mouseHit = {rx = -50, ry = -50, width = 100, height = 100},

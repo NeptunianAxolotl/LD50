@@ -3,6 +3,7 @@ local def = {
 	radius = 80,
 	collide = true,
 	image = "ruby_mine",
+	desc = "Mine ruby",
 	placementRadius = 130,
 	portraitNeutral = "ruby_mine",
 	voidDestroys = true,

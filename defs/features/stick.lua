@@ -3,6 +3,7 @@ local def = {
 	radius = 25,
 	placementRadius = 2,
 	collide = false,
+	desc = "Take stick",
 	image = "stick",
 	collectAs = "stick_item",
 	voidMoves = true,

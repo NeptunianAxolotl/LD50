@@ -2,6 +2,7 @@ local def = {
 	name = "ruby",
 	radius = 25,
 	collide = false,
+	desc = "Take ruby",
 	image = "ruby_item",
 	collectAs = "ruby_item",
 	voidMoves = true,

@@ -4,6 +4,7 @@ local def = {
 	collide = true,
 	image = "tree",
 	shadowRadius = 27,
+	desc = "Chop down tree",
 	placementRadius = 220,
 	voidDestroys = true,
 	imageAlpha = 0.82,

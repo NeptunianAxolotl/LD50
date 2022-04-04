@@ -3,6 +3,7 @@ local def = {
 	radius = 80,
 	collide = true,
 	image = "stone_mine",
+	desc = "Quarry stone",
 	placementRadius = 130,
 	portraitNeutral = "stone_mine",
 	voidDestroys = true,

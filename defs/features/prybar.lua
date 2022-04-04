@@ -2,6 +2,7 @@ local def = {
 	name = "prybar",
 	radius = 25,
 	collide = false,
+	desc = "Take prybar",
 	image = "prybar_item",
 	collectAs = "prybar_item",
 	voidMoves = true,

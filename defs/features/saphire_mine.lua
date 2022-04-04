@@ -4,6 +4,7 @@ local def = {
 	collide = true,
 	image = "saphire_mine",
 	placementRadius = 130,
+	desc = "Mine sapphire",
 	portraitNeutral = "saphire_mine",
 	voidDestroys = true,
 	mouseHit = {rx = -100, ry = -100, width = 200, height = 200},

@@ -5,6 +5,7 @@ local def = {
 	name = "wood_pile",
 	radius = 80,
 	collide = true,
+	desc = "Take/store wood", 
 	image = "wood_pile",
 	humanName = "Wood Pile",
 	placementRadius = 130,

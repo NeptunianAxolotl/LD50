@@ -3,6 +3,7 @@ local def = {
 	radius = 25,
 	collide = false,
 	image = "pick_item",
+	desc = "Take pick",
 	collectAs = "pick_item",
 	voidMoves = true,
 	mouseHit = {rx = -50, ry = -50, width = 100, height = 100},

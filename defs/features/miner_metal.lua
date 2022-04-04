@@ -3,6 +3,7 @@ local def = {
 	radius = 80,
 	collide = true,
 	image = "miner_metal",
+	desc = "Mine metal",
 	placementRadius = 130,
 	portraitNeutral = "miner_metal",
 	voidDestroys = true,
