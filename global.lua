@@ -17,7 +17,7 @@ local globals = {
 	USE_DEBUG_MAP = true,
 	UNLOCK_ALL_TECH = true,
 	DRAW_DEBUG = false,
-	DEBUG_START_ITEM = "coal_item",
+	DEBUG_START_ITEM = "log_item",
 	
 	TREE_SPAWN_RAND = 400,
 	

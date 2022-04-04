@@ -311,6 +311,7 @@ function api.Update(dt)
 	if self.playerGuy.IsDead() or self.buildMenuOpen then
 		return
 	end
+	GroundHandler.PosToTile(self.playerGuy.GetPos())
 	if self.heldSinceGroundGoal then
 		if love.mouse.isDown(self.heldSinceGroundGoal) then
 			self.playerGuy.SetMoveGoal(self.world.GetMousePosition(), 50)
