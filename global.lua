@@ -11,10 +11,10 @@ local globals = {
 	
 	PHYSICS_SCALE = 300,
 	
-	DEBUG_CAMERA_ZOOM = 1,
+	DEBUG_CAMERA_ZOOM = 12,
 	DEBUG_PLAYER_SPEED = 1,
-	DEBUG_FIRE_OVERRIDE = 2000,
-	USE_DEBUG_MAP = false,
+	DEBUG_FIRE_OVERRIDE = 20000,
+	USE_DEBUG_MAP = true,
 	UNLOCK_ALL_TECH = true,
 	DRAW_DEBUG = false,
 	DEBUG_START_ITEM = "log_item",
@@ -55,6 +55,9 @@ local globals = {
 	PRYBAR_COST = 4,
 	
 	FURNACE_FUEL_USE = 15,
+	
+	BIG_DIG_RADIUS = 2400,
+	BIG_DIG_DAMAGE = 20,
 }
 
 return globals

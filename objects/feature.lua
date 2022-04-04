@@ -75,6 +75,10 @@ local function NewFeature(self, physicsWorld, world)
 		if self.light then
 			ShadowHandler.RemoveLight(self.light)
 		end
+		if self.noDigTiles then
+			GroundHandler.ReleaseDigProtection(self.noDigTiles)
+			self.noDigTiles = false
+		end
 		self.dead = true
 		return true
 	end
