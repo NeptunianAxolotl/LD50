@@ -210,6 +210,43 @@ function api.Draw(drawQueue)
 	end
 end
 
+function api.DrawInterface()
+	local screenWidth, screenHeight = love.window.getMode()
+	local screenPos = self.world.ScreenToWorld({0, 0})
+	local driftX, driftY = screenPos[1], screenPos[2]
+	love.graphics.setColor(1, 1, 1, 1)
+	love.graphics.setLineWidth(0)
+	for i = 1, #self.stars do
+		local x = screenWidth*((self.stars[i][1] + self.starDrift[i]*driftX)%1)
+		local y = screenHeight*((self.stars[i][2] + self.starDrift[i]*driftY)%1)
+		local pos = self.world.ScreenToWorld({x, y})
+		if not (api.CheckTileAtPosExists(pos) or 
+				api.CheckTileAtPosExists({pos[1], pos[2] + 10}) or
+				api.CheckTileAtPosExists({pos[1] + 20, pos[2] - 40}) or
+				api.CheckTileAtPosExists({pos[1] + 20, pos[2] - 80}) or
+				api.CheckTileAtPosExists({pos[1] + 20, pos[2] - 120}) or
+				api.CheckTileAtPosExists({pos[1] + 20, pos[2] - 160}) or
+				api.CheckTileAtPosExists({pos[1] + 20, pos[2] - 200}) or
+				api.CheckTileAtPosExists({pos[1] - 20, pos[2] - 40}) or
+				api.CheckTileAtPosExists({pos[1] - 20, pos[2] - 80}) or
+				api.CheckTileAtPosExists({pos[1] - 20, pos[2] - 120}) or
+				api.CheckTileAtPosExists({pos[1] - 20, pos[2] - 160}) or
+				api.CheckTileAtPosExists({pos[1] - 20, pos[2] - 200})) then
+			love.graphics.rectangle("fill", x - 0.5, y - 0.5, 1, 1, 0, 0, 1)
+			--love.graphics.points(x, y)
+		end
+	end
+end
+
+local function InitialiseStars()
+	self.stars = {}
+	self.starDrift = {}
+	for i = 1, 1000 do
+		self.stars[#self.stars + 1] = {math.random(), math.random()}
+		self.starDrift[#self.starDrift + 1] = math.random()*Global.STAR_DRIFT + Global.STAR_DRIFT_BASE
+	end
+end
+
 function api.Initialize(world)
 	self = {
 		world = world,
@@ -218,6 +255,7 @@ function api.Initialize(world)
 		noDig = {},
 		staleGround = 0,
 	}
+	InitialiseStars()
 	
 	SetupGround()
 end

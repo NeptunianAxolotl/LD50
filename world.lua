@@ -200,14 +200,18 @@ function api.Draw()
 	NpcHandler.Draw(drawQueue)
 	EffectsHandler.Draw(drawQueue)
 	
-	ShadowHandler.DrawGroundShadow(self.cameraTransform)
+	if not Global.DEBUG_NO_SHADOW then
+		ShadowHandler.DrawGroundShadow(self.cameraTransform)
+	end
 	love.graphics.replaceTransform(self.cameraTransform)
 	while true do
 		local d = drawQueue:pop()
 		if not d then break end
 		d.f()
 	end
-	ShadowHandler.DrawVisionShadow(self.cameraTransform)
+	if not Global.DEBUG_NO_SHADOW then
+		ShadowHandler.DrawVisionShadow(self.cameraTransform)
+	end
 	
 	--local windowX, windowY = love.window.getMode()
 	--if windowX/windowY > 16/9 then
@@ -218,6 +222,7 @@ function api.Draw()
 	love.graphics.replaceTransform(self.interfaceTransform)
 	
 	-- Draw interface
+	GroundHandler.DrawInterface()
 	EffectsHandler.DrawInterface()
 	DialogueHandler.DrawInterface()
 	ChatHandler.DrawInterface()

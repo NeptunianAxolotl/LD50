@@ -1,6 +1,7 @@
 local def = {
 	name = "stick",
 	radius = 25,
+	placementRadius = 2,
 	collide = false,
 	image = "stick",
 	collectAs = "stick_item",

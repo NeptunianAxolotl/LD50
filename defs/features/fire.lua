@@ -30,7 +30,7 @@ local def = {
 		self.fuelValue = GetNewFuelValue(world, self.fuelValue, dt)
 		self.fuelBoostValue = GetNewFuelValue(world, self.fuelBoostValue, dt*6) -- Burns faster
 		
-		self.smoothedValue = util.AverageScalar(self.smoothedValue, self.fuelValue + self.fuelBoostValue, 0.98)
+		self.smoothedValue = util.AverageScalar(self.smoothedValue, self.fuelValue + self.fuelBoostValue, 0.11)
 		self.energyRadius = math.pow(self.smoothedValue, 0.85) * 12
 		--print(math.floor(self.energyRadius), math.floor(self.fuelValue))
 	end,
