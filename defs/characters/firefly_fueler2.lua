@@ -10,7 +10,8 @@ local def = {
 	initData = {
 		items = {
 			ore_item = 0,
-		}
+		},
+		wallowingInDarkness = true,
 	},
 	behaviour = function (self, world, dt)
 		if not self.friendly then

@@ -1,58 +1,29 @@
+
+local util = require("include/util")
+local GuyUtils = require("utilities/guyUtils")
+
 local def = {
-	inheritFrom = "firefly_fueler",
-	speedMult = 0.5,
-	workMult = 0.5,
+	inheritFrom = "firefly",
+	speedMult = 0.7,
+	workMult = 0.7,
+	jobType = "job_fuel",
+	mineType = "mine_none",
 	initData = {
-		pissed = false,
-		friendly = false,
-		mood = 0,
 		items = {
-			log_item = 0,
-		}
+			ore_item = 0,
+		},
+		wallowingInDarkness = true,
 	},
 	behaviour = function (self, world, dt)
-		if self.behaviourDelay then
-			self.behaviourDelay = self.behaviourDelay - dt
-			if self.behaviourDelay < 0 then
-				self.behaviourDelay = false
-			else
-				return
-			end
-		end
-		if self.items.log_item > 0 and not self.moveGoalPos then
-			local function UseLog(success)
-				if success then
-					self.items.log_item = self.items.log_item - 1
-					self.behaviourDelay = 0.8
-				end
-				return true
-			end
-			local feature = TerrainHandler.GetClosetFeature(self.GetPos(), "fire")
-			self.SetMoveGoal(feature.GetPos(), feature.GetRadius() + Global.DROP_LEEWAY, feature, "burn", "log_item", UseLog)
+		if not self.friendly then
+			return
 		end
 		
-		if self.pissed and not self.moveGoalPos then
-			local function Attack(success)
-				if success then
-					local playerGuy = PlayerHandler.GetGuy()
-					if not playerGuy.IsDead() then
-						self.behaviourDelay = 0.5
-						playerGuy.DealDamage(20 + math.floor(math.random()*10))
-						ChatHandler.AddMessage("Angry logger hits you to " .. math.floor(playerGuy.GetHealth()) .. "%!", 4, false, {1, 0, 0, 1}, "chat_bad")
-					end
-				end
-				return true
-			end
-			local playerGuy = PlayerHandler.GetGuy()
-			if not playerGuy.IsDead() then
-				self.SetMoveCharGoal(playerGuy, playerGuy.GetRadius() + Global.DROP_LEEWAY, "self_handle", false, Attack)
-			else
-				local feature = TerrainHandler.GetClosetFeature(self.GetPos(), "log")
-				if feature then
-					self.SetMoveGoal(feature.GetPos(), feature.GetRadius() + Global.DROP_LEEWAY, feature, "collect", false)
-				end
-			end
+		if self.moveGoalPos then
+			return
 		end
+		
+		GuyUtils.FullyGeneralHelperGuy(self)
 	end,
 	chat = {
 		acceptsChat = function(self)
@@ -62,19 +33,6 @@ local def = {
 			return (self.friendly and "options") or "hello"
 		end,
 		scenes = {
-			options = {
-				msg = {{
-					text = "YOU HAVE REACHED THE OPERATOR",
-					sound = "chat_good",
-				},
-				{
-					text = "PLEASE STAND BY AND PREPARE TO BE EJECTED FROM THE MATRIX",
-					sound = "chat_good",
-					delay = 2,
-				},
-				},			
-				replyDelay = 4,
-			},
 			hello = {
 				msg = {{
 					text = "...",
@@ -235,14 +193,9 @@ local def = {
 					delay = 4.5,
 				},
 				{
-					text = "(The firefly decides to help you out.)",
+					text = "...guess I can help you out, if you need it.",
 					sound = "chat_good",
 					delay = 6.5,
-				},
-				{
-					text = "(Talk to him again for options.)",
-					sound = "chat_good",
-					delay = 8.5,
 				},
 				},
 				onSceneFunc = function (self, player)
@@ -250,7 +203,15 @@ local def = {
 					--ChatHandler.AddMessage("SCENE FUNC")
 					self.friendly = true
 				end,
-				replyDelay = 10,
+				replyDelay = 8,
+				replies = {
+					{
+						msg = {
+							text = "What can you do?",
+						},
+						leadsTo = "options_first",
+					},			
+				},
 			},
 			silence3 = {
 				msg = {{
@@ -309,7 +270,7 @@ local def = {
 							text = "[leave]",
 						},
 					},				
-			},
+				},
 			},
 			silence32 = {
 				msg = {
@@ -354,14 +315,9 @@ local def = {
 					delay = 10,
 				},
 				{
-					text = "(The firefly decides to help you out.)",
+					text = "And I would like to offer some help.",
 					sound = "chat_good",
-					delay = 12,
-				},
-				{
-					text = "(Talk to him again for options.)",
-					sound = "chat_good",
-					delay = 14,
+					delay = 10,
 				},
 				},	
 				onSceneFunc = function (self, player)
@@ -370,9 +326,19 @@ local def = {
 					self.friendly = true
 				end,
 				replyDelay = 15.5,
+				replies = {
+					{
+						msg = {
+							text = "What can you do?",
+						},
+						leadsTo = "options_first",
+					},			
+				},
 			},	
 		},
 	}
 }
+
+def.chat.scenes = util.CopyTable(GuyUtils.generalHelperTable, true, def.chat.scenes)
 
 return def
