@@ -34,6 +34,12 @@ local function DoMoveGoalAction(self)
 		if ActionCallback(canPlace, feature, action, item) and canPlace then
 			TerrainHandler.SpawnFeature(item, actionPos)
 		end
+	elseif action == "mine" then
+		local success = (not feature.IsBusy())
+		ActionCallback(success, feature, action, item)
+		if success then
+			self.behaviourDelay = feature.DoMine(self, self.GetPos())
+		end
 	elseif feature and not feature.IsDead() and action == "transform" and item then
 		local success = (feature.HasPower() and not feature.IsBusy())
 		ActionCallback(success, feature, action, item)
@@ -42,6 +48,7 @@ local function DoMoveGoalAction(self)
 			local busyTime = itemDef.craftingTime / (self.def.workMult or 1)
 			self.behaviourDelay = itemDef.craftingTime
 			feature.SetBusy(busyTime)
+			TerrainHandler.GetHomeFire().UseFuel(itemDef.fuelCost)
 			local createPos = self.GetPos()
 			local function CreateItem()
 				TerrainHandler.DropFeatureInFreeSpace(createPos, itemDef.dropAs, itemDef.dropMult)
@@ -135,7 +142,7 @@ local function NewGuy(self, physicsWorld, world)
 	
 	self.shadow = ShadowHandler.AddCircleShadow(def.shadowRadius)
 	if def.lightFunc then
-		self.light = ShadowHandler.AddLight(def.bigLight, 200 * (def.lightRadiusMult or 1), def.lightColor, not def.isPlayer)
+		self.light = ShadowHandler.AddLight(def.isPlayer or def.bigLight, 200 * (def.lightRadiusMult or 1), def.lightColor, not def.isPlayer)
 	end
 	
 	function self.MoveWithVector(moveVec)
@@ -185,6 +192,15 @@ local function NewGuy(self, physicsWorld, world)
 			end
 			self.moveGoalAction = false
 		end
+	end
+	
+	function self.AddToInventory(item)
+		if def.isPlayer then
+			PlayerHandler.AddItem(item)
+			return
+		end
+		self.items = self.items or {}
+		self.items[item] = (self.items[item] or 0) + 1
 	end
 	
 	function self.DealDamage(damage)

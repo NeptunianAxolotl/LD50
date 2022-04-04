@@ -52,20 +52,20 @@ local terrain = {
 		}
 	},
 	{
-		name = "tree_test",
+		name = "tree",
 		pos = {-500, 1000},
 	},
 	
 	{
-		name = "tree_test",
+		name = "tree",
 		pos = {100, 2500},
 	},	
 	{
-		name = "tree_test",
+		name = "tree",
 		pos = {2500, 100},
 	},	
 	{
-		name = "tree_test",
+		name = "tree",
 		pos = {450, 100},
 	},
 }

@@ -7,7 +7,7 @@ local def = {
 	isEnergyProvider = true,
 	bigLight = true,
 	initData = {
-		fuelValue = 1500,
+		fuelValue = Global.DEBUG_FIRE_OVERRIDE or 1500,
 		energyRadius = 10,
 		energyProvided = 1, -- In units of fires, so fire is permanently at 1.
 	},

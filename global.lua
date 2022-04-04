@@ -11,9 +11,14 @@ local globals = {
 	
 	PHYSICS_SCALE = 300,
 	
+	DEBUG_CAMERA_ZOOM = 1,
+	DEBUG_PLAYER_SPEED = 1,
+	DEBUG_FIRE_OVERRIDE = 2000,
 	USE_DEBUG_MAP = true,
 	UNLOCK_ALL_TECH = true,
-	DRAW_DEBUG = true,
+	DRAW_DEBUG = false,
+	
+	TREE_SPAWN_RAND = 400,
 	
 	INVENTORY_SLOTS = 5,
 	
@@ -45,6 +50,9 @@ local globals = {
 	AXE_COST = 2,
 	SWORD_COST = 3,
 	ORE_TO_METAL = 3,
+	PRYBAR_COST = 4,
+	
+	FURNACE_FUEL_USE = 15,
 }
 
 return globals

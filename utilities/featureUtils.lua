@@ -4,7 +4,7 @@ local ItemDefs = util.LoadDefDirectory("defs/items")
 
 local api = {}
 
-function api.ForgeHelper(tech, createdItem, usedItem, cost, forgeSound, actionDesc, completeDesc)
+function api.ForgeHelper(tech, createdItem, usedItem, cost, fuelCost, forgeSound, actionDesc, completeDesc)
 	local forgeTime = ItemDefs[createdItem].craftingTime
 	return {
 		displayFunc = function (self, player)
@@ -18,6 +18,7 @@ function api.ForgeHelper(tech, createdItem, usedItem, cost, forgeSound, actionDe
 			local function DoForge()
 				player.AddItem(createdItem)
 			end
+			TerrainHandler.GetHomeFire().UseFuel(fuelCost)
 			Delay.Add(forgeTime - 0.1, DoForge)
 			SoundHandler.PlaySound(forgeSound)
 			

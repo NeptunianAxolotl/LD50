@@ -9,8 +9,12 @@ local NewFeature = require("objects/feature")
 local self = {}
 local api = {}
 
-function api.FindFreeSpaceFeature(centre, feature)
-	return api.FindFreeSpace(centre, FeatureDefs[feature].radius)
+function api.GetHomeFire()
+	return self.homeFire
+end
+
+function api.FindFreeSpaceFeature(centre, feature, usePlaceDistance)
+	return api.FindFreeSpace(centre, ((usePlaceDistance and FeatureDefs[feature].placementRadius) or FeatureDefs[feature].radius))
 end
 
 function api.SpawnFeature(name, pos, items)
@@ -29,12 +33,13 @@ function api.SpawnFeature(name, pos, items)
 			feature.AddItems(name, count)
 		end
 	end
+	return feature
 end
 
-function api.DropFeatureInFreeSpace(pos, toDrop, count)
+function api.DropFeatureInFreeSpace(pos, toDrop, count, usePlaceDistance)
 	count = count or 1
 	for i = 1, count do
-		local dropPos = api.FindFreeSpaceFeature(pos, toDrop)
+		local dropPos = api.FindFreeSpaceFeature(pos, toDrop, usePlaceDistance)
 		if dropPos then
 			-- Items could rarely be eaten here
 			api.SpawnFeature(toDrop, dropPos)
@@ -92,6 +97,9 @@ function api.FindFreeSpace(centre, freeRadius)
 		if closeDist > freeRadius then
 			return pos
 		end
+		if not GroundHandler.PositionHasGround(pos, freeRadius) then
+			return false
+		end
 		searchRadius = searchRadius + 20
 	end
 	return false
@@ -148,8 +156,11 @@ end
 
 local function SetupTerrain()
 	for i = 1, #terrainDef do
-		local feature = terrainDef[i]
-		api.SpawnFeature(feature.name, feature.pos, feature.items)
+		local featurePlaceDef = terrainDef[i]
+		local feature = api.SpawnFeature(featurePlaceDef.name, featurePlaceDef.pos, featurePlaceDef.items)
+		if featurePlaceDef.name == "fire" then
+			self.homeFire = feature
+		end
 	end
 end
 
@@ -162,7 +173,14 @@ function api.Update(dt)
 end
 
 function api.Draw(drawQueue)
-	IterableMap.ApplySelf(self.features, "Draw", drawQueue)
+	local left, top, right, bot = self.world.GetCameraExtents(400)
+	--IterableMap.ApplySelf(self.features, "Draw", drawQueue, left, top, right, bot)
+	
+	local indexMax, keyByIndex, dataByKey = IterableMap.GetBarbarianData(self.features)
+	--print(indexMax)
+	for i = 1, indexMax do
+		dataByKey[keyByIndex[i]].Draw(drawQueue, left, top, right, bot)
+	end
 end
 
 function api.Initialize(world)

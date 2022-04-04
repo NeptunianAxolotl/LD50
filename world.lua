@@ -114,6 +114,14 @@ function api.ScreenToWorld(pos)
 	return {x, y}
 end
 
+function api.GetCameraExtents(buffer)
+	local screenWidth, screenHeight = love.window.getMode()
+	local topLeftPos = api.ScreenToWorld({0, 0})
+	local botRightPos = api.ScreenToWorld({screenWidth, screenHeight})
+	buffer = buffer or 0
+	return topLeftPos[1] - buffer, topLeftPos[2] - buffer, botRightPos[1] + buffer, botRightPos[2] + buffer
+end
+
 function api.ScreenToInterface(pos)
 	local x, y = self.interfaceTransform:inverse():transformPoint(pos[1], pos[2])
 	return {x, y}
@@ -148,8 +156,8 @@ function api.Update(dt, realDt)
 	Delay.Update(dt)
 	--ModuleTest.Update(dt)
 	ComponentHandler.Update(dt)
-	GroundHandler.Update(dt)
 	TerrainHandler.Update(dt)
+	GroundHandler.Update(dt)
 	PlayerHandler.Update(dt)
 	NpcHandler.Update(dt)
 	DialogueHandler.Update(dt)
@@ -161,7 +169,7 @@ function api.Update(dt, realDt)
 	EffectsHandler.Update(dt)
 	GameHandler.Update(dt)
 	
-	local cameraX, cameraY, cameraScale = Camera.UpdateCameraToViewPoints(dt, PlayerHandler.GetViewRestriction(), 0.75, 0.75)
+	local cameraX, cameraY, cameraScale = Camera.UpdateCameraToViewPoints(dt, PlayerHandler.GetViewRestriction(), 0, 0)
 	Camera.UpdateTransform(self.cameraTransform, cameraX, cameraY, cameraScale)
 end
 
@@ -234,8 +242,8 @@ function api.Initialize()
 	ChatHandler.Initialize(api)
 	DialogueHandler.Initialize(api)
 	PhysicsHandler.Initialize(api)
-	GroundHandler.Initialize(api)
 	TerrainHandler.Initialize(api)
+	GroundHandler.Initialize(api) -- Initialize after terrain handler, as ground places trees based on density.
 	PlayerHandler.Initialize(api)
 	NpcHandler.Initialize(api)
 	ComponentHandler.Initialize(api)
