@@ -52,7 +52,7 @@ local def = {
 			return not self.pissed
 		end,
 		getEntry = function(self, player)
-			return (self.firstTalk and "intro1") or (self.friendly and "hello_friendly") or "default"
+			return (self.firstTalk and "intro1") or (self.friendly and "default_friendly") or "default"
 		end,
 		scenes = {
 			intro1 = {
@@ -90,17 +90,7 @@ local def = {
 							text = "Here's some wood, gramps.",
 							sound = "chat_good",
 						},
-						leadsToFunc = function (self, player)
-							local logCount = player.GetInventoryCount("log_item")
-							if logCount > 0 then
-								player.RemoveInventory("log_item", logCount)
-								self.friendly = true
-								self.items.log_item = logCount
-								return "thanks", true
-							else
-								return "hang_on_no_logs", true
-							end
-						end
+						leadsTo = "thanks"
 					},
 					{
 						msg = {
@@ -261,22 +251,6 @@ local def = {
 					},
 				}
 			},
-			die = {
-				msg = {{
-					text = "Then die, hoarder!",
-					sound = "chat_bad",
-				}},
-			},
-			die_lie = {
-				msg = {{
-					text = "Sigh...",
-					sound = "chat_good",
-				},{
-					text = "I'll just have to take them from your corpse!",
-					sound = "chat_bad",
-					delay = 1.2
-				}},
-			},
 			thanks = {
 				msg = {
 				{
@@ -290,6 +264,15 @@ local def = {
 				},
 				},
 				replyDelay = 4,
+				leadsToFunc = function (self, player)
+					-- Called with the scene is opened.
+						local logCount = player.GetInventoryCount("log_item")
+						player.RemoveInventory("log_item", logCount)
+						self.friendly = true
+						self.items.log_item = logCount
+						self.behaviourDelay = 1.2
+						return "dialogue_end", true
+				end,
 			},
 			hang_on_no_logs = {
 				msg = {{
@@ -303,9 +286,9 @@ local def = {
 					sound = "chat_good",
 				}},
 			},
-			hello_friendly = {
+			default_friendly = {
 				msg = {{
-					text = "Hello, found any more logs?",
+					text = "'ey, pupa.  Found any more wood?",
 					sound = "chat_good",
 				}},
 				replyDelay = 0.5,
@@ -333,6 +316,13 @@ local def = {
 							sound = "chat_good",
 						},
 						leadsTo = "keep_looking",
+					},					
+					{
+						msg = {
+							text = "That crack in your chitin looks gnarly.",
+							sound = "chat_good",
+						},
+						leadsTo = "default_friendly_crack",
 					},
 				}
 			},
