@@ -20,7 +20,7 @@ local characters = {
 		pos = {500, 180},
 	},
 	{
-		name = "firefly_fueler1",	
+		name = "firefly_fueler2",	
 		data = {animDir = math.pi/2},
 		pos = {50, 180},
 	},
