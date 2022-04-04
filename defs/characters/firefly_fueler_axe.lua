@@ -62,6 +62,36 @@ local def = {
 					},
 				}
 			},
+			help1 = {
+				msg = {{
+					text = "Kinda in a bind myself, y'know.",
+					sound = "chat_good",
+					delay = 1,
+				},
+				{
+					text = "Might be able to help you out if you lend me a hand, here.",
+					sound = "chat_good",
+					delay = 2.5,
+				},
+				},
+				replyDelay = 4,
+				replies = {
+					{
+						msg = {
+							text = "Sure.  What do you need?",
+							sound = "chat_good",
+						},
+						leadsTo = "whatwrong",
+					},
+					{
+						msg = {
+							text = "I'm late...to...my fire...? Maybe later. (Leave.)",
+							sound = "chat_good",
+						},
+						leadsTo = "leave",
+					},
+				}
+			},
 			stillhere = {
 				msg = {
 				{

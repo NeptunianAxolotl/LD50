@@ -215,8 +215,9 @@ api.generalHelperTable = {
 		msg = {{
 			text = "What d'you want me to do?",
 			sound = "chat_good",
+			delay = 1,
 		}},			
-		replyDelay = 1,
+		replyDelay = 1.5,
 			replies = {
 			{
 				msg = {
@@ -266,8 +267,9 @@ api.generalHelperTable = {
 		msg = {{
 			text = "What d'you want me to do?",
 			sound = "chat_good",
+			delay = 1.5,
 		}},			
-		replyDelay = 1,
+		replyDelay = 3,
 			replies = {
 			{
 				msg = {
@@ -310,8 +312,9 @@ api.generalHelperTable = {
 		msg = {{
 			text = "What'd you want me to dig for?",
 			sound = "chat_good",
+			delay = 1,
 		}},		
-		replyDelay = 1,
+		replyDelay = 1.5,
 		replies = {
 			{
 				msg = {
@@ -361,8 +364,9 @@ api.generalHelperTable = {
 		msg = {{
 			text = "What'd you want me to dig for?",
 			sound = "chat_good",
+			delay = 1,
 		}},		
-		replyDelay = 1,
+		replyDelay = 1.5,
 		replies = {
 			{
 				msg = {
