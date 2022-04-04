@@ -100,6 +100,12 @@ function api.MousePressed(x, y, button)
 	x, y = self.cameraTransform:inverse():transformPoint(x, y)
 	
 	-- Send event to game components
+	if Global.DEBUG_PRINT_CLICK_POS and button == 2 then
+		print("{")
+		print([[    name = "BLA",]])
+		print("    pos = {" .. (math.floor(x/10)*10) .. ", " .. (math.floor(y/10)*10) .. "},")
+		print("{,")
+	end
 	PlayerHandler.MousePressedWorld(x, y, button)
 end
 

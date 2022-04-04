@@ -47,7 +47,9 @@ function love.update(dt)
 	frames = frames + 1
 	if dt > 0.05 then
 		longFrames = longFrames + 1
-		print(math.floor(frames *100 / longFrames), dt)
+		if not Global.DEBUG_PRINT_CLICK_POS then
+			print(math.floor(frames *100 / longFrames), dt)
+		end
 	end
 	if dt > 0.1 then
 		dt = 0.1
