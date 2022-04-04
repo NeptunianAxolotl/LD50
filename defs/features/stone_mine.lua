@@ -5,6 +5,7 @@ local def = {
 	image = "stone_mine",
 	placementRadius = 130,
 	portraitNeutral = "stone_mine",
+	voidDestroys = true,
 	mouseHit = {rx = -100, ry = -100, width = 200, height = 200},
 	initData = {
 	},

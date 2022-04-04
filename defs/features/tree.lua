@@ -5,6 +5,7 @@ local def = {
 	image = "tree",
 	shadowRadius = 27,
 	placementRadius = 220,
+	voidDestroys = true,
 	mouseHit = {rx = -45, ry = -220, width = 90, height = 260},
 	initData = {
 	},

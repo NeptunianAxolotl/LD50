@@ -6,6 +6,7 @@ local def = {
 	placementRadius = 130,
 	capacity = 10, -- TODO
 	portraitNeutral = "portrait_wood_pile",
+	voidDestroys = true,
 	mouseHit = {rx = -100, ry = -100, width = 200, height = 200},
 	initData = {
 		items = {

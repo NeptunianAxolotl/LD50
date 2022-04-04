@@ -8,6 +8,7 @@ local def = {
 	image = "furnace",
 	placementRadius = 130,
 	portraitNeutral = "furnace",
+	voidDestroys = true,
 	mouseHit = {rx = -100, ry = -100, width = 200, height = 200},
 	initData = {
 	},

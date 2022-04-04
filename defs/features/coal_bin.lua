@@ -5,6 +5,7 @@ local def = {
 	image = "coal_bin",
 	placementRadius = 130,
 	portraitNeutral = "coal_bin",
+	voidDestroys = true,
 	mouseHit = {rx = -100, ry = -100, width = 200, height = 200},
 	initData = {
 		items = {

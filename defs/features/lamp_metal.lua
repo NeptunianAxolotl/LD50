@@ -5,6 +5,7 @@ local def = {
 	image = "lamp_metal",
 	placementRadius = 130,
 	portraitNeutral = "lamp_metal",
+	voidDestroys = true,
 	mouseHit = {rx = -100, ry = -100, width = 200, height = 200},
 	initData = {
 	},

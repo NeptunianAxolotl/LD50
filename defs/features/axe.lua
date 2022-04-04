@@ -4,6 +4,7 @@ local def = {
 	collide = false,
 	image = "axe_item",
 	collectAs = "axe_item",
+	voidMoves = true,
 	mouseHit = {rx = -50, ry = -50, width = 100, height = 100},
 }
 

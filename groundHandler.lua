@@ -115,6 +115,7 @@ function api.RemoveTile(i, j)
 		return
 	end
 	self.ground.tiles[j][i] = 0
+	self.staleGround = self.staleGround + 1
 end
 
 function api.PositionHasGround(checkPos, radius)
@@ -145,6 +146,26 @@ function api.DealTileDamage(tileX, tileY, damage)
 	end
 	api.RemoveTile(tileX, tileY)
 	return true
+end
+
+function api.CheckStaleGround(feature)
+	if feature.staleGround == self.staleGround then
+		return false
+	end
+	feature.staleGround = self.staleGround
+	if api.PositionHasGround(feature.GetPos(), feature.def.radius) then
+		return false
+	end
+	if feature.def.voidMoves then
+		local pos = feature.GetPos()
+		feature.Destroy()
+		TerrainHandler.DropFeatureInFreeSpace(pos, feature.def.name, 1)
+		return true
+	end
+	if feature.def.voidDestroys then
+		feature.Destroy(true)
+		return true
+	end
 end
 
 function api.Update(dt)
@@ -185,6 +206,7 @@ function api.Initialize(world)
 		ground = util.CopyTable(groundDef, true),
 		tileHealth = {},
 		noDig = {},
+		staleGround = 0,
 	}
 	
 	SetupGround()
