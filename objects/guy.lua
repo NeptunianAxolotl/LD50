@@ -323,7 +323,7 @@ local function NewGuy(self, physicsWorld, world)
 			return
 		end
 		local bx, by = self.body:getPosition()
-		drawQueue:push({y=by; f=function()
+		drawQueue:push({y=by + 24; f=function()
 			Resources.DrawIsoAnimation(def.animation, bx, by, self.animTime, self.animDir)
 			if def.animationOverlay then
 				local color = def.overAnimColorFunc(self)

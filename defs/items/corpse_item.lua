@@ -1,5 +1,5 @@
 local def = {
-	image = "corpse_item",
+	image = "corpse_item_inventory",
 	dropAs = "corpse",
 	burnValue = 250,
 }
