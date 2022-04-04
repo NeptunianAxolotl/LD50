@@ -6,6 +6,34 @@ local buildDefs = {
 		feature = "wood_pile",
 		cost = {"log_item", "log_item"},
 	},
+	{
+		unlockReq = "coal_bin",
+		buildImage = "build_coal_bin",
+		name = "build_coal_bin",
+		feature = "coal_bin",
+		cost = {"metal_item", "metal_item", "rock_item", "rock_item"},
+	},
+	{
+		unlockReq = "workshop",
+		buildImage = "build_workshop",
+		name = "build_workshop",
+		feature = "workshop",
+		cost = {"metal_item", "metal_item", "metal_item", "metal_item", "log_item", "log_item"},
+	},
+	{
+		unlockReq = "furnace",
+		buildImage = "build_furnace",
+		name = "build_furnace",
+		feature = "furnace",
+		cost = {"rock_item", "rock_item", "rock_item", "rock_item", "ruby_item", "rock_item", "ruby_item"},
+	},
+	{
+		unlockReq = "big_digger",
+		buildImage = "build_big_digger",
+		name = "build_big_digger",
+		feature = "big_digger",
+		cost = {"metal_frame_item", "metal_frame_item", "metal_frame_item", "metal_frame_item", "emerald_item", "emerald_item", "emerald_item"},
+	},
 }
 
 for i = 1, #buildDefs do

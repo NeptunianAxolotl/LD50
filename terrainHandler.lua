@@ -9,6 +9,10 @@ local NewFeature = require("objects/feature")
 local self = {}
 local api = {}
 
+function api.GetFeatureDef(name)
+	return FeatureDefs[name]
+end
+
 function api.GetHomeFire()
 	return self.homeFire
 end
