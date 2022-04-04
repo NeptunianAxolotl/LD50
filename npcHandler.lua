@@ -11,7 +11,7 @@ local api = {}
 
 function api.SpawnCharacter(name, pos, data)
 	local def = CharacterDefs[name]
-	data = data or {}
+	data = util.CopyTable(data or {})
 	data.pos = pos
 	data.def = def
 	IterableMap.Add(self.characters, NewGuy(data, self.world.GetPhysicsWorld(), self.world))

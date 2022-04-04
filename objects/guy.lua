@@ -4,6 +4,7 @@ local Font = require("include/font")
 local ShadowHandler = require("shadowHandler")
 local ItemDefs = util.LoadDefDirectory("defs/items")
 local ItemAction = require("defs/itemActions")
+local GuyUtils = require("utilities/guyUtils")
 
 local function DoMoveGoalAction(self)
 	local actionPos = self.moveGoalPos
@@ -23,7 +24,11 @@ local function DoMoveGoalAction(self)
 			print(action, feature and feature.def.name, item)
 		elseif (not ActionCallback) or ActionCallback(true, feature, action, item) then
 			local itemDef = ItemDefs[item]
-			TerrainHandler.DropFeatureInFreeSpace(actionPos, itemDef.dropAs, itemDef.dropMult)
+			if itemDef then
+				TerrainHandler.DropFeatureInFreeSpace(actionPos, itemDef.dropAs, itemDef.dropMult)
+			else
+				print("itemDefError", self.def.name, item, action)
+			end
 		end
 	elseif action == "collect" and feature then
 		if (not ActionCallback) or ActionCallback(not feature.IsDead(), feature, action, item) then
@@ -58,8 +63,7 @@ local function DoMoveGoalAction(self)
 		end
 	elseif action == "mine" then
 		local success = (not feature.IsBusy())
-		ActionCallback(success, feature, action, item)
-		if success then
+		if ((not ActionCallback) or ActionCallback(success, feature, action, item)) and success then
 			self.behaviourDelay = feature.DoMine(self, self.GetPos())
 		end
 	elseif feature and not feature.IsDead() and action == "transform" and item then
@@ -83,6 +87,8 @@ local function DoMoveGoalAction(self)
 		end
 		self.SetTalkingTo(other)
 		other.SetTalkingTo(self)
+	elseif feature and not feature.IsDead() and action == "burn_all" then
+		ActionCallback(true, feature, action, item)
 	elseif feature and item and not feature.IsDead() then
 		if (not ActionCallback) or ActionCallback(not feature.IsDead(), feature, action, item) then
 			ItemAction.DoItemToFeature(feature, action, item)
@@ -98,6 +104,7 @@ local function CheckMoveGoal(self)
 	end
 	if self.moveGoalChar then
 		if self.moveGoalChar.IsDead() then
+			self.blockedUntilMoveFinished = false
 			self.ClearMoveGoal()
 			return
 		end
@@ -112,6 +119,7 @@ local function CheckMoveGoal(self)
 		if self.moveGoalAction then
 			DoMoveGoalAction(self)
 		end
+		self.blockedUntilMoveFinished = false
 		self.ClearMoveGoal()
 		return
 	end
@@ -121,6 +129,7 @@ local function CheckMoveGoal(self)
 	if self.moveGoalAction and self.moveGoalAction.feature then
 		if self.moveGoalAction.feature.IsDead() then
 			if not self.def.isPlayer then
+				self.blockedUntilMoveFinished = false
 				self.ClearMoveGoal()
 			end
 		else
@@ -138,7 +147,11 @@ local function UpdateAnimDir(self)
 		return
 	end
 	local speed, angle = util.CartToPolar({vx, vy})
-	if speed < 100 then
+	self.moving = (speed > 100)
+	if not self.moving then
+		if math.random() < 0.01 and self.idleDirection then
+			self.animDir = self.idleDirection
+		end
 		return
 	end
 	self.animDir = angle
@@ -164,7 +177,7 @@ local function NewGuy(self, physicsWorld, world)
 	
 	self.shadow = ShadowHandler.AddCircleShadow(def.shadowRadius)
 	if def.lightFunc then
-		self.light = ShadowHandler.AddLight(def.isPlayer or def.bigLight, 200 * (def.lightRadiusMult or 1), def.lightColor, not def.isPlayer)
+		self.light = ShadowHandler.AddLight(true, 200 * (def.lightRadiusMult or 1), def.lightColor, not def.isPlayer)
 	end
 	
 	function self.MoveWithVector(moveVec)
@@ -180,6 +193,9 @@ local function NewGuy(self, physicsWorld, world)
 	end
 	
 	function self.SetMoveGoal(pos, radius, feature, action, item, ActionCallback)
+		if self.blockedUntilMoveFinished then
+			return
+		end
 		self.moveGoalChar = false
 		self.moveGoalPos = pos
 		self.moveGoalRadius = radius
@@ -199,6 +215,9 @@ local function NewGuy(self, physicsWorld, world)
 	end
 	
 	function self.SetMoveCharGoal(guy, radius, action, item, ActionCallback)
+		if self.blockedUntilMoveFinished then
+			return
+		end
 		self.moveGoalChar = guy
 		self.moveGoalPos = guy.GetPos()
 		self.moveGoalRadius = radius
@@ -214,6 +233,20 @@ local function NewGuy(self, physicsWorld, world)
 				self.moveGoalAction.ActionCallback(false)
 			end
 			self.moveGoalAction = false
+		end
+	end
+	
+	function self.FilterOutInventory(whitelist)
+		local whiteMap = {}
+		for i = 1, #whitelist do
+			whiteMap[whitelist[i]] = true
+		end
+		for key, value in pairs(self.items or {}) do
+			if not whiteMap[key] then
+				local itemDef = ItemDefs[key]
+				TerrainHandler.DropFeatureInFreeSpace(self.GetPos(), itemDef.dropAs, value * (itemDef.dropMult or 1))
+				self.RemoveInventory(key, value)
+			end
 		end
 	end
 	
@@ -264,6 +297,9 @@ local function NewGuy(self, physicsWorld, world)
 	end
 	
 	function self.ClearMoveGoal()
+		if self.blockedUntilMoveFinished then
+			return
+		end
 		if self.moveGoalAction and self.moveGoalAction.ActionCallback then
 			self.moveGoalAction.ActionCallback(false)
 		end
@@ -303,8 +339,12 @@ local function NewGuy(self, physicsWorld, world)
 		return true
 	end
 	
+	function self.IsBlockedUnitMoveGoal()
+		return self.blockedUntilMoveFinished
+	end
+	
 	function self.CanBeTalkedTo()
-		return def.chat and def.chat.acceptsChat(self)
+		return (not self.blockedUntilMoveFinished) and def.chat and def.chat.acceptsChat(self)
 	end
 	
 	function self.GetType()
@@ -315,19 +355,40 @@ local function NewGuy(self, physicsWorld, world)
 		if self.dead then
 			return true
 		end
-		self.animTime = self.animTime + dt
+		if self.moving or not GroundHandler.CheckTileAtPosExists(self.GetPos()) then
+			self.animTime = self.animTime + dt
+		end
 		self.behaviourDelay = util.UpdateTimer(self.behaviourDelay, dt * (def.workMult or 1))
+		if self.unblockMoveTimer then
+			self.unblockMoveTimer = util.UpdateTimer(self.unblockMoveTimer, dt)
+			if not self.unblockMoveTimer then
+				self.blockedUntilMoveFinished = false
+			end
+		end
 		if self.behaviourDelay then
 			return
+		end
+		if def.updateFunc then
+			def.updateFunc(self, world, dt)
+		end
+		if (not self.wallowingInDarkness) and def.coldRunLevel and self.lightValue < def.coldRunLevel then
+			if GuyUtils.RunToFire(self) then
+				if def.isPlayer and not self.blockedUntilMoveFinished and not TerrainHandler.GetPositionEnergy(self.GetPos()) then
+					ChatHandler.AddMessage("It's so cold here, I have to go back to the fire")
+				end
+				self.blockedUntilMoveFinished = true
+			end
+			if self.blockedUntilMoveFinished then
+				CheckMoveGoal(self)
+				UpdateAnimDir(self)
+				return false
+			end
 		end
 		if def.behaviour then
 			def.behaviour(self, world, dt)
 		end
 		CheckMoveGoal(self)
 		UpdateAnimDir(self)
-		if def.updateFunc then
-			def.updateFunc(self, world, dt)
-		end
 	end
 	
 	function self.GetPos()
@@ -365,8 +426,9 @@ local function NewGuy(self, physicsWorld, world)
 			return
 		end
 		local bx, by = self.body:getPosition()
+		local anim = (GroundHandler.CheckTileAtPosExists(self.GetPos()) and def.animation) or def.animationFlying or def.animation
 		drawQueue:push({y=by + 24; f=function()
-			Resources.DrawIsoAnimation(def.animation, bx, by, self.animTime, self.animDir)
+			Resources.DrawIsoAnimation(anim, bx, by, self.animTime, self.animDir)
 			if def.animationOverlay then
 				local color = def.overAnimColorFunc(self)
 				Resources.DrawIsoAnimation(def.animationOverlay, bx, by, self.animTime, self.animDir, false, false, color)

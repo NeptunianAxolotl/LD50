@@ -7,13 +7,26 @@ local def = {
 	collide = true,
 	image = "furnace",
 	placementRadius = 130,
-	portraitNeutral = "furnace",
+	portraitNeutral = "furnace_portrait",
+	humanName = "Furnace",
 	voidDestroys = true,
 	mouseHit = {rx = -100, ry = -100, width = 200, height = 200},
 	initData = {
+		energyRadius = 10,
+		energyProvided = 0,
 	},
+	deconstructMaterials = {"rock", "rock", "rock", "ruby"},
 	requiresPower = true,
-	toPowerRangeMult = 0.75,
+	toPowerRangeMult = 0.95,
+	isEnergyProvider = true,
+	bigLight = true,
+	lightFunc = function (self)
+		return self.energyRadius * (0.4 + 0.03*math.random()) * 3.6
+	end,
+	updateFunc = function (self, dt)
+		self.energyRadius = Global.FURNACE_LIGHT_RANGE * self.GetLightLevel()
+		self.energyProvided = math.max(0, self.GetLightLevel() * Global.LIGHT_RELAY_MULT - Global.LIGHT_RELAY_CONST)
+	end,
 	chat = {
 		acceptsChat = function(self)
 			return true
@@ -38,6 +51,11 @@ local def = {
 				}},
 				replyDelay = 0,
 				replies = {
+					FeatureUtils.DestoryHelper(
+						"prybar_item", false, 5, false,
+						"Destroy the furnace.",
+						"You dismantle the furnace."
+					),
 					FeatureUtils.ForgeHelper(
 						"metal", "metal_item", "ore_item", Global.ORE_TO_METAL, Global.FURNACE_FUEL_USE, "health_down",
 						"Smelt ore into metal (" .. Global.ORE_TO_METAL .. " ore)",

@@ -9,6 +9,10 @@ local NewFeature = require("objects/feature")
 local self = {}
 local api = {}
 
+function api.GetFeatureDef(name)
+	return FeatureDefs[name]
+end
+
 function api.GetHomeFire()
 	return self.homeFire
 end
@@ -17,9 +21,9 @@ function api.FindFreeSpaceFeature(centre, feature, usePlaceDistance)
 	return api.FindFreeSpace(centre, ((usePlaceDistance and FeatureDefs[feature].placementRadius) or FeatureDefs[feature].radius))
 end
 
-function api.SpawnFeature(name, pos, items)
+function api.SpawnFeature(name, pos, items, data)
 	local def = FeatureDefs[name]
-	local data = {}
+	data = util.CopyTable(data or {})
 	data.pos = pos
 	data.def = def
 	local feature = NewFeature(data, self.world.GetPhysicsWorld(), self.world)
@@ -119,7 +123,8 @@ function api.GetPositionEnergy(pos, toPowerRangeMult)
 		for i = 1, count do
 			local feature = dataByKey[keyByIndex[i]]
 			if feature.IsDead() then
-				IterableMap.Remove(self, i) -- This should be rare
+				IterableMap.ApplySelf(self.energyFeature, "IsDead") -- Remove dead ones, this should happen once per death
+				print("retry")
 				retry = true
 				break
 			elseif not (maxEnergy and feature.energyProvided <= maxEnergy) then
@@ -161,7 +166,7 @@ end
 local function SetupTerrain()
 	for i = 1, #terrainDef do
 		local featurePlaceDef = terrainDef[i]
-		local feature = api.SpawnFeature(featurePlaceDef.name, featurePlaceDef.pos, featurePlaceDef.items)
+		local feature = api.SpawnFeature(featurePlaceDef.name, featurePlaceDef.pos, featurePlaceDef.items, featurePlaceDef.data)
 		if featurePlaceDef.name == "fire" then
 			self.homeFire = feature
 		end
@@ -177,7 +182,7 @@ function api.Update(dt)
 end
 
 function api.Draw(drawQueue)
-	local left, top, right, bot = self.world.GetCameraExtents(400)
+	local left, top, right, bot = self.world.GetCameraExtents(800)
 	--IterableMap.ApplySelf(self.features, "Draw", drawQueue, left, top, right, bot)
 	
 	local indexMax, keyByIndex, dataByKey = IterableMap.GetBarbarianData(self.features)

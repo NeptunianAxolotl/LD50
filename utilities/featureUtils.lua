@@ -32,4 +32,31 @@ function api.ForgeHelper(tech, createdItem, usedItem, cost, fuelCost, forgeSound
 	}
 end
 
+function api.DestoryHelper(toolNeeded, alternateTool, actionTime, actionSound, actionDesc, completeDesc)
+	return {
+		displayFunc = function (self, player)
+			return player.GetInventoryCount(toolNeeded) > 0 or (alternateTool and player.GetInventoryCount(alternateTool) > 0)
+		end,
+		msg = {
+			text = actionDesc,
+		},
+		leadsToFunc = function (self, player)
+			local function DelayDestroy()
+				self.Destroy(true)
+			end
+			Delay.Add(actionTime, DelayDestroy)
+			if actionSound then
+				SoundHandler.PlaySound(actionSound)
+			end
+			return false
+		end,
+		alternateReplyMsg = {
+			text = completeDesc,
+			delay = actionTime,
+			timer = 7,
+		},
+		delayNextScene = actionTime,
+	}
+end
+
 return api

@@ -66,18 +66,23 @@ local function DrawConsole()
 	
 	--width of background rectangle may have to be sensitive to the length of the longest option
 	maxWidth = 10
-	
+	local replyCount = 0
 	for i = #replies, 1, -1 do
-		tempWidth = love.graphics.getFont():getWidth(replies[i].msg.text)
-	
-		if (maxWidth < tempWidth) then
-			maxWidth = tempWidth
+		local reply = replies[i]
+		local displayed, unclickable = true, false
+		if reply.displayFunc then
+			displayed, unclickable = reply.displayFunc(self.chatGuy, PlayerHandler)
+		end
+		if displayed then
+			replyCount = replyCount + 1
+			tempWidth = love.graphics.getFont():getWidth(replies[i].msg.text)
+			if (maxWidth < tempWidth) then
+				maxWidth = tempWidth
+			end
 		end
 	end
-	
-	--draw reply background
 	love.graphics.setColor(0, 0, 0, 0.6)
-	love.graphics.rectangle("fill", 400, windowY - (117 + (#replies * 45)), maxWidth + 60, (#replies * 42) + 20, 0, 0, 5)
+	love.graphics.rectangle("fill", 400, windowY - (130 + (replyCount * Global.REPLY_LINE_SPACING)), maxWidth + 65, (replyCount * Global.REPLY_LINE_SPACING) + 20, 0, 0, 5)
 	
 	local replyDrawPos = 1
 	for i = #replies, 1, -1 do
@@ -136,7 +141,7 @@ local function CheckSelectReply()
 	if myReply.leadsTo then
 		SetNextScene(myReply.leadsTo, concludes, myReply.delayNextScene)
 		if myReply.concludes then
-			api.ConcludeChat()
+			api.ConcludeChat(myReply.delayNextScene)
 		end
 	elseif myReply.leadsToFunc then
 		local leadsTo, concludes = myReply.leadsToFunc(self.chatGuy, PlayerHandler)
@@ -144,10 +149,10 @@ local function CheckSelectReply()
 			SetNextScene(leadsTo, concludes, myReply.delayNextScene)
 		end
 		if concludes or (not leadsTo) then
-			api.ConcludeChat()
+			api.ConcludeChat(myReply.delayNextScene)
 		end
 	else
-		api.ConcludeChat()
+		api.ConcludeChat(myReply.delayNextScene)
 	end
 	
 	-- Print message after leadTo, so that it appears after the replay (if instant)
@@ -176,10 +181,11 @@ function api.InChat()
 	return self.chatGuy
 end
 
-function api.ConcludeChat()
+local function ConcludeChatRaw()
 	if not self.chatGuy then
 		return
 	end
+	
 	ChatHandler.FlushChatTurns()
 	ChatHandler.SetChatTurnEnabled(false)
 	if self.chatGuy.ClearMoveGoal then
@@ -197,6 +203,15 @@ function api.ConcludeChat()
 	self.replyDelay = false
 end
 
+function api.ConcludeChat(delay)
+	if delay then
+		Delay.Add(delay, ConcludeChatRaw)
+		self.replyDelay = delay
+	else
+		ConcludeChatRaw()
+	end
+end
+
 --------------------------------------------------
 -- Updating
 --------------------------------------------------
@@ -206,7 +221,7 @@ function api.MousePressedInterface(mx, my, button)
 end
 
 function api.Update(dt)
-	if self.chatGuy and self.chatGuy.IsDead() then
+	if self.chatGuy and (self.chatGuy.IsDead() or (self.chatGuy.IsBlockedUnitMoveGoal and self.chatGuy.IsBlockedUnitMoveGoal())) then
 		api.ConcludeChat()
 	end
 	if self.chatGuy then

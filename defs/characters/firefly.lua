@@ -2,6 +2,7 @@ local def = {
 	radius = 42,
 	collide = true,
 	animation = "firefly_anim",
+	animationFlying = "firefly_flying_anim",
 	animationOverlay = "firefly_light_anim",
 	portraitNeutral = "portrait_firefly_neutral",
 	portraitHappy = "portrait_firefly_happy",
@@ -10,6 +11,7 @@ local def = {
 	collideDensity = 1,
 	radius = 16,
 	shadowRadius = 14,
+	coldRunLevel = 0.4,
 	initData = {
 		lightValue = 1,
 	},
@@ -46,12 +48,6 @@ local def = {
 					self.lightValue = 0
 				end
 			end
-		end
-		if self.lightValue < 0.6 then
-			
-		end
-		if self.def.isPlayer then
-			--print( self.lightValue)
 		end
 	end,
 	lightColor = {180, 180, 180}

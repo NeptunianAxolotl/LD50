@@ -7,11 +7,13 @@ local def = {
 	collide = true,
 	image = "workshop",
 	placementRadius = 130,
-	portraitNeutral = "workshop",
+	portraitNeutral = "workshop_portrait",
+	humanName = "Workshop",
 	voidDestroys = true,
 	mouseHit = {rx = -100, ry = -100, width = 200, height = 200},
 	initData = {
 	},
+	deconstructMaterials = {"metal", "metal", "log", "log"},
 	chat = {
 		acceptsChat = function(self)
 			return true
@@ -33,6 +35,11 @@ local def = {
 				}},
 				replyDelay = 0,
 				replies = {
+					FeatureUtils.DestoryHelper(
+						"prybar_item", false, 3.5, false,
+						"Destroy the workshop.",
+						"You dismantle the workshop."
+					),
 					FeatureUtils.ForgeHelper(
 						"metal_frame", "metal_frame_item", "metal_item", Global.METAL_TO_FRAME, 0, "health_down",
 						"Create a metal frame (" .. Global.METAL_TO_FRAME .. " metal)",

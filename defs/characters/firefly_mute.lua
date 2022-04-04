@@ -1,65 +1,36 @@
+
+local util = require("include/util")
+local GuyUtils = require("utilities/guyUtils")
+
 local def = {
 	inheritFrom = "firefly",
 	speedMult = 0.5,
 	workMult = 0.5,
+	jobType = "job_fuel",
+	mineType = "mine_none",
 	initData = {
-		pissed = false,
-		friendly = false,
-		mood = 0,
 		items = {
-			log_item = 0,
-		}
+			ore_item = 0,
+		},
+		wallowingInDarkness = true,
 	},
 	behaviour = function (self, world, dt)
-		if self.behaviourDelay then
-			self.behaviourDelay = self.behaviourDelay - dt
-			if self.behaviourDelay < 0 then
-				self.behaviourDelay = false
-			else
-				return
-			end
-		end
-		if self.items.log_item > 0 and not self.moveGoalPos then
-			local function UseLog(success)
-				if success then
-					self.items.log_item = self.items.log_item - 1
-					self.behaviourDelay = 0.8
-				end
-				return true
-			end
-			local feature = TerrainHandler.GetClosetFeature(self.GetPos(), "fire")
-			self.SetMoveGoal(feature.GetPos(), feature.GetRadius() + Global.DROP_LEEWAY, feature, "burn", "log_item", UseLog)
+		if not self.friendly then
+			return
 		end
 		
-		if self.pissed and not self.moveGoalPos then
-			local function Attack(success)
-				if success then
-					local playerGuy = PlayerHandler.GetGuy()
-					if not playerGuy.IsDead() then
-						self.behaviourDelay = 0.5
-						playerGuy.DealDamage(20 + math.floor(math.random()*10))
-						ChatHandler.AddMessage("Angry logger hits you to " .. math.floor(playerGuy.GetHealth()) .. "%!", 4, false, {1, 0, 0, 1}, "chat_bad")
-					end
-				end
-				return true
-			end
-			local playerGuy = PlayerHandler.GetGuy()
-			if not playerGuy.IsDead() then
-				self.SetMoveCharGoal(playerGuy, playerGuy.GetRadius() + Global.DROP_LEEWAY, "self_handle", false, Attack)
-			else
-				local feature = TerrainHandler.GetClosetFeature(self.GetPos(), "log")
-				if feature then
-					self.SetMoveGoal(feature.GetPos(), feature.GetRadius() + Global.DROP_LEEWAY, feature, "collect", false)
-				end
-			end
+		if self.moveGoalPos then
+			return
 		end
+		
+		GuyUtils.FullyGeneralHelperGuy(self)
 	end,
 	chat = {
 		acceptsChat = function(self)
 			return true
 		end,
 		getEntry = function(self, player)
-			return "hello"
+			return (self.friendly and "options") or "hello"
 		end,
 		scenes = {
 			hello = {
@@ -84,7 +55,7 @@ local def = {
 					},
 					{
 						msg = {
-							text = "[spend a while together in silence]",
+							text = "(Spend a while together in silence.)",
 						},
 						leadsTo = "silence3"
 					},
@@ -125,7 +96,7 @@ local def = {
 					},
 					{
 						msg = {
-							text = "[leave]",
+							text = "(Leave.)",
 						},
 					},
 				},
@@ -148,7 +119,7 @@ local def = {
 					},
 					{
 						msg = {
-							text = "[leave]",
+							text = "(Leave.)",
 						},
 					},
 				},
@@ -176,7 +147,7 @@ local def = {
 					},
 					{
 						msg = {
-							text = "[leave]",
+							text = "(Leave.)",
 						},
 					},
 				},
@@ -192,7 +163,7 @@ local def = {
 					replies = {
 					{
 						msg = {
-							text = "[leave]",
+							text = "(Leave.)",
 						},
 					},
 				},
@@ -221,9 +192,26 @@ local def = {
 					sound = "chat_good",
 					delay = 4.5,
 				},
+				{
+					text = "...guess I can help you out, if you need it.",
+					sound = "chat_good",
+					delay = 6.5,
 				},
-				replyDelay = 6,
-				--moves closer to the fire
+				},
+				onSceneFunc = function (self, player)
+					-- Called with the scene is opened.
+					--ChatHandler.AddMessage("SCENE FUNC")
+					self.friendly = true
+				end,
+				replyDelay = 8,
+				replies = {
+					{
+						msg = {
+							text = "What can you do?",
+						},
+						leadsTo = "options_first",
+					},			
+				},
 			},
 			silence3 = {
 				msg = {{
@@ -240,7 +228,7 @@ local def = {
 					},
 					{
 						msg = {
-							text = "[leave]",
+							text = "(Leave.)",
 						},
 					},
 			},
@@ -266,7 +254,7 @@ local def = {
 				replies = {
 					{
 						msg = {
-							text = "(shrug)",
+							text = "(Shrug.)",
 						},
 						leadsTo = "silence32",
 					},
@@ -279,10 +267,10 @@ local def = {
 					},
 					{
 						msg = {
-							text = "[leave]",
+							text = "(Leave.)",
 						},
 					},				
-			},
+				},
 			},
 			silence32 = {
 				msg = {
@@ -304,10 +292,10 @@ local def = {
 				{
 					text = "Live.",
 					sound = "chat_good",	
-					delay = 10,
+					delay = 9,
 				},
 				},	
-				replyDelay = 12,
+				replyDelay = 10.5,
 			},
 			silence33 = {
 				msg = {
@@ -324,13 +312,33 @@ local def = {
 				{
 					text = "I wish you whatever luck remains.",
 					sound = "chat_good",
-					delay = 12,
+					delay = 10,
+				},
+				{
+					text = "And I would like to offer some help.",
+					sound = "chat_good",
+					delay = 10,
 				},
 				},	
-				replyDelay = 15,
+				onSceneFunc = function (self, player)
+					-- Called with the scene is opened.
+					--ChatHandler.AddMessage("SCENE FUNC")
+					self.friendly = true
+				end,
+				replyDelay = 15.5,
+				replies = {
+					{
+						msg = {
+							text = "What can you do?",
+						},
+						leadsTo = "options_first",
+					},			
+				},
 			},	
 		},
 	}
 }
+
+def.chat.scenes = util.CopyTable(GuyUtils.generalHelperTable, true, def.chat.scenes)
 
 return def

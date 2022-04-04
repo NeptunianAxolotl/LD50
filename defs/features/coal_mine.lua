@@ -11,11 +11,11 @@ local def = {
 	},
 	isMine = true,
 	mineTool = "pick_item",
-	mineCapacity = 8,
+	mineToolDesc = "a pick",
+	mineCapacity = 5,
 	mineTime = 3.5,
 	mineSound = "coin_collect_2",
 	mineItems = {
-		"coal_item",
 		"coal_item",
 	},
 	mineItemsToInventory = {

@@ -30,7 +30,14 @@ local function NewFeature(self, physicsWorld, world)
 		self.shadow = ShadowHandler.AddCircleShadow(def.shadowRadius)
 	end
 	if def.lightFunc then
-		self.light = ShadowHandler.AddLight(def.bigLight)
+		if def.lightCopies then
+			self.lightTable = {}
+			for i = 1, def.lightCopies do
+				self.lightTable[i] = ShadowHandler.AddLight(def.bigLight, false, {128, 128, 128})
+			end
+		else
+			self.light = ShadowHandler.AddLight(def.bigLight)
+		end
 	end
 	
 	function self.GetPos()
@@ -46,7 +53,7 @@ local function NewFeature(self, physicsWorld, world)
 	end
 	
 	function self.GetRadius()
-		return def.radius
+		return def.radius * math.max(1, self.radiusScale)
 	end
 	
 	function self.GetDef()
@@ -76,6 +83,11 @@ local function NewFeature(self, physicsWorld, world)
 		if self.light then
 			ShadowHandler.RemoveLight(self.light)
 		end
+		if self.lightTable then
+			for i = 1, #self.lightTable do
+				ShadowHandler.RemoveLight(self.lightTable[i])
+			end
+		end
 		if self.noDigTiles then
 			GroundHandler.ReleaseDigProtection(self.noDigTiles)
 			self.noDigTiles = false
@@ -84,6 +96,16 @@ local function NewFeature(self, physicsWorld, world)
 		if dropMaterials and def.deconstructMaterials then
 			for i = 1, #def.deconstructMaterials do
 				TerrainHandler.DropFeatureInFreeSpace(dropPos, def.deconstructMaterials[i])
+			end
+			if self.items then
+				for name, count in pairs(self.items) do
+					TerrainHandler.DropFeatureInFreeSpace(dropPos, ItemDefs[name].dropAs, count)
+				end
+			end
+			if self.mineCapacity then
+				for i = 1, #def.mineItems do
+					TerrainHandler.DropFeatureInFreeSpace(dropPos, ItemDefs[def.mineItems[i]].dropAs, self.mineCapacity)
+				end
 			end
 		end
 		return true
@@ -110,6 +132,10 @@ local function NewFeature(self, physicsWorld, world)
 			self.lightUpdateDt = Global.LIGHT_SLOW_UPDATE
 		end
 		return self.hasLight
+	end
+	
+	function self.GetLightLevel()
+		return self.HasLight() or 0
 	end
 	
 	function self.HasStock()
@@ -140,7 +166,7 @@ local function NewFeature(self, physicsWorld, world)
 			end
 			for i = 1, #def.mineItems do
 				local item = def.mineItems[i]
-				if def.mineItemsToInventory[i] and not guy.IsDead() then
+				if guy.def.isPlayer and def.mineItemsToInventory[i] and not guy.IsDead() then
 					guy.AddToInventory(item)
 				else
 					local itemDef = ItemDefs[item]
@@ -194,6 +220,13 @@ local function NewFeature(self, physicsWorld, world)
 		return "feature"
 	end
 	
+	function self.UpdateRadius(radius)
+		self.radiusScale = radius
+		self.shape:setRadius(def.radius * self.radiusScale)
+		self.fixture:destroy()
+		self.fixture = love.physics.newFixture(self.body, self.shape)
+	end
+	
 	function self.Update(dt)
 		if self.dead then
 			return true
@@ -205,7 +238,7 @@ local function NewFeature(self, physicsWorld, world)
 			self.noDigTiles = GroundHandler.SetPosDigProtection(self.GetPos(), def.noDigRadius)
 		end
 		if def.updateFunc then
-			def.updateFunc(self, dt)
+			def.updateFunc(self, dt, world)
 		end
 		self.busyTimer = util.UpdateTimer(self.busyTimer, dt)
 		self.moveTarget = util.UpdateTimer(self.moveTarget, dt)
@@ -215,9 +248,7 @@ local function NewFeature(self, physicsWorld, world)
 			if self.radiusScale > 1 then
 				self.radiusScale = 1
 			end
-			self.shape:setRadius(def.radius * self.radiusScale)
-			self.fixture:destroy()
-			self.fixture = love.physics.newFixture(self.body, self.shape)
+			self.UpdateRadius(self.radiusScale)
 		end
 		self.animTime = self.animTime + dt
 	end
@@ -227,8 +258,9 @@ local function NewFeature(self, physicsWorld, world)
 			return
 		end
 		local bodyPos = self.GetPos()
+		local scale = math.max(1, self.radiusScale)
 		local hit = def.mouseHit
-		return util.PosInRectangle(pos, bodyPos[1] + hit.rx, bodyPos[2] + hit.ry, hit.width, hit.height)
+		return util.PosInRectangle(pos, bodyPos[1] + hit.rx * scale, bodyPos[2] + hit.ry * scale, hit.width * scale, hit.height * scale)
 	end
 	
 	function self.HitBoxToScreen()
@@ -248,27 +280,47 @@ local function NewFeature(self, physicsWorld, world)
 		if pos[1] > left and pos[2] > top and pos[1] < right and pos[2] < bot then
 			drawQueue:push({y=pos[2]; f=function()
 				if def.image then
-					Resources.DrawImage(def.image, pos[1], pos[2])
+					Resources.DrawImage(def.image, pos[1], pos[2], false, def.imageAlpha)
 				elseif def.animation then
-					Resources.DrawAnimation(def.animation, pos[1], pos[2], self.animTime)
+					local scale = self.radiusScale and self.radiusScale > 1 and self.radiusScale
+					Resources.DrawAnimation(def.animation, pos[1], pos[2], self.animTime, false, false, scale)
 				end
 			end})
 		end
 		if self.shadow then
-			ShadowHandler.UpdateShadowParams(self.shadow, {pos[1], pos[2]}, def.shadowRadius)
+			ShadowHandler.UpdateShadowParams(self.shadow, pos, def.shadowRadius)
 		end
 		if self.light then
 			local lightGround = def.lightFunc(self)
-			ShadowHandler.UpdateLightParams(self.light, {pos[1], pos[2]}, lightGround)
+			ShadowHandler.UpdateLightParams(self.light, pos, lightGround)
+		end
+		if self.lightTable then
+			local lightGround, danceRadius = def.lightFunc(self)
+			for i = 1, #self.lightTable do
+				ShadowHandler.UpdateLightParams(self.lightTable[i], util.Add(pos, util.RandomPointInCircle(danceRadius)), lightGround)
+			end
 		end
 		if Global.DRAW_DEBUG then
-			love.graphics.setColor(1, 1, 1, 1)
-			love.graphics.circle('line', pos[1], pos[2], def.radius)
-			
-			if self.energyRadius then
-				love.graphics.setColor(1, 0, 0, 1)
-				love.graphics.circle('line', pos[1], pos[2], self.energyRadius)
+			love.graphics.setLineWidth(20)
+			if def.name == "coal_mine" then
+				love.graphics.setColor(0,0,0, 1)
+			elseif def.name == "ruby_mine" then
+				love.graphics.setColor(1,0,0, 1)
+			elseif def.name == "emerald_mine" then
+				love.graphics.setColor(0,1,0, 1)
+			elseif def.name == "stone_mine" then
+				love.graphics.setColor(0.5,0.5,0.5, 1)
+			elseif def.name == "ore_mine" then
+				love.graphics.setColor(1,1,0, 1)
+			else
+				love.graphics.setColor(1,1,1, 1)
 			end
+			love.graphics.circle('line', pos[1], pos[2], def.radius * self.radiusScale)
+		end
+		if Global.DRAW_ENERGY_RINGS and self.energyRadius and def.isFire then
+			love.graphics.setLineWidth(32)
+			love.graphics.setColor(1, 0.7, 0.4, 0.10)
+			love.graphics.circle('line', pos[1], pos[2], self.energyRadius)
 		end
 	end
 	

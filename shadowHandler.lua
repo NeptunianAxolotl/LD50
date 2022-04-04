@@ -17,6 +17,28 @@ local world
 --------------------------------------------------
 
 function api.UpdateLightParams(light, pos, radius, color)
+	local left, top, right, bot = world.GetCameraExtents(radius*0.95)
+	local inWorld = (pos[1] > left) and (pos[2] > top) and (pos[1] < right) and (pos[2] < bot)
+	
+	if not inWorld then
+		if not light.disabled then
+			light.disabled = true
+			light.wantGround = (light.ground and true) or false
+			
+			if light.ground then
+				light.ground:Remove()
+			end
+			light.vision:Remove()
+		end
+		return
+	elseif light.disabled then
+		light.disabled = false
+		local newLight = api.AddLight(light.useStar, radius, color, not light.wantGround)
+		light.ground = newLight.ground
+		light.vision = newLight.vision
+		light.useStar = newLight.useStar
+	end
+	
 	pos = world.WorldToScreen(pos)
 	if radius < 1 then
 		radius = 1
@@ -45,6 +67,7 @@ function api.AddLight(useStar, maxRadius, color, visionOnly)
 	local light = {
 		ground = (not visionOnly) and ((useStar and Star) or Light):new(self.groundShadow, maxRadius),
 		vision = ((useStar and Star) or Light):new(self.visionShadow, maxRadius*1.3),
+		useStar = useStar
 	}
 	
 	color = color or {255, 255, 255}
@@ -56,6 +79,9 @@ function api.AddLight(useStar, maxRadius, color, visionOnly)
 end
 
 function api.RemoveLight(light)
+	if light.disabled then
+		return
+	end
 	if light.ground then
 		light.ground:Remove()
 	end

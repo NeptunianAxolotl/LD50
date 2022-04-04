@@ -53,6 +53,10 @@ function api.Restart()
 	api.Initialize()
 end
 
+function api.GetLifetime()
+	return self.lifetime
+end
+
 function api.TakeScreenshot()
 	love.filesystem.setIdentity("TheMilesHigh/screenshots")
 	love.graphics.captureScreenshot("screenshot_" .. math.floor(math.random()*100000) .. "_.png")
@@ -96,6 +100,13 @@ function api.MousePressed(x, y, button)
 	x, y = self.cameraTransform:inverse():transformPoint(x, y)
 	
 	-- Send event to game components
+	if Global.DEBUG_PRINT_CLICK_POS and button == 2 then
+		print("{")
+		print([[    name = "BLA",]])
+		print("    pos = {" .. (math.floor(x/10)*10) .. ", " .. (math.floor(y/10)*10) .. "},")
+		print("},")
+		return true
+	end
 	PlayerHandler.MousePressedWorld(x, y, button)
 end
 
@@ -153,6 +164,7 @@ function api.Update(dt, realDt)
 		return
 	end
 	
+	self.lifetime = self.lifetime + dt
 	Delay.Update(dt)
 	--ModuleTest.Update(dt)
 	ComponentHandler.Update(dt)
@@ -195,14 +207,18 @@ function api.Draw()
 	NpcHandler.Draw(drawQueue)
 	EffectsHandler.Draw(drawQueue)
 	
-	ShadowHandler.DrawGroundShadow(self.cameraTransform)
+	if not Global.DEBUG_NO_SHADOW and not (Global.DEBUG_SPACE_ZOOM_OUT and love.keyboard.isDown("space")) then
+		ShadowHandler.DrawGroundShadow(self.cameraTransform)
+	end
 	love.graphics.replaceTransform(self.cameraTransform)
 	while true do
 		local d = drawQueue:pop()
 		if not d then break end
 		d.f()
 	end
-	ShadowHandler.DrawVisionShadow(self.cameraTransform)
+	if not Global.DEBUG_NO_SHADOW and not (Global.DEBUG_SPACE_ZOOM_OUT and love.keyboard.isDown("space")) then
+		ShadowHandler.DrawVisionShadow(self.cameraTransform)
+	end
 	
 	--local windowX, windowY = love.window.getMode()
 	--if windowX/windowY > 16/9 then
@@ -213,6 +229,7 @@ function api.Draw()
 	love.graphics.replaceTransform(self.interfaceTransform)
 	
 	-- Draw interface
+	GroundHandler.DrawInterface()
 	EffectsHandler.DrawInterface()
 	DialogueHandler.DrawInterface()
 	ChatHandler.DrawInterface()
@@ -233,6 +250,7 @@ function api.Initialize()
 	self.emptyTransform = love.math.newTransform()
 	self.paused = false
 	self.musicEnabled = true
+	self.lifetime = Global.DEBUG_START_LIFETIME or 0
 	
 	Delay.Initialise()
 	ShadowHandler.Initialize(api)
@@ -256,7 +274,7 @@ function api.Initialize()
 		--pinX = {875, 0.5},
 		--pinY = {900, 1},
 		minScale = 1000,
-		initPos = {200, 200}
+		initPos = {Global.PLAYER_START_X, Global.PLAYER_START_Y}
 	})
 end
 

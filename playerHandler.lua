@@ -6,6 +6,7 @@ local DialogueHandler = require("dialogueHandler")
 
 local util = require("include/util")
 local InventoryUtil = require("utilities/inventory")
+local TechUtil = require("utilities/techs")
 local ItemAction = require("defs/itemActions")
 
 local NewGuy = require("objects/guy")
@@ -139,11 +140,24 @@ function api.GetUnlocks()
 	return self.unlocks
 end
 
+function api.UnlockTech(name, hasNewBuildOpt)
+	self.unlocks[name] = true
+	self.hasNewBuildOpt = self.hasNewBuildOpt or hasNewBuildOpt
+end
+
+function api.HasNewBuildOpt()
+	return self.hasNewBuildOpt
+end
+
 --------------------------------------------------
 -- Guy Callbacks and control
 --------------------------------------------------
 
 local function DoGuyMovement()
+	if self.playerGuy.IsBlockedUnitMoveGoal() then
+		return
+	end
+
 	local dir = false
 	if love.keyboard.isDown("d") then
 		if love.keyboard.isDown("s") then
@@ -180,7 +194,10 @@ local function ActionCallback(success, other, action, item)
 		self.activeItem = false
 		return true
 	end
-	if action == "collect" then
+	
+	if action == "mine" then
+		return true
+	elseif action == "collect" then
 		api.AddItem(other.GetDef().collectAs)
 		return true
 	elseif action == "build" then
@@ -197,6 +214,23 @@ local function ActionCallback(success, other, action, item)
 		self.inventory[self.activeItem] = "empty"
 		self.activeItem = false
 		return true
+	elseif action == "burn_all" then
+		local logs, stick = api.GetConvertedWoodCounts()
+		local coal = api.GetInventoryCount("coal_item")
+		for i = 1, logs do
+			ItemAction.DoItemToFeature(other, "burn", "log_item")
+		end
+		for i = 1, stick do
+			ItemAction.DoItemToFeature(other, "burn", "stick_item")
+		end
+		for i = 1, coal do
+			ItemAction.DoItemToFeature(other, "burn", "coal_item")
+		end
+		api.SetItemCount("log_item", 0)
+		api.SetItemCount("log_bundle_item", 0)
+		api.SetItemCount("stick_item", 0)
+		api.SetItemCount("stick_bundle_item", 0)
+		api.SetItemCount("coal_item", 0)
 	end
 end
 
@@ -217,7 +251,11 @@ function api.GetViewRestriction()
 	if self.playerGuy.IsDead() then
 		return
 	end
-	return {{pos = util.Add(self.playerGuy.GetPos(), util.Mult(0.01, self.playerGuy.GetVelocity())), radius = 800 * (Global.DEBUG_CAMERA_ZOOM or 1)}}
+	local radius = 960 * (Global.DEBUG_CAMERA_ZOOM or 1)
+	if Global.DEBUG_SPACE_ZOOM_OUT and love.keyboard.isDown("space") then
+		radius = radius * 10
+	end
+	return {{pos = util.Add(self.playerGuy.GetPos(), util.Mult(0.01, self.playerGuy.GetVelocity())), radius = radius}}
 end
 
 
@@ -242,6 +280,7 @@ function api.MousePressedInterface(mx, my, button)
 	end
 	if self.hoveredBuildMenu then
 		self.buildMenuOpen = not self.buildMenuOpen
+		self.hasNewBuildOpt = false
 		if self.buildMenuOpen and not self.playerGuy.IsDead() then
 			self.playerGuy.ClearMoveGoal()
 		end
@@ -295,12 +334,14 @@ function api.MousePressedWorld(mx, my, button)
 	
 	local feature = self.hoveredFeature
 	local featurePos = feature.GetPos()
-	if feature.GetDef().isMine then
+	if feature.GetDef().isFire then
+		self.playerGuy.SetMoveGoal(featurePos, feature.GetRadius() + Global.DROP_LEEWAY, feature, "burn_all", false, ActionCallback)
+	elseif feature.GetDef().isMine then
 		local canMine = (not feature.GetDef().mineTool) or (api.GetInventoryCount(feature.GetDef().mineTool) > 0)
 		if canMine then
 			self.playerGuy.SetMoveGoal(featurePos, feature.GetRadius() + Global.DROP_LEEWAY, feature, "mine", false, ActionCallback)
 		else
-			ChatHandler.AddMessage("Something about needing a tool " .. (feature.GetDef().mineTool or "???"))
+			ChatHandler.AddMessage("You need " .. (feature.GetDef().mineToolDesc or "???") .. " to harvest this resource!")
 		end
 	elseif feature.GetDef().collectAs then
 		self.playerGuy.SetMoveGoal(featurePos, feature.GetRadius() + Global.DROP_LEEWAY, feature, "collect", false, ActionCallback)
@@ -316,6 +357,7 @@ end
 --------------------------------------------------
 
 function api.Update(dt)
+	TechUtil.CheckUnlocks(self.world, api, dt)
 	if self.playerGuy.IsDead() or self.buildMenuOpen then
 		return
 	end
@@ -398,7 +440,7 @@ function api.DrawInterface()
 	self.hoveredItem = InventoryUtil.DrawInventoryBar(self.world, self.inventory, self.selectedItem, self.activeItem, ItemDefs, checkHover, 80, 15, 2, Global.INVENTORY_SLOTS, 0, 0)
 	self.hoveredItem = InventoryUtil.DrawInventoryBar(self.world, self.inventory, self.selectedItem, self.activeItem, ItemDefs, checkHover, 80, 15, 1, 1, 0, 0) or self.hoveredItem
 	
-	self.hoveredBuildMenu = InventoryUtil.DrawBuild(self.world, Global.INVENTORY_SLOTS, (not DialogueHandler.InChat()), self.buildMenuOpen, 80, 15, 0, 120, 70)
+	self.hoveredBuildMenu = InventoryUtil.DrawBuild(self.world, api, Global.INVENTORY_SLOTS, (not DialogueHandler.InChat()), self.buildMenuOpen, 80, 15, 0, 120, 70)
 	
 	self.hoveredFeature = false
 	self.hoveredNpc = false
@@ -442,7 +484,6 @@ function api.Initialize(parentWorld)
 		inventory = {
 		},
 		unlocks = {
-			wood_pile = true,
 		},
 		lastShunt = 1
 	}
@@ -454,7 +495,7 @@ function api.Initialize(parentWorld)
 	end
 	
 	local guyData = {
-		pos = {200, 200},
+		pos = {Global.PLAYER_START_X, Global.PLAYER_START_Y},
 		def = CharacterDefs["firefly_player"],
 	}
 	self.playerGuy = NewGuy(guyData, self.world.GetPhysicsWorld(), self.world)

@@ -1,15 +1,15 @@
 return {
 	form = "iso_animation", -- image, sound or animation
-	xScale = 2,
-	yScale = 2,
+	xScale = 4,
+	yScale = 4,
 	yOffset = 0.76,
-	width = 90,
+	width = 32,
 	duration = 0.5,
 	firstDir = 0,
 	files = {
-		"resources/images/playersheet_e.png",
-		"resources/images/playersheet_s.png",
-		"resources/images/playersheet_w.png",
-		"resources/images/playersheet_n.png",
+		"resources/images/playersheet2_e.png",
+		"resources/images/playersheet2_s.png",
+		"resources/images/playersheet2_w.png",
+		"resources/images/playersheet2_n.png",
 	},
 }

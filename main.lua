@@ -47,7 +47,9 @@ function love.update(dt)
 	frames = frames + 1
 	if dt > 0.05 then
 		longFrames = longFrames + 1
-		print(math.floor(frames *100 / longFrames), dt)
+		if not Global.DEBUG_PRINT_CLICK_POS then
+			print(math.floor(frames *100 / longFrames), dt)
+		end
 	end
 	if dt > 0.1 then
 		dt = 0.1
@@ -64,7 +66,7 @@ function love.load(arg)
 	local major, minor, revision, codename = love.getVersion()
 	print(string.format("Version %d.%d.%d - %s", major, minor, revision, codename))
 
-	love.graphics.setDefaultFilter("nearest", "nearest")
+	love.graphics.setDefaultFilter("nearest", "nearest") -- Removing this helps some things and really hurts others
 
 	love.graphics.setBackgroundColor(0/255, 0/225, 0/255, 1)
 
@@ -73,5 +75,5 @@ function love.load(arg)
 	Resources.LoadResources()
 	World.Initialize()
 	
-	--love.window.maximize() -- Do not fullscreen since we lack an exit button.
+	love.window.maximize() -- Do not fullscreen since we lack an exit button.
 end
