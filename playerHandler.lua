@@ -424,9 +424,6 @@ function api.Initialize(parentWorld)
 	self = {
 		world = parentWorld,
 		inventory = {
-			"empty",
-			"empty",
-			"empty",
 		},
 		unlocks = {
 			wood_pile = true,
@@ -435,7 +432,7 @@ function api.Initialize(parentWorld)
 	
 	for i = 1, Global.INVENTORY_SLOTS do
 		if not self.inventory[i] then
-			self.inventory[i] = "empty"
+			self.inventory[i] = Global.DEBUG_START_ITEM or "empty"
 		end
 	end
 	
