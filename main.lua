@@ -75,5 +75,5 @@ function love.load(arg)
 	Resources.LoadResources()
 	World.Initialize()
 	
-	--love.window.maximize() -- Do not fullscreen since we lack an exit button.
+	love.window.maximize() -- Do not fullscreen since we lack an exit button.
 end

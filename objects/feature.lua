@@ -258,8 +258,9 @@ local function NewFeature(self, physicsWorld, world)
 			return
 		end
 		local bodyPos = self.GetPos()
+		local scale = math.max(1, self.radiusScale)
 		local hit = def.mouseHit
-		return util.PosInRectangle(pos, bodyPos[1] + hit.rx, bodyPos[2] + hit.ry, hit.width, hit.height)
+		return util.PosInRectangle(pos, bodyPos[1] + hit.rx * scale, bodyPos[2] + hit.ry * scale, hit.width * scale, hit.height * scale)
 	end
 	
 	function self.HitBoxToScreen()
@@ -279,7 +280,7 @@ local function NewFeature(self, physicsWorld, world)
 		if pos[1] > left and pos[2] > top and pos[1] < right and pos[2] < bot then
 			drawQueue:push({y=pos[2]; f=function()
 				if def.image then
-					Resources.DrawImage(def.image, pos[1], pos[2])
+					Resources.DrawImage(def.image, pos[1], pos[2], false, def.imageAlpha)
 				elseif def.animation then
 					local scale = self.radiusScale and self.radiusScale > 1 and self.radiusScale
 					Resources.DrawAnimation(def.animation, pos[1], pos[2], self.animTime, false, false, scale)
@@ -300,8 +301,20 @@ local function NewFeature(self, physicsWorld, world)
 			end
 		end
 		if Global.DRAW_DEBUG then
-			love.graphics.setLineWidth(2)
-			love.graphics.setColor(1, 1, 1, 1)
+			love.graphics.setLineWidth(20)
+			if def.name == "coal_mine" then
+				love.graphics.setColor(0,0,0, 1)
+			elseif def.name == "ruby_mine" then
+				love.graphics.setColor(1,0,0, 1)
+			elseif def.name == "emerald_mine" then
+				love.graphics.setColor(0,1,0, 1)
+			elseif def.name == "stone_mine" then
+				love.graphics.setColor(0.5,0.5,0.5, 1)
+			elseif def.name == "ore_mine" then
+				love.graphics.setColor(1,1,0, 1)
+			else
+				love.graphics.setColor(1,1,1, 1)
+			end
 			love.graphics.circle('line', pos[1], pos[2], def.radius * self.radiusScale)
 		end
 		if Global.DRAW_ENERGY_RINGS and self.energyRadius and def.isFire then

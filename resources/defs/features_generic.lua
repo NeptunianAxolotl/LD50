@@ -61,7 +61,7 @@ local scales = {
 	ruby_mine    = 3,
 	stone_mine   = 3,
 	emerald_mine = 3,
-	wood_hut     = 1,
+	wood_hut     = 3,
 	workshop     = 1,
 }
 
@@ -73,6 +73,7 @@ local portraitScales = {
 local offsets = {
 	anvil        = 0.65,
 	furnace      = 0.7,
+	wood_hut      = 0.8,
 }
 
 for i = 1, #featureNames do
