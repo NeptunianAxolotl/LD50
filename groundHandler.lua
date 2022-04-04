@@ -88,12 +88,12 @@ end
 
 function api.ReleaseDigProtection(tileList)
 	for i = 1, #tileList do
-		local tileX, tileY = tileList[i]
+		local tileX, tileY = tileList[i][1], tileList[i][2]
 		self.noDig[tileX][tileY] = self.noDig[tileX][tileY] - 1
 	end
 end
 
-function api.CheckTileDiggable(i, j)
+function api.IsTileDiggable(i, j)
 	if not self.noDig[i] then
 		return true
 	end
@@ -107,7 +107,7 @@ end
 
 function api.IsPosDiggable(pos)
 	local i, j = api.PosToTile(pos)
-	return api.CheckTileExists(i, j) and api.CheckTileDiggable(i, j)
+	return api.CheckTileExists(i, j) and api.IsTileDiggable(i, j)
 end
 
 function api.RemoveTile(i, j)

@@ -25,6 +25,13 @@ local function FindNewDigTile(self)
 end
 
 local function DigTile(self, dt)
+	if not self.slowDigCheck then
+		self.slowDigCheck = math.random()*0.5 + 0.5
+		if not GroundHandler.IsTileDiggable(self.digTileX, self.digTileY) then
+			self.digTileX, self.digTileY = false, false
+			return
+		end
+	end
 	local dug, dead = GroundHandler.DealTileDamage(self.digTileX, self.digTileY, dt*Global.BIG_DIG_DAMAGE)
 	if dead then
 		self.digTileX, self.digTileY = false, false
@@ -32,11 +39,13 @@ local function DigTile(self, dt)
 	if dug then
 		ChatHandler.AddMessage("make goodies")
 	end
+	self.slowDigCheck = util.UpdateTimer(self.slowDigCheck, dt)
 end
 
 local def = {
 	name = "big_digger",
 	radius = 80,
+	noDigRadius = 100,
 	collide = true,
 	image = "big_digger",
 	placementRadius = 130,
@@ -46,10 +55,6 @@ local def = {
 		behaviourDelay = 0
 	},
 	updateFunc = function (self, dt)
-		if not self.noDigTiles then
-			self.noDigTiles = GroundHandler.SetPosDigProtection(self.GetPos(), self.def.radius)
-		end
-		
 		if not self.digTileX then
 			self.searchDigTimer = util.UpdateTimer(self.searchDigTimer, dt) 
 			if not self.searchDigTimer then
@@ -57,7 +62,7 @@ local def = {
 				if tileX then
 					self.digTileX, self.digTileY = tileX, tileY
 				end
-				self.searchDigTimer = 0.01
+				self.searchDigTimer = 0.5
 			end
 		end
 		

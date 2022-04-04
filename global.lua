@@ -11,7 +11,7 @@ local globals = {
 	
 	PHYSICS_SCALE = 300,
 	
-	DEBUG_CAMERA_ZOOM = 12,
+	DEBUG_CAMERA_ZOOM = 3,
 	DEBUG_PLAYER_SPEED = 1,
 	DEBUG_FIRE_OVERRIDE = 20000,
 	USE_DEBUG_MAP = true,
@@ -57,7 +57,7 @@ local globals = {
 	FURNACE_FUEL_USE = 15,
 	
 	BIG_DIG_RADIUS = 2400,
-	BIG_DIG_DAMAGE = 20,
+	BIG_DIG_DAMAGE = 1,
 }
 
 return globals

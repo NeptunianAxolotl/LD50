@@ -1,6 +1,7 @@
 local def = {
 	name = "emerald",
 	radius = 25,
+	noDigRadius = 80,
 	collide = false,
 	image = "emerald_item",
 	collectAs = "emerald_item",
