@@ -66,18 +66,23 @@ local function DrawConsole()
 	
 	--width of background rectangle may have to be sensitive to the length of the longest option
 	maxWidth = 10
-	
+	local replyCount = 0
 	for i = #replies, 1, -1 do
-		tempWidth = love.graphics.getFont():getWidth(replies[i].msg.text)
-	
-		if (maxWidth < tempWidth) then
-			maxWidth = tempWidth
+		local reply = replies[i]
+		local displayed, unclickable = true, false
+		if reply.displayFunc then
+			displayed, unclickable = reply.displayFunc(self.chatGuy, PlayerHandler)
+		end
+		if displayed then
+			replyCount = replyCount + 1
+			tempWidth = love.graphics.getFont():getWidth(replies[i].msg.text)
+			if (maxWidth < tempWidth) then
+				maxWidth = tempWidth
+			end
 		end
 	end
-	
-	--draw reply background
 	love.graphics.setColor(0, 0, 0, 0.6)
-	love.graphics.rectangle("fill", 400, windowY - (117 + (#replies * 45)), maxWidth + 60, (#replies * 42) + 20, 0, 0, 5)
+	love.graphics.rectangle("fill", 400, windowY - (130 + (replyCount * Global.REPLY_LINE_SPACING)), maxWidth + 65, (replyCount * Global.REPLY_LINE_SPACING) + 20, 0, 0, 5)
 	
 	local replyDrawPos = 1
 	for i = #replies, 1, -1 do

@@ -27,8 +27,14 @@ local def = {
 		return self.energyRadius * (0.4 + 0.03*math.random()) * 3.6, 1.2
 	end,
 	updateFunc = function (self, dt, world)
+		local oldFireValue = self.fuelValue + self.fuelBoostValue
 		self.fuelValue = GetNewFuelValue(world, self.fuelValue, dt)
 		self.fuelBoostValue = GetNewFuelValue(world, self.fuelBoostValue, dt*6) -- Burns faster
+		
+		if Global.DEBUG_PRINT_FIRE then
+			local newFireValue = self.fuelValue + self.fuelBoostValue
+			print(math.floor((oldFireValue - newFireValue)/dt), math.floor(newFireValue))
+		end
 		
 		self.smoothedValue = util.AverageScalar(self.smoothedValue, self.fuelValue + self.fuelBoostValue, 0.11)
 		self.energyRadius = math.pow(self.smoothedValue, 0.85) * 12

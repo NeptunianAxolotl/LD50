@@ -243,7 +243,7 @@ function api.Initialize()
 	self.emptyTransform = love.math.newTransform()
 	self.paused = false
 	self.musicEnabled = true
-	self.lifetime = 0
+	self.lifetime = Global.DEBUG_START_LIFETIME or 0
 	
 	Delay.Initialise()
 	ShadowHandler.Initialize(api)
@@ -267,7 +267,7 @@ function api.Initialize()
 		--pinX = {875, 0.5},
 		--pinY = {900, 1},
 		minScale = 1000,
-		initPos = {200, 200}
+		initPos = {Global.PLAYER_START_X, Global.PLAYER_START_Y}
 	})
 end
 
