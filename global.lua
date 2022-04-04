@@ -24,6 +24,7 @@ local globals = {
 	INVENTORY_SLOTS = 5,
 	
 	NPC_PICKUP_TIME = 0.2,
+	NPC_DROP_TIME = 0.05,
 	
 	MOVE_SPEED = 88,
 	APPROACH_LEEWAY = 420,
@@ -45,6 +46,8 @@ local globals = {
 	
 	FIREFLY_FADE = 0.11,
 	FIREFLY_GAIN = 0.17,
+	
+	ORGANISE_PILE_DIST = 0.75,
 	
 	HAMMER_COST = 2,
 	PICK_COST = 3,

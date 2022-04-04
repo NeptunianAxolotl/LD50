@@ -16,7 +16,12 @@ local function DoMoveGoalAction(self)
 	local other = guy or feature
 	
 	if action == "drop" then
-		if (not ActionCallback) or ActionCallback(true, feature, action, item) then
+		if (feature and item and feature.def.isPile) and not self.def.isPlayer then
+			feature.AddItems(item, self.GetInventoryCount(item))
+			self.items[item] = (self.items[item] or 0) - self.GetInventoryCount(item)
+			self.behaviourDelay = Global.NPC_DROP_TIME
+			print(action, feature and feature.def.name, item)
+		elseif (not ActionCallback) or ActionCallback(true, feature, action, item) then
 			local itemDef = ItemDefs[item]
 			TerrainHandler.DropFeatureInFreeSpace(actionPos, itemDef.dropAs, itemDef.dropMult)
 		end
@@ -35,12 +40,12 @@ local function DoMoveGoalAction(self)
 							break
 						end
 					end
-					self.behaviourDelay = Global.NPC_PICKUP_TIME / (self.def.workMult or 1)
+					self.behaviourDelay = Global.NPC_PICKUP_TIME
 				end
 			else
 				feature.Destroy()
 				if not self.def.isPlayer then
-					self.behaviourDelay = Global.NPC_PICKUP_TIME / (self.def.workMult or 1)
+					self.behaviourDelay = Global.NPC_PICKUP_TIME
 					self.items = self.items or {}
 					self.items[feature.def.collectAs] = (self.items[feature.def.collectAs] or 0) + 1
 				end

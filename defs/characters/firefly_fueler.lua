@@ -15,7 +15,7 @@ local def = {
 			return
 		end
 		
-		GuyUtils.FuelFire(self, TerrainHandler.GetHomeFire(), dt)
+		GuyUtils.FuelFire(self, TerrainHandler.GetHomeFire(), 0.9)
 	end,
 }
 

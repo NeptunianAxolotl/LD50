@@ -2,13 +2,26 @@
 local util = require("include/util")
 local ItemDefs = util.LoadDefDirectory("defs/items")
 
+local loseFuelFeatures = {
+	["log"] = true,
+	stick = true,
+	coal = true,
+}
+
 local fuelFeatures = {
 	["log"] = true,
 	stick = true,
 	coal = true,
 	wood_pile = true,
-	coal_pile = true,
+	coal_bin = true,
 }
+
+local pileForItem = {
+	["log_item"] = "wood_pile",
+	stick_item = "wood_pile",
+	coal_item = "coal_bin",
+}
+
 local fuelItems = {
 	"coal_item",
 	"log_item",
@@ -36,7 +49,7 @@ function api.SeekAndCollectFeature(self, featureType)
 	return false
 end
 
-function api.SeekAndFuelFire(self, feature)
+function api.SeekAndFuelFire(self, fire)
 	for i = 1, #fuelItems do
 		local item = fuelItems[i]
 		if self.GetInventoryCount(item) > 0 then
@@ -47,7 +60,7 @@ function api.SeekAndFuelFire(self, feature)
 				end
 				return true
 			end
-			self.SetMoveGoal(feature.GetPos(), feature.GetRadius() + Global.DROP_LEEWAY, feature, "burn", item, UseFuel)
+			self.SetMoveGoal(fire.GetPos(), fire.GetRadius() + Global.DROP_LEEWAY, fire, "burn", item, UseFuel)
 			return true
 		end
 	end
@@ -55,11 +68,42 @@ function api.SeekAndFuelFire(self, feature)
 	return false
 end
 
-function api.FuelFire(self, fireToFuel, dt)
-	if api.SeekAndFuelFire(self, fireToFuel) then
-		return
+function api.DumpInCloserPile(self, fire)
+	local haveItem = false
+	for i = 1, #fuelItems do
+		local item = fuelItems[i]
+		if self.GetInventoryCount(item) > 0 then
+			local averagePos = util.Average(self.GetPos(), fire.GetPos())
+			local fireDist = util.DistVectors(self.GetPos(), fire.GetPos())
+			local pileFeature, pileDist = TerrainHandler.GetClosetFeature(averagePos, pileForItem[item], false, true, true)
+			if pileFeature and pileDist and pileDist * 2 < fireDist*Global.ORGANISE_PILE_DIST then
+				self.SetMoveGoal(pileFeature.GetPos(), pileFeature.GetRadius() + Global.DROP_LEEWAY, pileFeature, "drop", item)
+				return true
+			end
+			haveItem = true
+		end
 	end
-	api.SeekAndCollectFeature(self, fuelFeatures)
+
+	if haveItem and api.SeekAndFuelFire(self, fire) then
+		return true
+	end
+end
+
+function api.OrganiseFuel(self, fire)
+	if api.DumpInCloserPile(self, fire) then
+		return true
+	end
+	return api.SeekAndCollectFeature(self, loseFuelFeatures)
+end
+
+function api.FuelFire(self, fire, organiseChance)
+	if organiseChance and math.random() < organiseChance and api.OrganiseFuel(self, fire)then
+		return true
+	end
+	if api.SeekAndFuelFire(self, fire) then
+		return true
+	end
+	return api.SeekAndCollectFeature(self, fuelFeatures)
 end
 
 function api.GatherAndCraft(self, gatherItem, craftCost, gatherFeature, craftFeature, craftResult)
