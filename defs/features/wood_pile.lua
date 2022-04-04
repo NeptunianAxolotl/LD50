@@ -46,7 +46,7 @@ local def = {
 				replyDelay = 0,
 				replies = {
 					FeatureUtils.DestoryHelper(
-						"axe_item", "prybar_item", 3, false,
+						"prybar_item", false, 3, false,
 						"Destroy the wood pile.",
 						"You hack at the wood pile until it is merely a pile of wood."
 					),

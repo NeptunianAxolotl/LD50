@@ -1,3 +1,6 @@
+
+local FeatureUtils = require("utilities/featureUtils")
+
 local def = {
 	name = "coal_bin",
 	radius = 80,
@@ -15,6 +18,7 @@ local def = {
 	isPile = {
 		{"coal_item", 2},
 	},
+	deconstructMaterials = {"metal", "rock", "rock"},
 	stockCheckFunc = function (self)
 		return (self.items.coal_item or 0) > 0
 	end,
@@ -35,6 +39,11 @@ local def = {
 				}},
 				replyDelay = 0,
 				replies = {
+					FeatureUtils.DestoryHelper(
+						"prybar_item", false, 5, false,
+						"Destroy the coal bin.",
+						"You tear apart the coal bin."
+					),
 					{
 						displayFunc = function (self, player)
 							return player.ItemHasSpace("coal_item") and (self.items.coal_item or 0) > 0

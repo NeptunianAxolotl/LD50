@@ -1,5 +1,6 @@
 
 local util = require("include/util")
+local FeatureUtils = require("utilities/featureUtils")
 
 local function CheckOwnAvoid(self, tileX, tileY)
 	return self.avoidTiles and self.avoidTiles[tileX] and self.avoidTiles[tileX][tileY]
@@ -58,6 +59,7 @@ local def = {
 		behaviourDelay = 0,
 		enabled = true,
 	},
+	deconstructMaterials = {"metal_frame_item", "metal_frame_item", "metal_item", "metal_item", "metal_item", "emerald_item", "emerald_item"},
 	requiresPower = true,
 	toPowerRangeMult = 0.75,
 	updateFunc = function (self, dt)
@@ -105,6 +107,11 @@ local def = {
 				}},
 				replyDelay = 0,
 				replies = {
+					FeatureUtils.DestoryHelper(
+						"prybar_item", false, 5, false,
+						"Destroy the excavator.",
+						"You pry apart the excavator, bending barely any of the framing out of shape."
+					),
 					{
 						displayFunc = function (self, player)
 							return true, self.enabled

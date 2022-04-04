@@ -30,6 +30,15 @@ local data = {
 		yOffset = 0.5,
 	},
 	{
+		name = "build_anvil",
+		file = "resources/images/features/anvil.png",
+		form = "image",
+		xScale = 0.3,
+		yScale = 0.3,
+		xOffset = 0.5,
+		yOffset = 0.5,
+	},
+	{
 		name = "build_big_digger",
 		file = "resources/images/features/big_digger.png",
 		form = "image",

@@ -52,7 +52,8 @@ function api.DestoryHelper(toolNeeded, alternateTool, actionTime, actionSound, a
 		end,
 		alternateReplyMsg = {
 			text = completeDesc,
-			delay = actionTime
+			delay = actionTime,
+			timer = 7,
 		},
 		delayNextScene = actionTime,
 	}

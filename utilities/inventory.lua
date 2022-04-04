@@ -91,7 +91,7 @@ function api.DrawBuildMenu(world, playerData)
 	local screenWidth, screenHeight = love.window.getMode()
 	local mousePos = world.GetMousePositionInterface()
 
-	local menuWidth, menuHeight = 760, 560
+	local menuWidth, menuHeight = 760, 640
 	local left, top = screenWidth*0.5 - menuWidth/2, screenHeight*0.48 - menuHeight/2
 
 	love.graphics.setColor(0.6*1.1, 0.7*1.1, 0.7*1.1, 1)
@@ -112,10 +112,10 @@ function api.DrawBuildMenu(world, playerData)
 	end
 	
 	Font.SetSize(0)
-	love.graphics.print("Availible Structures", left + 200, top + 28)
+	love.graphics.print("Availible Structures", left + 200, top + 36)
 
-	local startX = left + 104
-	local startY = top + 128
+	local startX = left + 120
+	local startY = top + 150
 
 	for i = 1, #BuildDefs do
 		local def = BuildDefs[i]
@@ -143,7 +143,7 @@ function api.DrawBuildMenu(world, playerData)
 				local item = ItemDefs[def.cost[j]]
 				Resources.DrawImage(item.image, startX + 28 + 75*j, startY + 12, false, 1, 0.8, resourceCol)
 			end
-			startY = startY + 85
+			startY = startY + 84
 		end
 	end
 	
