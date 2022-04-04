@@ -1,6 +1,7 @@
 local def = {
 	name = "emerald_mine",
 	radius = 80,
+	noDigRadius = 160,
 	collide = true,
 	image = "emerald_mine",
 	placementRadius = 130,

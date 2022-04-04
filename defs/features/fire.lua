@@ -1,6 +1,7 @@
 local def = {
 	name = "fire",
 	radius = 110,
+	noDigRadius = 50,
 	collide = true,
 	animation = "fire",
 	isFire = true,

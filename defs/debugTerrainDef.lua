@@ -66,11 +66,6 @@ local placeList = {
 	
 	"big_digger",
 	
-	"lamp_wood",
-	"miner_metal",
-	"miner_wood",
-	"lamp_metal",
-	
 	-- Huts
 	"metal_hut",
 	"wood_hut",
@@ -123,6 +118,11 @@ local placeList = {
 	"tele_wood",
 	"tele_in",
 	
+	-- Dropping to replace with placing base gem on the ground?
+	"miner_metal",
+	"miner_wood",
+	"lamp_wood",
+	"lamp_metal",
 }
 
 local angle = math.pi

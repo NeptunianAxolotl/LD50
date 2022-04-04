@@ -75,6 +75,10 @@ local function NewFeature(self, physicsWorld, world)
 		if self.light then
 			ShadowHandler.RemoveLight(self.light)
 		end
+		if self.noDigTiles then
+			GroundHandler.ReleaseDigProtection(self.noDigTiles)
+			self.noDigTiles = false
+		end
 		self.dead = true
 		return true
 	end
@@ -107,7 +111,7 @@ local function NewFeature(self, physicsWorld, world)
 			self.hasPower = TerrainHandler.GetPositionEnergy(self.GetPos(), def.toPowerRangeMult)
 			self.lightUpdateDt = Global.LIGHT_SLOW_UPDATE
 		end
-		return (not self.IsDead()) or self.hasPower
+		return (not self.IsDead()) and self.hasPower
 	end
 	
 	function self.DoMine(guy, createPos)
@@ -173,6 +177,9 @@ local function NewFeature(self, physicsWorld, world)
 	function self.Update(dt)
 		if self.dead then
 			return true
+		end
+		if def.noDigRadius and not self.noDigTiles then
+			self.noDigTiles = GroundHandler.SetPosDigProtection(self.GetPos(), def.noDigRadius)
 		end
 		if def.updateFunc then
 			def.updateFunc(self, dt)

@@ -55,6 +55,10 @@ local globals = {
 	PRYBAR_COST = 4,
 	
 	FURNACE_FUEL_USE = 15,
+	
+	BIG_DIG_RADIUS = 2400,
+	BIG_DIG_DAMAGE = 1,
+	BIG_DIG_FUEL_PER_SECOND = 5,
 }
 
 return globals

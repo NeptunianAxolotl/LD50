@@ -75,6 +75,41 @@ function api.CheckTileExists(i, j)
 	return (self.ground.tiles[j][i] == 1)
 end
 
+function api.SetPosDigProtection(checkPos, radius)
+	local tileList = {}
+	for i = 1, 8 do
+		local tileX, tileY = api.PosToTile(util.Add(util.PolarToCart(radius, math.pi*i/4), checkPos))
+		tileList[#tileList + 1] = {tileX, tileY}
+		self.noDig[tileX] = self.noDig[tileX] or {}
+		self.noDig[tileX][tileY] = (self.noDig[tileX][tileY] or 0) + 1
+	end
+	return tileList
+end
+
+function api.ReleaseDigProtection(tileList)
+	for i = 1, #tileList do
+		local tileX, tileY = tileList[i][1], tileList[i][2]
+		self.noDig[tileX][tileY] = self.noDig[tileX][tileY] - 1
+	end
+end
+
+function api.IsTileDiggable(i, j)
+	if not self.noDig[i] then
+		return true
+	end
+	return (self.noDig[i][j] or 0) < 1
+end
+
+function api.CheckTileAtPosExists(pos)
+	local i, j = api.PosToTile(pos)
+	return api.CheckTileExists(i, j)
+end
+
+function api.IsPosDiggable(pos)
+	local i, j = api.PosToTile(pos)
+	return api.CheckTileExists(i, j) and api.IsTileDiggable(i, j)
+end
+
 function api.RemoveTile(i, j)
 	if not self.ground.tiles[j] then
 		return
@@ -148,7 +183,8 @@ function api.Initialize(world)
 	self = {
 		world = world,
 		ground = util.CopyTable(groundDef, true),
-		tileHealth = {}
+		tileHealth = {},
+		noDig = {},
 	}
 	
 	SetupGround()
