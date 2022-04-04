@@ -14,6 +14,13 @@ local def = {
 			stick_item = 0,
 		}
 	},
+	isPile = {
+		{"log_item", 3},
+		{"stick_item", 5},
+	},
+	stockCheckFunc = function (self)
+		return (self.items.stick_item or 0) > 0 or (self.items.log_item or 0) > 0
+	end,
 	chat = {
 		acceptsChat = function(self)
 			return true

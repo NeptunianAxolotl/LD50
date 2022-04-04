@@ -12,6 +12,12 @@ local def = {
 			coal_item = 0,
 		}
 	},
+	isPile = {
+		{"coal_item", 2},
+	},
+	stockCheckFunc = function (self)
+		return (self.items.coal_item or 0) > 0
+	end,
 	chat = {
 		acceptsChat = function(self)
 			return true

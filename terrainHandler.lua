@@ -47,15 +47,19 @@ function api.DropFeatureInFreeSpace(pos, toDrop, count, usePlaceDistance)
 	end
 end
 
-function api.GetClosetFeature(pos, featureType, toSurface, requireLight, requirePower, requireNotGoal, requireNotBusy, skipChance)
+function api.GetClosetFeature(pos, featureType, toSurface, requireLight, requirePower, requireNotGoal, requireNotBusy, skipChance, requireStock)
+	if featureType and type(featureType) == "string" then
+		featureType = {[featureType] = true}
+	end
 	local minFunc
 	if toSurface then
 		minFunc = function (feature)
-			if (featureType and feature.def.name ~= featureType) or 
+			if (featureType and not featureType[feature.def.name]) or 
+					(requireStock and not feature.HasStock()) or
 					(requireLight and not feature.HasLight()) or 
 					(requirePower and not feature.HasPower()) or 
-					(requireNotGoal and feature.IsMoveTarget()) or 
-					(requireNotBusy and feature.IsBusyOrTalking()) then
+					(requireNotGoal and feature.IsMoveTarget(true)) or 
+					(requireNotBusy and feature.IsBusyOrTalking(true)) then
 				return false
 			end
 			if skipChance and skipChance > math.random() then
@@ -67,11 +71,12 @@ function api.GetClosetFeature(pos, featureType, toSurface, requireLight, require
 		end
 	else
 		minFunc = function (feature)
-			if (featureType and feature.def.name ~= featureType) or 
+			if (featureType and not featureType[feature.def.name]) or 
+					(requireStock and not feature.HasStock()) or
 					(requireLight and not feature.HasLight()) or 
 					(requirePower and not feature.HasPower()) or 
-					(requireNotGoal and feature.IsMoveTarget()) or 
-					(requireNotBusy and feature.IsBusyOrTalking()) then
+					(requireNotGoal and feature.IsMoveTarget(true)) or 
+					(requireNotBusy and feature.IsBusyOrTalking(true)) then
 				return false
 			end
 			if skipChance and skipChance > math.random() then

@@ -20,13 +20,30 @@ local function DoMoveGoalAction(self)
 			local itemDef = ItemDefs[item]
 			TerrainHandler.DropFeatureInFreeSpace(actionPos, itemDef.dropAs, itemDef.dropMult)
 		end
-	elseif action == "collect" then
+	elseif action == "collect" and feature then
 		if (not ActionCallback) or ActionCallback(not feature.IsDead(), feature, action, item) then
-			feature.Destroy()
-			if not self.def.isPlayer then
-				self.behaviourDelay = Global.NPC_PICKUP_TIME / (self.def.workMult or 1)
-				self.items = self.items or {}
-				self.items[feature.def.collectAs] = (self.items[feature.def.collectAs] or 0) + 1
+			if feature.def.isPile then
+				if not self.def.isPlayer then
+					local pileList = feature.def.isPile
+					for i = 1, #pileList do
+						local itemType, maxTake = pileList[i][1], pileList[i][2]
+						if feature.GetItems(itemType) > 0 then
+							local take = math.min(feature.GetItems(itemType), maxTake)
+							self.items = self.items or {}
+							self.items[itemType] = (self.items[itemType] or 0) + take
+							feature.AddItems(itemType, -take)
+							break
+						end
+					end
+					self.behaviourDelay = Global.NPC_PICKUP_TIME / (self.def.workMult or 1)
+				end
+			else
+				feature.Destroy()
+				if not self.def.isPlayer then
+					self.behaviourDelay = Global.NPC_PICKUP_TIME / (self.def.workMult or 1)
+					self.items = self.items or {}
+					self.items[feature.def.collectAs] = (self.items[feature.def.collectAs] or 0) + 1
+				end
 			end
 		end
 	elseif action == "build" then

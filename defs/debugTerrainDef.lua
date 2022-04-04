@@ -6,6 +6,20 @@ local terrain = {
 		pos = {0, 0},
 	},
 	{
+		name = "coal_bin",
+		pos = {500, 500},
+		items = {
+			coal_item = 5
+		}
+	},
+	{
+		name = "wood_pile",
+		pos = {000, 500},
+		items = {
+			log_item = 5
+		}
+	},
+	{
 		name = "furnace",
 		pos = {-300, 900},
 	},
@@ -64,7 +78,7 @@ end
 local placeList = {
 	--"fire", -- already got one
 	
-	"big_digger",
+	--"big_digger", -- eats what I'm testing
 	
 	-- Huts
 	"metal_hut",
@@ -75,6 +89,8 @@ local placeList = {
 	"wood_pile",
 	"coal_bin",
 	
+	-- NEED SCALING
+	
 	-- Mines
 	"emerald_mine",
 	"saphire_mine",
@@ -84,7 +100,6 @@ local placeList = {
 	"coal_mine",
 	"tree",
 	
-	-- NEED SCALING
 	
 	-- benches
 	"workshop",
@@ -93,10 +108,10 @@ local placeList = {
 	
 	-- MOSTLY DONE
 	--Tools
-	"prybar",
-	"hammer",
+	"prybar", -- Needs deconstruction ability
+	"hammer", -- Needs construction gating
+	"axe", -- Needs deconstruction ability
 	"pick",
-	"axe",
 	
 	-- Resources
 	"metal",
@@ -110,6 +125,7 @@ local placeList = {
 	"log",
 	"emerald",
 	"coal",
+	
 	
 	-- DROPPING?
 	"sword",

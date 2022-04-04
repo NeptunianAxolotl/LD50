@@ -1,16 +1,16 @@
 local characters = {
 	{
-		name = "firefly_furnace",
+		name = "firefly_fueler",
 		pos = {-100, 120},
 	},
-	{
-		name = "firefly_furnace",
-		pos = {-100, 160},
-	},
-	{
-		name = "firefly_workshop",
-		pos = {-100, 160},
-	},
+	--{
+	--	name = "firefly_furnace",
+	--	pos = {-100, 160},
+	--},
+	--{
+	--	name = "firefly_workshop",
+	--	pos = {-100, 160},
+	--},
 	--{
 	--	name = "firefly_furnace",
 	--	pos = {-100, 200},
