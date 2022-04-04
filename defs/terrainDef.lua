@@ -617,10 +617,6 @@ local terrain = {
     pos = {-5190, 550},
 },
 {
-    name = "pick",
-    pos = {1620, -2180},
-},
-{
     name = "coal_bin",
     pos = {2370, 5870},
 },
@@ -642,11 +638,15 @@ local terrain = {
 },
 {
     name = "ruby",
-    pos = {1770, -1650},
+    pos = {-7280, 5200},
 },
 {
     name = "ruby",
-    pos = {-7280, 5200},
+    pos = {-3470, 230},
+},
+{
+    name = "ruby",
+    pos = {3740, 2050},
 },
 {
     name = "emerald",
@@ -731,6 +731,138 @@ local terrain = {
 {
     name = "emerald_mine",
     pos = {-9420, -6560},
+},
+{
+    name = "coal",
+    pos = {-3700, 290},
+},
+{
+    name = "coal",
+    pos = {-2140, -510},
+},
+{
+    name = "rock",
+    pos = {1490, -2300},
+},
+{
+    name = "coal_mine",
+    pos = {-10010, -1410},
+},
+{
+    name = "coal_mine",
+    pos = {-10710, -1410},
+},
+{
+    name = "coal_mine",
+    pos = {-11750, -1460},
+},
+{
+    name = "coal_mine",
+    pos = {-12070, -1780},
+},
+{
+    name = "coal_mine",
+    pos = {-12450, -1100},
+},
+{
+    name = "coal_mine",
+    pos = {-13010, -610},
+},
+{
+    name = "stick",
+    pos = {-900, -960},
+},
+{
+    name = "stick",
+    pos = {-1240, -810},
+},
+{
+    name = "stick",
+    pos = {-1600, 0},
+},
+{
+    name = "stick",
+    pos = {-1690, 1000},
+},
+{
+    name = "stick",
+    pos = {-1310, 740},
+},
+{
+    name = "stick",
+    pos = {-560, 1500},
+},
+{
+    name = "stick",
+    pos = {100, 800},
+},
+{
+    name = "stick",
+    pos = {670, 1330},
+},
+{
+    name = "stick",
+    pos = {1070, 590},
+},
+{
+    name = "stick",
+    pos = {1330, -750},
+},
+{
+    name = "stick",
+    pos = {780, -580},
+},
+{
+    name = "stick",
+    pos = {310, -1580},
+},
+{
+    name = "stick",
+    pos = {-1260, -2300},
+},
+{
+    name = "stick",
+    pos = {30, -2280},
+},
+{
+    name = "stick",
+    pos = {-2200, 250},
+},
+{
+    name = "stick",
+    pos = {-690, 1970},
+},
+{
+    name = "stick",
+    pos = {1610, 1040},
+},
+{
+    name = "stick",
+    pos = {2840, 510},
+},
+{
+    name = "stick",
+    pos = {2540, -1260},
+},
+{
+    name = "stick",
+    pos = {2650, -2090},
+},
+{
+    name = "stick",
+    pos = {2090, -2150},
+},
+{
+    name = "stick",
+    pos = {-760, -130},
+},
+{
+    name = "stick",
+    pos = {490, 550},
+},
+{
+    name = "stick",
+    pos = {510, -650},
 },
 
 }

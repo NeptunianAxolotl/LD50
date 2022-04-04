@@ -17,7 +17,7 @@ local function SetupGround()
 	for i = 1, self.ground.width do
 		for j = 1, self.ground.height do
 			if self.ground.treeDensity[j][i] > 0 then
-				local density = self.ground.treeDensity[j][i]
+				local density = self.ground.treeDensity[j][i] * Global.TREE_MULT
 				while density >= 1 do
 					TerrainHandler.DropFeatureInFreeSpace(util.Add(util.RandomPointInCircle(Global.TREE_SPAWN_RAND), api.TileToPos(i, j)), "tree", 1, true)
 					density = density - 1
@@ -27,7 +27,7 @@ local function SetupGround()
 				end
 				
 				
-				local density = self.ground.treeDensity[j][i] * 0.8
+				local density = self.ground.treeDensity[j][i] * Global.STICK_MULT
 				while density >= 1 do
 					TerrainHandler.DropFeatureInFreeSpace(util.Add(util.RandomPointInCircle(Global.TREE_SPAWN_RAND), api.TileToPos(i, j)), "stick", 1, true)
 					density = density - 1

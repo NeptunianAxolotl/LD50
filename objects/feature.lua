@@ -258,8 +258,9 @@ local function NewFeature(self, physicsWorld, world)
 			return
 		end
 		local bodyPos = self.GetPos()
+		local scale = math.max(1, self.radiusScale)
 		local hit = def.mouseHit
-		return util.PosInRectangle(pos, bodyPos[1] + hit.rx, bodyPos[2] + hit.ry, hit.width, hit.height)
+		return util.PosInRectangle(pos, bodyPos[1] + hit.rx * scale, bodyPos[2] + hit.ry * scale, hit.width * scale, hit.height * scale)
 	end
 	
 	function self.HitBoxToScreen()
@@ -279,7 +280,7 @@ local function NewFeature(self, physicsWorld, world)
 		if pos[1] > left and pos[2] > top and pos[1] < right and pos[2] < bot then
 			drawQueue:push({y=pos[2]; f=function()
 				if def.image then
-					Resources.DrawImage(def.image, pos[1], pos[2])
+					Resources.DrawImage(def.image, pos[1], pos[2], false, def.imageAlpha)
 				elseif def.animation then
 					local scale = self.radiusScale and self.radiusScale > 1 and self.radiusScale
 					Resources.DrawAnimation(def.animation, pos[1], pos[2], self.animTime, false, false, scale)

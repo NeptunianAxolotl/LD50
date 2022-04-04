@@ -1,7 +1,7 @@
 
 local globals = {
 	MASTER_VOLUME = 0.75,
-	MUSIC_VOLUME = 0.01,
+	MUSIC_VOLUME = 0.4,
 	DEFAULT_MUSIC_DURATION = 174.69,
 	CROSSFADE_TIME = 0,
 	
@@ -10,7 +10,7 @@ local globals = {
 	INC_OFFSET = -15,
 	
 	PHYSICS_SCALE = 300,
-	FIRE_START_FUEL = 280,
+	FIRE_START_FUEL = 210,
 	
 	STICK_FUEL = 10,
 	LOG_FUEL = 30,
@@ -27,15 +27,15 @@ local globals = {
 	DEBUG_SPACE_ZOOM_OUT = true,
 	DEBUG_PRINT_CLICK_POS = true,
 	DEBUG_MAP_METRICS = true,
-	--DEBUG_CAMERA_ZOOM = 10,
+	DEBUG_CAMERA_ZOOM = 1,
+	DEBUG_NO_SHADOW = true,
 	--DEBUG_START_LIFETIME = 10 * 60,
 	--DEBUG_FIRE_OVERRIDE = 4500,
-	--DEBUG_NO_SHADOW = true,
 	--DEBUG_PRINT_FIRE = true,
-	DEBUG_PLAYER_SPEED = 1,
+	--DEBUG_PLAYER_SPEED = 1,
 	--USE_DEBUG_MAP = false,
 	--UNLOCK_ALL_TECH = true,
-	DRAW_DEBUG = true,
+	--DRAW_DEBUG = true,
 	--DEBUG_START_ITEM = "log_item",
 	
 	TREE_SPAWN_RAND = 400,
@@ -95,6 +95,9 @@ local globals = {
 	
 	STAR_DRIFT = 0.00001,
 	STAR_DRIFT_BASE = 0.000001,
+	
+	TREE_MULT = 0.85,
+	STICK_MULT = 0.3,
 }
 
 return globals
