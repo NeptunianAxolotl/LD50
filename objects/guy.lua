@@ -158,6 +158,7 @@ local function NewGuy(self, physicsWorld, world)
 	end
 	
 	function self.SetMoveGoal(pos, radius, feature, action, item, ActionCallback)
+		self.moveGoalChar = false
 		self.moveGoalPos = pos
 		self.moveGoalRadius = radius
 		if action then

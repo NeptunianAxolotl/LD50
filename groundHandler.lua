@@ -3,7 +3,7 @@ local IterableMap = require("include/IterableMap")
 local util = require("include/util")
 local Resources = require("resourceHandler")
 
-local GroundDef = require("defs/groundDef")
+local groundDef = (Global.USE_DEBUG_MAP and require("defs/debugGroundDef")) or require("defs/groundDef")
 
 local self = {}
 local api = {}
@@ -62,7 +62,7 @@ end
 function api.Initialize(world)
 	self = {
 		world = world,
-		ground = util.CopyTable(GroundDef, true)
+		ground = util.CopyTable(groundDef, true)
 	}
 	
 	SetupGround()

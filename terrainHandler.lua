@@ -191,6 +191,9 @@ function api.Initialize(world)
 	}
 	
 	SetupTerrain()
+	--for name in pairs(FeatureDefs) do
+	--	print([[	"]] .. name .. [[",]])
+	--end
 end
 
 return api

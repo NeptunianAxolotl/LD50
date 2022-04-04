@@ -111,8 +111,8 @@ local function NewFeature(self, physicsWorld, world)
 	end
 	
 	function self.DoMine(guy, createPos)
-		if self.mineSound then
-			SoundHandler.PlaySound(self.mineSound)
+		if def.mineSound then
+			SoundHandler.PlaySound(def.mineSound)
 		end
 		self.mineCapacity = self.mineCapacity - 1
 		

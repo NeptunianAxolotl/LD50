@@ -256,7 +256,7 @@ function api.Initialize()
 		--pinX = {875, 0.5},
 		--pinY = {900, 1},
 		minScale = 1000,
-		initPos = {875, 500}
+		initPos = {200, 200}
 	})
 end
 

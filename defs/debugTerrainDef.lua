@@ -1,15 +1,9 @@
+local util = require("include/util")
+
 local terrain = {
 	{
 		name = "fire",
 		pos = {0, 0},
-	},
-	{
-		name = "anvil",
-		pos = {-600, 300},
-	},
-	{
-		name = "furnace",
-		pos = {000, 400},
 	},
 	{
 		name = "furnace",
@@ -18,10 +12,6 @@ local terrain = {
 	{
 		name = "furnace",
 		pos = {-800, 900},
-	},
-	{
-		name = "furnace",
-		pos = {-500, -100},
 	},
 	{
 		name = "furnace",
@@ -76,6 +66,65 @@ for i = 1, 10 do
 			name = "ore",
 			pos = {1200 + 150*i, 300 + 100*j},
 		}
+	end
+end
+
+local placeList = {
+	"emerald_mine",
+	"metal_frame",
+	"metal",
+	"anvil",
+	"furnace",
+	"rock",
+	"ore",
+	"ruby_mine",
+	"ruby",
+	"saphire_mine",
+	"saphire",
+	"stone_mine",
+	"fire",
+	"stick",
+	"lamp_wood",
+	"tele_metal",
+	"tele_wood",
+	"workshop",
+	"prybar",
+	"metal_hut",
+	"big_digger",
+	"wood_pile",
+	"miner_metal",
+	"hammer",
+	"wood_hut",
+	"miner_wood",
+	"big_wood_hut",
+	"sword",
+	"log",
+	"tree",
+	"ore_mine",
+	"axe",
+	"tele_in",
+	"coal",
+	"coal_mine",
+	"pick",
+	"emerald",
+	"lamp_metal",
+	"corpse",
+	"big_teleport",
+	"coal_bin",
+}
+
+local angle = math.pi
+local distance = 800
+for i = 1, #placeList do
+	terrain[#terrain + 1] = {
+		name = placeList[i],
+		pos = util.PolarToCart(distance, angle),
+	}
+	angle = angle + math.pi*0.08
+	if distance > 900 then
+		distance = 800
+	else
+		distance = 1100
 	end
 end
 

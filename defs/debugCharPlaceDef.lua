@@ -113,4 +113,8 @@ local characters = {
 	},
 }
 
+for i = 1, #characters do
+	characters[i].pos[2] = characters[i].pos[2] + 300
+end
+
 return characters
