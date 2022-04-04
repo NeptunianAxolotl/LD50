@@ -17,6 +17,7 @@ local globals = {
 	USE_DEBUG_MAP = true,
 	UNLOCK_ALL_TECH = true,
 	DRAW_DEBUG = false,
+	DEBUG_START_ITEM = "coal_item",
 	
 	TREE_SPAWN_RAND = 400,
 	
@@ -50,6 +51,7 @@ local globals = {
 	AXE_COST = 2,
 	SWORD_COST = 3,
 	ORE_TO_METAL = 2,
+	METAL_TO_FRAME = 5,
 	PRYBAR_COST = 4,
 	
 	FURNACE_FUEL_USE = 15,
