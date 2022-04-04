@@ -149,6 +149,9 @@ local function UpdateAnimDir(self)
 	local speed, angle = util.CartToPolar({vx, vy})
 	self.moving = (speed > 100)
 	if not self.moving then
+		if math.random() < 0.01 and self.idleDirection then
+			self.animDir = self.idleDirection
+		end
 		return
 	end
 	self.animDir = angle

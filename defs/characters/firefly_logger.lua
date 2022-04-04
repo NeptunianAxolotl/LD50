@@ -13,21 +13,32 @@ local def = {
 		done = false,
 		items = {
 			log_item = 0,
+			stick_item = 0,
 		},
 		wallowingInDarkness = true,
+		idleLocation = {-410, 150},
+		idleDirection = 0
 	},
 	behaviour = function (self, world, dt)
 		if not self.friendly then
-			if self.items.log_item > 0 and not self.moveGoalPos then
+			if (self.items.log_item > 0 or self.items.stick_item > 0) and not self.moveGoalPos then
 				local function UseLog(success)
 					if success then
-						self.items.log_item = self.items.log_item - 1
+						if self.items.log_item > 0 then
+							self.items.log_item = self.items.log_item - 1
+						else
+							self.items.stick_item = self.items.stick_item - 1
+						end
 						self.behaviourDelay = 0.8
 					end
 					return true
 				end
 				local feature = TerrainHandler.GetClosetFeature(self.GetPos(), "fire")
-				self.SetMoveGoal(feature.GetPos(), feature.GetRadius() + Global.DROP_LEEWAY, feature, "burn", "log_item", UseLog)
+				if self.items.log_item > 0 then
+					self.SetMoveGoal(feature.GetPos(), feature.GetRadius() + Global.DROP_LEEWAY, feature, "burn", "log_item", UseLog)
+				else
+					self.SetMoveGoal(feature.GetPos(), feature.GetRadius() + Global.DROP_LEEWAY, feature, "burn", "stick_item", UseLog)
+				end
 			end
 		end
 		
@@ -35,7 +46,14 @@ local def = {
 			return
 		end
 		
-		GuyUtils.FullyGeneralHelperGuy(self)
+		if GuyUtils.FullyGeneralHelperGuy(self) then
+			return
+		end
+		
+		if math.random() < 0.01 and util.DistVectors(self.idleLocation, self.GetPos()) > 90 then
+			self.SetMoveGoal(self.idleLocation, 50)
+			return
+		end
 	end,
 	chat = {
 		acceptsChat = function(self)
