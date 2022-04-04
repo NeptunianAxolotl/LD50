@@ -2,7 +2,7 @@ local characters = {
 	{
 		name = "firefly_logger",	
 		data = {animDir = 0},
-		pos = {-400, 300},
+		pos = {-400, 100},
 	},
 	{
 		name = "firefly_creeper",
@@ -16,13 +16,23 @@ local characters = {
 	},
 	{
 		name = "firefly_fueler0",	
-		data = {animDir = math.pi/2},
-		pos = {500, 180},
+		data = {animDir = math.pi},
+		pos = {800, 180},
+	},
+	{
+		name = "firefly_fueler1",	
+		data = {animDir = math.pi},
+		pos = {1200, -400},
 	},
 	{
 		name = "firefly_fueler2",	
-		data = {animDir = math.pi/2},
-		pos = {50, 180},
+		data = {animDir = 0},
+		pos = {-200, 1200},
+	},
+	{
+		name = "firefly_fueler_axe",	
+		data = {animDir = 0},
+		pos = {-900, -1500},
 	},
 }
 

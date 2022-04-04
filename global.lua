@@ -21,7 +21,7 @@ local globals = {
 	COAL_FUEL_BOOST = 20,
 	
 	PLAYER_START_X = 400,
-	PLAYER_START_Y = 250,
+	PLAYER_START_Y = 450,
 	DRAW_ENERGY_RINGS = true,
 	
 	DEBUG_SPACE_ZOOM_OUT = true,

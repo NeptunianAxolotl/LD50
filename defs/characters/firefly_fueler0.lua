@@ -58,7 +58,7 @@ local def = {
 				replies = {
 					{
 						msg = {
-							text = "You can come sit by the fire if you help out.",
+							text = "You can come sit closer by the fire later, if you help out.",
 							sound = "chat_good",
 						},
 						leadsTo = "help2",
