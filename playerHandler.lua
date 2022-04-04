@@ -180,7 +180,9 @@ local function ActionCallback(success, other, action, item)
 		self.activeItem = false
 		return true
 	end
-	if action == "collect" then
+	if action == "mine" then
+		return true
+	elseif action == "collect" then
 		api.AddItem(other.GetDef().collectAs)
 		return true
 	elseif action == "build" then
