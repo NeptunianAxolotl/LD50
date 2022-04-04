@@ -66,13 +66,9 @@ local placeList = {
 	
 	"big_digger",
 	"lamp_wood",
-	"tele_metal",
-	"tele_wood",
 	"miner_metal",
-	"big_teleport",
 	"miner_wood",
 	"lamp_metal",
-	"tele_in",
 	
 	-- Huts
 	"metal_hut",
@@ -103,7 +99,6 @@ local placeList = {
 	--Tools
 	"prybar",
 	"hammer",
-	"sword",
 	"pick",
 	"axe",
 	
@@ -119,6 +114,13 @@ local placeList = {
 	"log",
 	"emerald",
 	"coal",
+	
+	-- DROPPING?
+	"sword",
+	"big_teleport",
+	"tele_metal",
+	"tele_wood",
+	"tele_in",
 	
 }
 

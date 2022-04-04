@@ -49,10 +49,18 @@ function api.AddItem(item)
 			return true
 		end
 	end
-	if self.inventory[1] == "empty" then
-		self.inventory[1] = item
-		return true
+	-- Shunt an item
+	for i = 1, #self.inventory do
+		local toCheck = (self.lastShunt + i - 1)%(#self.inventory) + 1
+		local itemDef = ItemDefs[self.inventory[i]]
+		if itemDef and not itemDef.isTool then
+			self.lastShunt = toCheck
+			TerrainHandler.DropFeatureInFreeSpace(self.playerGuy.GetPos(), itemDef.dropAs, itemDef.dropMult)
+			self.inventory[toCheck] = item
+			return true
+		end
 	end
+	-- Full of tools, fail to lift the item
 	local itemDef = ItemDefs[item]
 	TerrainHandler.DropFeatureInFreeSpace(self.playerGuy.GetPos(), itemDef.dropAs, itemDef.dropMult)
 	return false
@@ -435,7 +443,8 @@ function api.Initialize(parentWorld)
 		},
 		unlocks = {
 			wood_pile = true,
-		}
+		},
+		lastShunt = 1
 	}
 	
 	for i = 1, Global.INVENTORY_SLOTS do
