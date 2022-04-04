@@ -142,6 +142,9 @@ local def = {
 						end
 					},
 					{
+						displayFunc = function (self, player)
+							return self.story
+						end,
 						msg = {
 							text = "Why do we need the fire?  We have our own light.",
 							sound = "chat_good",
@@ -197,7 +200,7 @@ local def = {
 							text = "It's fine.  Go on.",
 							sound = "chat_good",
 						},
-						leadsTo = "story1"
+						leadsTo = "story1a"
 					},
 					{
 						msg = {
@@ -530,12 +533,12 @@ local def = {
 				{
 					text = "And so, here we are.",
 					sound = "chat_good",
-					delay = 19,
+					delay = 21.5,
 				},
 				{
 					text = "And this is all that's left.",
 					sound = "chat_good",
-					delay = 22,
+					delay = 24,
 				},
 				},
 				onSceneFunc = function (self, player)
@@ -544,14 +547,14 @@ local def = {
 					self.story2 = false
 					self.story3 = true
 				end,
-				replyDelay = 23.5,
+				replyDelay = 25.5,
 				replies = {
 					{
 						msg = 
 						{
 							text = "(Stay silent.)",
 						},
-						leadsTo = "story3a_passive"
+						leadsTo = "story3_passive"
 					},
 					{
 						msg = 
@@ -559,7 +562,7 @@ local def = {
 							text = "...is this really all that's left?",
 							sound = "chat_good",
 						},
-						leadsTo = "story3a_active"
+						leadsTo = "story3_active"
 					},
 					{
 						msg = 
@@ -601,7 +604,7 @@ local def = {
 						{
 							text = "(Shrug.)",
 						},
-						leadsTo = "story3a_passive"
+						leadsTo = "story3_passive"
 					},
 					{
 						msg = 
@@ -609,7 +612,7 @@ local def = {
 							text = "...is this really all that's left?",
 							sound = "chat_good",
 						},
-						leadsTo = "story3a_active"
+						leadsTo = "story3_active"
 					},
 					{
 						msg = 
@@ -617,7 +620,7 @@ local def = {
 							text = "...sorry, I have to go.",
 							sound = "chat_good",
 						},
-						leadsTo = "story3a_depart"
+						leadsTo = "story3_depart"
 					},
 				}
 			},
@@ -908,7 +911,6 @@ local def = {
 				},
 				{
 					text = "...",
-					sound = "chat_good",
 					delay = 4,
 				},
 				{
@@ -967,7 +969,7 @@ local def = {
 				msg = {{
 					text = "Safe travels.  Degenerate pupa.  Remember to fly over holes, not just walk into them.",
 					sound = "chat_good",
-					delay = 1,
+					delay = 1.5,
 				}},
 				replyDelay = 4.5,
 			},

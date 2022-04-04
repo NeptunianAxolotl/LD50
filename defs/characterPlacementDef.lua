@@ -7,12 +7,12 @@ local characters = {
 	{
 		name = "firefly_creeper",
 		data = {animDir = math.pi/2},
-		pos = {700, -500},
+		pos = {2100, -500},
 	},
 	{
 		name = "firefly_mute",	
 		data = {animDir = math.pi},
-		pos = {-1600, -1200},
+		pos = {-1600, -1900},
 	},
 }
 
