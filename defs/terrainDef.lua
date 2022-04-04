@@ -864,6 +864,18 @@ local terrain = {
     name = "stick",
     pos = {510, -650},
 },
+{
+    name = "pick",
+    pos = {4030, -1490},
+},
+{
+    name = "ore_mine",
+    pos = {4200, -1850},
+},
+{
+    name = "ore_mine",
+    pos = {4580, -1340},
+},
 
 }
 
