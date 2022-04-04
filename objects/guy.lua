@@ -87,6 +87,8 @@ local function DoMoveGoalAction(self)
 		end
 		self.SetTalkingTo(other)
 		other.SetTalkingTo(self)
+	elseif feature and not feature.IsDead() and action == "burn_all" then
+		ActionCallback(true, feature, action, item)
 	elseif feature and item and not feature.IsDead() then
 		if (not ActionCallback) or ActionCallback(not feature.IsDead(), feature, action, item) then
 			ItemAction.DoItemToFeature(feature, action, item)

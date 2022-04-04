@@ -194,6 +194,7 @@ local function ActionCallback(success, other, action, item)
 		self.activeItem = false
 		return true
 	end
+	
 	if action == "mine" then
 		return true
 	elseif action == "collect" then
@@ -213,6 +214,23 @@ local function ActionCallback(success, other, action, item)
 		self.inventory[self.activeItem] = "empty"
 		self.activeItem = false
 		return true
+	elseif action == "burn_all" then
+		local logs, stick = api.GetConvertedWoodCounts()
+		local coal = api.GetInventoryCount("coal_item")
+		for i = 1, logs do
+			ItemAction.DoItemToFeature(other, "burn", "log_item")
+		end
+		for i = 1, stick do
+			ItemAction.DoItemToFeature(other, "burn", "stick_item")
+		end
+		for i = 1, coal do
+			ItemAction.DoItemToFeature(other, "burn", "coal_item")
+		end
+		api.SetItemCount("log_item", 0)
+		api.SetItemCount("log_bundle_item", 0)
+		api.SetItemCount("stick_item", 0)
+		api.SetItemCount("stick_bundle_item", 0)
+		api.SetItemCount("coal_item", 0)
 	end
 end
 
@@ -312,7 +330,9 @@ function api.MousePressedWorld(mx, my, button)
 	
 	local feature = self.hoveredFeature
 	local featurePos = feature.GetPos()
-	if feature.GetDef().isMine then
+	if feature.GetDef().isFire then
+		self.playerGuy.SetMoveGoal(featurePos, feature.GetRadius() + Global.DROP_LEEWAY, feature, "burn_all", false, ActionCallback)
+	elseif feature.GetDef().isMine then
 		local canMine = (not feature.GetDef().mineTool) or (api.GetInventoryCount(feature.GetDef().mineTool) > 0)
 		if canMine then
 			self.playerGuy.SetMoveGoal(featurePos, feature.GetRadius() + Global.DROP_LEEWAY, feature, "mine", false, ActionCallback)
