@@ -21,7 +21,6 @@ local function DoMoveGoalAction(self)
 			feature.AddItems(item, self.GetInventoryCount(item))
 			self.items[item] = (self.items[item] or 0) - self.GetInventoryCount(item)
 			self.behaviourDelay = Global.NPC_DROP_TIME
-			print(action, feature and feature.def.name, item)
 		elseif (not ActionCallback) or ActionCallback(true, feature, action, item) then
 			local itemDef = ItemDefs[item]
 			if itemDef then
