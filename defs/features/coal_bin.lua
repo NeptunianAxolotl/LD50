@@ -4,7 +4,7 @@ local def = {
 	collide = true,
 	image = "coal_bin",
 	placementRadius = 130,
-	portraitNeutral = "coal_bin",
+	portraitNeutral = "coal_bin_portrait",
 	voidDestroys = true,
 	mouseHit = {rx = -100, ry = -100, width = 200, height = 200},
 	initData = {
