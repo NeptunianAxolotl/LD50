@@ -2,6 +2,7 @@ local def = {
 	radius = 42,
 	collide = true,
 	animation = "firefly_anim",
+	animationFlying = "firefly_flying_anim",
 	animationOverlay = "firefly_light_anim",
 	portraitNeutral = "portrait_firefly_neutral",
 	portraitHappy = "portrait_firefly_happy",

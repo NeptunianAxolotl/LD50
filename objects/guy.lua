@@ -145,7 +145,8 @@ local function UpdateAnimDir(self)
 		return
 	end
 	local speed, angle = util.CartToPolar({vx, vy})
-	if speed < 100 then
+	self.moving = (speed > 100)
+	if not self.moving then
 		return
 	end
 	self.animDir = angle
@@ -335,7 +336,9 @@ local function NewGuy(self, physicsWorld, world)
 		if self.dead then
 			return true
 		end
-		self.animTime = self.animTime + dt
+		if self.moving or not GroundHandler.CheckTileAtPosExists(self.GetPos()) then
+			self.animTime = self.animTime + dt
+		end
 		self.behaviourDelay = util.UpdateTimer(self.behaviourDelay, dt * (def.workMult or 1))
 		if self.unblockMoveTimer then
 			self.unblockMoveTimer = util.UpdateTimer(self.unblockMoveTimer, dt)
@@ -404,8 +407,9 @@ local function NewGuy(self, physicsWorld, world)
 			return
 		end
 		local bx, by = self.body:getPosition()
+		local anim = (GroundHandler.CheckTileAtPosExists(self.GetPos()) and def.animation) or def.animationFlying or def.animation
 		drawQueue:push({y=by + 24; f=function()
-			Resources.DrawIsoAnimation(def.animation, bx, by, self.animTime, self.animDir)
+			Resources.DrawIsoAnimation(anim, bx, by, self.animTime, self.animDir)
 			if def.animationOverlay then
 				local color = def.overAnimColorFunc(self)
 				Resources.DrawIsoAnimation(def.animationOverlay, bx, by, self.animTime, self.animDir, false, false, color)
