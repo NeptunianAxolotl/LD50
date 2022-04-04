@@ -429,7 +429,7 @@ local def = {
 							text = "Sure.  Ready?",
 							sound = "chat_good",
 						},
-						leadsTo = "leave",
+						leadsTo = "help_axe",
 					},
 					{
 						msg = {
@@ -438,12 +438,146 @@ local def = {
 						},
 						leadsTo = "notouch",
 					},
+				}
+			},
+			notouch = {
+				msg = {
+				{
+					text = "Oh, come ON!",
+					sound = "chat_good",
+					delay = 1,
+				}
+				},	
+				replyDelay = 2,
+				replies = {
 					{
 						msg = {
-							text = "I'm late...to...my fire...? Maybe later. (Leave.)",
+							text = "Okay, okay, fine.",
+							sound = "chat_good",
+						},
+						leadsTo = "help_axe",
+					},
+					{
+						msg = {
+							text = "Nope.  (Leave.)",
 							sound = "chat_good",
 						},
 						leadsTo = "leave",
+					},
+				}
+			},
+			help_axe = {
+				msg = {
+				{
+					text = "Ready?  Heave!",
+					sound = "chat_good",
+					delay = 1,
+				},
+				{
+					text = "Hnnnng!",
+					sound = "chat_good",
+					delay = 2,
+				},
+				},	
+				replyDelay = 3,
+				replies = {
+					{
+						msg = {
+							text = "Hnnng.",
+							sound = "chat_good",
+						},
+						leadsTo = "help_axe2",
+					},
+				}
+			},
+			help_axe2 = {
+				msg = {
+				{
+					text = "Hnnnnnnnnnnnnnng!",
+					sound = "chat_good",
+					delay = 1,
+				}
+				},	
+				replyDelay = 2,
+				replies = {
+					{
+						msg = {
+							text = "Hnnnnng!",
+							sound = "chat_good",
+						},
+						leadsTo = "help_axe3",
+					},
+				}
+			},
+			help_axe3 = {
+				msg = {
+				{
+					text = "HNNNNG",
+					sound = "chat_good",
+					delay = 1,
+				}
+				},	
+				replyDelay = 2,
+				replies = {
+					{
+						msg = {
+							text = "HNNNNNNNNG",
+							sound = "chat_good",
+						},
+						leadsTo = "help_axe4",
+					},
+				}
+			},
+			help_axe4 = {
+				msg = {
+				{
+					text = "HNNNNNNNNNNNNNNNNN-",
+					sound = "chat_good",
+					delay = 1,
+				}
+				},	
+				replyDelay = 2,
+				replies = {
+					{
+						msg = {
+							text = "Look, there you go, it came loose.",
+							sound = "chat_good",
+						},
+						leadsTo = "help_axe5",
+					},
+				}
+			},
+			help_axe5 = {
+				msg = {
+				{
+					text = "Huh, so it did.",
+					sound = "chat_good",
+					delay = 1,
+				},
+				{
+					text = "You can keep it if you want.  Too much trouble.",
+					sound = "chat_good",
+					delay = 2.5,
+				},
+				{
+					text = "...sitting around with no axe is kind of boring, though.",
+					sound = "chat_good",
+					delay = 4,
+				},
+				},	
+				replyDelay = 5,
+				onSceneFunc = function (self, player)
+					-- Called with the scene is opened.
+					--ChatHandler.AddMessage("SCENE FUNC")
+					self.friendly = true
+				end,
+				replies = {
+					{
+						msg = {
+							text = "Thanks.  You could help me out, if you want.",
+							sound = "chat_good",
+						},
+						leadsTo = "options_first",
 					},
 				}
 			},
@@ -461,47 +595,6 @@ local def = {
 					},
 				},
 				replyDelay = 3.5,
-			},
-			help1 = {
-				msg = {{
-					text = "Oh?",
-					sound = "chat_good",
-					delay = 1
-				}},
-				replyDelay = 2,
-				replies = {
-					{
-						msg = {
-							text = "You can come sit by the fire if you help out.",
-							sound = "chat_good",
-						},
-						leadsTo = "help2",
-					},
-				}
-			},
-			help2 = {
-				msg = {{
-					text = "Sure!",
-					sound = "chat_good",
-					delay = 1,
-				},
-				{
-					text = "(The firefly decides to help you out.)",
-					sound = "chat_good",
-					delay = 2,
-				},
-				{
-					text = "(Talk to him again for options.)",
-					sound = "chat_good",
-					delay = 3.5,
-				},
-				},
-				onSceneFunc = function (self, player)
-					-- Called with the scene is opened.
-					--ChatHandler.AddMessage("SCENE FUNC")
-					self.friendly = true
-				end,
-				replyDelay = 4.5,
 			},
 		},
 	}
