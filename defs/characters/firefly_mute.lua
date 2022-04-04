@@ -317,7 +317,7 @@ local def = {
 				{
 					text = "And I would like to offer some help.",
 					sound = "chat_good",
-					delay = 10,
+					delay = 13,
 				},
 				},	
 				onSceneFunc = function (self, player)
@@ -325,7 +325,7 @@ local def = {
 					--ChatHandler.AddMessage("SCENE FUNC")
 					self.friendly = true
 				end,
-				replyDelay = 15.5,
+				replyDelay = 14.5,
 				replies = {
 					{
 						msg = {
