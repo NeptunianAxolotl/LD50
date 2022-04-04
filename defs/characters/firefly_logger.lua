@@ -9,9 +9,6 @@ local def = {
 		story2 = false,
 		story3 = false,
 		done = false,
-		branch1 = false,
-		branch2 = false, 
-		branch3 = false,
 		items = {
 			log_item = 0,
 		}
