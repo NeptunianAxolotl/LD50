@@ -75,7 +75,7 @@ local def = {
 				replyDelay = 9,
 				onSceneFunc = function (self, player)
 					-- Called with the scene is opened.
-					ChatHandler.AddMessage("SCENE FUNC")
+					--ChatHandler.AddMessage("SCENE FUNC")
 					self.firstTalk = false
 				end,
 				replies = {
@@ -278,10 +278,18 @@ local def = {
 				}},
 			},
 			thanks = {
-				msg = {{
-					text = "Thanks, the fire always needs more logs!",
+				msg = {
+				{
+					text = "Made you'self useful, eh.  Maybe you're good for something after all.",
 					sound = "chat_good",
-				}},
+				},
+				{
+					text = "Lemme just chuck these on, here.",
+					sound = "chat_good",
+					delay = 2,
+				},
+				},
+				replyDelay = 4,
 			},
 			hang_on_no_logs = {
 				msg = {{
