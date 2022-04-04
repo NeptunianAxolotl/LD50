@@ -16,32 +16,49 @@ local world
 -- Light Handling
 --------------------------------------------------
 
-function api.UpdateLightParams(light, pos, radius)
+function api.UpdateLightParams(light, pos, radius, color)
 	pos = world.WorldToScreen(pos)
+	if radius < 1 then
+		radius = 1
+	end
 	local radiusGround = radius * world.WorldScaleToScreenScale()
 	local radiusVision = (radius * 1.3) * world.WorldScaleToScreenScale()
 	
-	light.ground:SetPosition(pos[1], pos[2], 1)
-	light.ground:SetRadius(radiusGround)
+	if color then
+		if light.ground then
+			light.ground:SetColor(color[1], color[2], color[3])
+		end
+		light.vision:SetColor(color[1], color[2], color[3])
+	end
+	
+	if light.ground then
+		light.ground:SetPosition(pos[1], pos[2], 1)
+		light.ground:SetRadius(radiusGround)
+	end
 	
 	light.vision:SetPosition(pos[1], pos[2], 1)
 	light.vision:SetRadius(radiusVision)
 end
 
-function api.AddLight(useStar, maxRadius)
+function api.AddLight(useStar, maxRadius, color, visionOnly)
 	maxRadius = maxRadius or 1000
 	local light = {
-		ground = ((useStar and Star) or Light):new(self.groundShadow, maxRadius),
+		ground = (not visionOnly) and ((useStar and Star) or Light):new(self.groundShadow, maxRadius),
 		vision = ((useStar and Star) or Light):new(self.visionShadow, maxRadius*1.3),
 	}
 	
-	light.ground:SetColor(255, 255, 255)
-	light.vision:SetColor(255, 255, 255)
+	color = color or {255, 255, 255}
+	if light.ground then
+		light.ground:SetColor(color[1], color[2], color[3])
+	end
+	light.vision:SetColor(color[1], color[2], color[3])
 	return light
 end
 
 function api.RemoveLight(light)
-	light.ground:Remove()
+	if light.ground then
+		light.ground:Remove()
+	end
 	light.vision:Remove()
 end
 
@@ -114,7 +131,7 @@ function api.Initialize(parentWorld)
 	self.groundShadow:SetColor(20, 20, 20)
 	self.visionShadow:SetColor(20, 20, 20)
 
-	self.mouseLight = api.AddLight()
+	self.mouseLight = api.AddLight(true, 300, {120, 120, 120})
 end
 
 return api

@@ -30,26 +30,12 @@ local function FeatureToBuildDef(featureName)
 	return false
 end
 
-function api.GetInventoryCount(item)
-	local count = 0
-	for i = 1, #self.inventory do
-		if self.inventory[i] == item then
-			count = count + 1
-		end
-	end
-	return count
-end
-
 local function DropInventory(pos)
 	for i = 1, #self.inventory do
 		if self.inventory[i] ~= "empty" then
-			local toDrop = ItemDefs[self.inventory[i]].dropAs
-			if toDrop then
-				local dropPos = TerrainHandler.FindFreeSpaceFeature(pos, toDrop)
-				if dropPos then
-					-- Items could rarely be eaten here
-					TerrainHandler.SpawnFeature(toDrop, dropPos)
-				end
+			local itemDef = ItemDefs[self.inventory[i]]
+			if itemDef then
+				TerrainHandler.DropFeatureInFreeSpace(pos, itemDef.dropAs, itemDef.dropMult)
 				self.inventory[i] = "empty"
 			end
 		end
@@ -57,17 +43,27 @@ local function DropInventory(pos)
 end
 
 function api.AddItem(item)
-	local start = (ItemDefs[item].isTool and 1) or 2
-	for i = start, #self.inventory do
+	for i = 1, #self.inventory do
 		if self.inventory[i] == "empty" then
 			self.inventory[i] = item
 			return true
 		end
 	end
-	if self.inventory[1] == "empty" then
-		self.inventory[1] = item
-		return true
+	-- Shunt an item
+	for i = 1, #self.inventory do
+		local toCheck = (self.lastShunt + i - 1)%(#self.inventory) + 1
+		local itemDef = ItemDefs[self.inventory[toCheck]]
+		if itemDef and not itemDef.isTool then
+			self.lastShunt = toCheck
+			TerrainHandler.DropFeatureInFreeSpace(self.playerGuy.GetPos(), itemDef.dropAs, itemDef.dropMult)
+			self.inventory[toCheck] = item
+			return true
+		end
 	end
+	-- Full of tools, fail to lift the item
+	local itemDef = ItemDefs[item]
+	TerrainHandler.DropFeatureInFreeSpace(self.playerGuy.GetPos(), itemDef.dropAs, itemDef.dropMult)
+	return false
 end
 
 function api.ItemHasSpace(item)
@@ -100,6 +96,16 @@ function api.SetItemCount(item, count)
 	end
 end
 
+function api.GetInventoryCount(item)
+	local count = 0
+	for i = 1, #self.inventory do
+		if self.inventory[i] == item then
+			count = count + 1
+		end
+	end
+	return count
+end
+
 function api.GetConvertedWoodCounts()
 	local logs = api.GetInventoryCount("log_bundle_item") * Global.LOG_BUNDLE + api.GetInventoryCount("log_item")
 	local sticks = api.GetInventoryCount("stick_bundle_item") * Global.STICK_BUNDLE + api.GetInventoryCount("stick_item")
@@ -119,6 +125,18 @@ function api.SpendOnBuilding(buildDef)
 	for key, value in pairs(buildDef.aggCostMap) do
 		api.RemoveInventory(key, value)
 	end
+end
+
+--------------------------------------------------
+-- Technology
+--------------------------------------------------
+
+function api.HasTech(name)
+	return Global.UNLOCK_ALL_TECH or self.unlocks[name]
+end
+
+function api.GetUnlocks()
+	return self.unlocks
 end
 
 --------------------------------------------------
@@ -199,12 +217,9 @@ function api.GetViewRestriction()
 	if self.playerGuy.IsDead() then
 		return
 	end
-	return {{pos = util.Add(self.playerGuy.GetPos(), util.Mult(0.05, self.playerGuy.GetVelocity())), radius = 800}}
+	return {{pos = util.Add(self.playerGuy.GetPos(), util.Mult(0.01, self.playerGuy.GetVelocity())), radius = 800 * (Global.DEBUG_CAMERA_ZOOM or 1)}}
 end
 
-function api.GetUnlocks()
-	return self.unlocks
-end
 
 --------------------------------------------------
 -- Input
@@ -278,13 +293,21 @@ function api.MousePressedWorld(mx, my, button)
 		return
 	end
 	
-	local featurePos = self.hoveredFeature.GetPos()
-	if self.hoveredFeature.GetDef().collectAs then
-		self.playerGuy.SetMoveGoal(featurePos, self.hoveredFeature.GetRadius() + Global.DROP_LEEWAY, self.hoveredFeature, "collect", false, ActionCallback)
-	elseif self.hoveredFeature.CanBeTalkedTo() then
-		self.playerGuy.SetMoveGoal(featurePos, self.hoveredFeature.GetRadius() + Global.DROP_LEEWAY, self.hoveredFeature, "talk", false, ActionCallback)
+	local feature = self.hoveredFeature
+	local featurePos = feature.GetPos()
+	if feature.GetDef().isMine then
+		local canMine = (not feature.GetDef().mineTool) or (api.GetInventoryCount(feature.GetDef().mineTool) > 0)
+		if canMine then
+			self.playerGuy.SetMoveGoal(featurePos, feature.GetRadius() + Global.DROP_LEEWAY, feature, "mine", false, ActionCallback)
+		else
+			ChatHandler.AddMessage("Something about needing a tool " .. (feature.GetDef().mineTool or "???"))
+		end
+	elseif feature.GetDef().collectAs then
+		self.playerGuy.SetMoveGoal(featurePos, feature.GetRadius() + Global.DROP_LEEWAY, feature, "collect", false, ActionCallback)
+	elseif feature.CanBeTalkedTo() then
+		self.playerGuy.SetMoveGoal(featurePos, feature.GetRadius() + Global.DROP_LEEWAY, feature, "talk", false, ActionCallback)
 	else
-		self.playerGuy.SetMoveGoal(featurePos, self.hoveredFeature.GetRadius() + Global.DROP_LEEWAY)
+		self.playerGuy.SetMoveGoal(featurePos, feature.GetRadius() + Global.DROP_LEEWAY)
 	end
 end
 
@@ -336,6 +359,14 @@ function api.Draw(drawQueue)
 		return
 	end
 	self.playerGuy.Draw(drawQueue)
+	
+	if Global.DRAW_DEBUG then
+		local tileX, tileY = GroundHandler.PosToTile(self.playerGuy.GetPos())
+		local pos = GroundHandler.TileToPos(tileX, tileY)
+		love.graphics.setColor(GroundHandler.CheckTileExists(tileX, tileY) and 0 or 1, 0.5, 0.5, 1)
+		love.graphics.setLineWidth(4)
+		love.graphics.rectangle("line", pos[1] - Global.TILE_WIDTH/2, pos[2] - Global.TILE_HEIGHT/2, Global.TILE_WIDTH, Global.TILE_HEIGHT, 0, 0, 5)
+	end
 end
 
 local function DrawHoveredNpc()
@@ -364,10 +395,10 @@ end
 
 function api.DrawInterface()
 	local checkHover = (not DialogueHandler.InChat()) and (not self.buildMenuOpen)
-	self.hoveredItem = InventoryUtil.DrawInventoryBar(self.world, self.inventory, self.selectedItem, self.activeItem, ItemDefs, checkHover, 80, 15, 2, Global.INVENTORY_SLOTS + 1, 0.5, 0)
-	self.hoveredItem = InventoryUtil.DrawInventoryBar(self.world, self.inventory, self.selectedItem, self.activeItem, ItemDefs, checkHover, 80, 15, 1, 1, 0, 0.5) or self.hoveredItem
+	self.hoveredItem = InventoryUtil.DrawInventoryBar(self.world, self.inventory, self.selectedItem, self.activeItem, ItemDefs, checkHover, 80, 15, 2, Global.INVENTORY_SLOTS, 0, 0)
+	self.hoveredItem = InventoryUtil.DrawInventoryBar(self.world, self.inventory, self.selectedItem, self.activeItem, ItemDefs, checkHover, 80, 15, 1, 1, 0, 0) or self.hoveredItem
 	
-	self.hoveredBuildMenu = InventoryUtil.DrawBuild(self.world, Global.INVENTORY_SLOTS + 1, (not DialogueHandler.InChat()), self.buildMenuOpen, 80, 15, 0.5, 120, 70)
+	self.hoveredBuildMenu = InventoryUtil.DrawBuild(self.world, Global.INVENTORY_SLOTS, (not DialogueHandler.InChat()), self.buildMenuOpen, 80, 15, 0, 120, 70)
 	
 	self.hoveredFeature = false
 	self.hoveredNpc = false
@@ -409,25 +440,22 @@ function api.Initialize(parentWorld)
 	self = {
 		world = parentWorld,
 		inventory = {
-			"empty",
-			"log_item",
-			"stick_item",
-			"stick_item",
 		},
 		unlocks = {
 			wood_pile = true,
-		}
+		},
+		lastShunt = 1
 	}
 	
-	for i = 1, Global.INVENTORY_SLOTS + 1 do
+	for i = 1, Global.INVENTORY_SLOTS do
 		if not self.inventory[i] then
-			self.inventory[i] = "empty"
+			self.inventory[i] = Global.DEBUG_START_ITEM or "empty"
 		end
 	end
 	
 	local guyData = {
 		pos = {200, 200},
-		def = CharacterDefs["firefly"],
+		def = CharacterDefs["firefly_player"],
 	}
 	self.playerGuy = NewGuy(guyData, self.world.GetPhysicsWorld(), self.world)
 end

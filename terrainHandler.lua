@@ -3,11 +3,19 @@ local IterableMap = require("include/IterableMap")
 local util = require("include/util")
 
 local FeatureDefs = util.LoadDefDirectory("defs/features")
-local terrainDef = require("defs/terrainDef")
+local terrainDef = (Global.USE_DEBUG_MAP and require("defs/debugTerrainDef")) or require("defs/terrainDef")
 local NewFeature = require("objects/feature")
 
 local self = {}
 local api = {}
+
+function api.GetHomeFire()
+	return self.homeFire
+end
+
+function api.FindFreeSpaceFeature(centre, feature, usePlaceDistance)
+	return api.FindFreeSpace(centre, ((usePlaceDistance and FeatureDefs[feature].placementRadius) or FeatureDefs[feature].radius))
+end
 
 function api.SpawnFeature(name, pos, items)
 	local def = FeatureDefs[name]
@@ -16,19 +24,41 @@ function api.SpawnFeature(name, pos, items)
 	data.def = def
 	local feature = NewFeature(data, self.world.GetPhysicsWorld(), self.world)
 	IterableMap.Add(self.features, feature)
+	if def.isEnergyProvider then
+		IterableMap.Add(self.energyFeature, feature)
+	end
 	
 	if items then
 		for name, count in pairs(items) do
 			feature.AddItems(name, count)
 		end
 	end
+	return feature
 end
 
-function api.GetClosetFeature(pos, featureType, toSurface)
+function api.DropFeatureInFreeSpace(pos, toDrop, count, usePlaceDistance)
+	count = count or 1
+	for i = 1, count do
+		local dropPos = api.FindFreeSpaceFeature(pos, toDrop, usePlaceDistance)
+		if dropPos then
+			-- Items could rarely be eaten here
+			api.SpawnFeature(toDrop, dropPos)
+		end
+	end
+end
+
+function api.GetClosetFeature(pos, featureType, toSurface, requireLight, requirePower, requireNotGoal, requireNotBusy, skipChance)
 	local minFunc
 	if toSurface then
 		minFunc = function (feature)
-			if featureType and feature.def.name ~= featureType then
+			if (featureType and feature.def.name ~= featureType) or 
+					(requireLight and not feature.HasLight()) or 
+					(requirePower and not feature.HasPower()) or 
+					(requireNotGoal and feature.IsMoveTarget()) or 
+					(requireNotBusy and feature.IsBusyOrTalking()) then
+				return false
+			end
+			if skipChance and skipChance > math.random() then
 				return false
 			end
 			local featurePos = feature.GetPos()
@@ -37,7 +67,14 @@ function api.GetClosetFeature(pos, featureType, toSurface)
 		end
 	else
 		minFunc = function (feature)
-			if featureType and feature.def.name ~= featureType then
+			if (featureType and feature.def.name ~= featureType) or 
+					(requireLight and not feature.HasLight()) or 
+					(requirePower and not feature.HasPower()) or 
+					(requireNotGoal and feature.IsMoveTarget()) or 
+					(requireNotBusy and feature.IsBusyOrTalking()) then
+				return false
+			end
+			if skipChance and skipChance > math.random() then
 				return false
 			end
 			local featurePos = feature.GetPos()
@@ -54,15 +91,41 @@ end
 
 function api.FindFreeSpace(centre, freeRadius)
 	local searchRadius = 0
-	while searchRadius < 1000 do
+	local searchInc = 15
+	while searchRadius < 2000 do
 		local pos = util.Add(centre, util.RandomPointInCircle(searchRadius))
 		local _, closeDist = api.GetClosetFeature(pos, featureType, true)
-		if closeDist > freeRadius then
+		if closeDist > freeRadius and GroundHandler.PositionHasGround(pos, freeRadius) then
 			return pos
 		end
-		searchRadius = searchRadius + 20
+		searchInc = searchInc + 2
+		searchRadius = searchRadius + searchInc
 	end
 	return false
+end
+
+function api.GetPositionEnergy(pos, toPowerRangeMult)
+	toPowerRangeMult = toPowerRangeMult or 1
+	local retry = true
+	while retry do
+		retry = false
+		local maxEnergy = false
+		local count, keyByIndex, dataByKey = IterableMap.GetBarbarianData(self.energyFeature)
+		for i = 1, count do
+			local feature = dataByKey[keyByIndex[i]]
+			if feature.IsDead() then
+				IterableMap.Remove(self, i) -- This should be rare
+				retry = true
+				break
+			elseif not (maxEnergy and feature.energyProvided <= maxEnergy) then
+				local dist = util.DistVectors(pos, feature.GetPos())
+				if dist < feature.energyRadius * toPowerRangeMult then
+					maxEnergy = feature.energyProvided
+				end
+			end
+		end
+		return maxEnergy
+	end
 end
 
 function api.CheckFeaturePlace(featureName, pos)
@@ -90,14 +153,13 @@ function api.DrawFeatureBlueprint(featureName, pos)
 	end
 end
 
-function api.FindFreeSpaceFeature(centre, feature)
-	return api.FindFreeSpace(centre, FeatureDefs[feature].radius)
-end
-
 local function SetupTerrain()
 	for i = 1, #terrainDef do
-		local feature = terrainDef[i]
-		api.SpawnFeature(feature.name, feature.pos, feature.items)
+		local featurePlaceDef = terrainDef[i]
+		local feature = api.SpawnFeature(featurePlaceDef.name, featurePlaceDef.pos, featurePlaceDef.items)
+		if featurePlaceDef.name == "fire" then
+			self.homeFire = feature
+		end
 	end
 end
 
@@ -110,16 +172,27 @@ function api.Update(dt)
 end
 
 function api.Draw(drawQueue)
-	IterableMap.ApplySelf(self.features, "Draw", drawQueue)
+	local left, top, right, bot = self.world.GetCameraExtents(400)
+	--IterableMap.ApplySelf(self.features, "Draw", drawQueue, left, top, right, bot)
+	
+	local indexMax, keyByIndex, dataByKey = IterableMap.GetBarbarianData(self.features)
+	--print(indexMax)
+	for i = 1, indexMax do
+		dataByKey[keyByIndex[i]].Draw(drawQueue, left, top, right, bot)
+	end
 end
 
 function api.Initialize(world)
 	self = {
 		features = IterableMap.New(),
+		energyFeature = IterableMap.New(),
 		world = world,
 	}
 	
 	SetupTerrain()
+	--for name in pairs(FeatureDefs) do
+	--	print([[	"]] .. name .. [[",]])
+	--end
 end
 
 return api

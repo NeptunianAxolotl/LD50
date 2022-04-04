@@ -10,7 +10,6 @@ local def = {
 			log_item = 0,
 		}
 	},
-	isNpc = true,
 	behaviour = function (self, world, dt)
 		if self.behaviourDelay then
 			self.behaviourDelay = self.behaviourDelay - dt

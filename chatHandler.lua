@@ -24,9 +24,14 @@ function api.AddMessage(text, timer, turns, color, sound, noLineSpace)
 	if sound then
 		SoundHandler.PlaySound(sound)
 	end
+	
+	if not text then
+		return -- Maybe we just wanted to play a sound
+	end
 
 	local realLines = {}
 	local textWidthLimit = 315
+	Font.SetSize(1)
 	--break up text to wrap consistently without manual intervention
 	if love.graphics.getFont():getWidth(text) > textWidthLimit then --width limit in pixels
 		--temp variable for text
@@ -70,18 +75,16 @@ function api.AddMessage(text, timer, turns, color, sound, noLineSpace)
 	end
 end
 
-function api.AddTurnMessage(message, defaultColor, defaultTimer)
+function api.AddTurnMessage(message, defaultColor, defaultTimer, extraDelay)
 	if self.hadLastChat then
 		return
 	end
 	local function AddFunc()
 		if message.text then
-			for i = 1, #message.text do
-				api.AddMessage(message.text[i], message.timer or defaultTimer, message.turns or 1, message.color or defaultColor, message.sound)
-			end
+			api.AddMessage(message.text, message.timer or defaultTimer, message.turns or 1, message.color or defaultColor, message.sound)
 		end
 	end
-	Delay.Add(message.delay or 0, AddFunc)
+	Delay.Add((message.delay or 0) + (extraDelay or 0), AddFunc)
 	if message.last then
 		self.hadLastChat = true
 	end
@@ -124,7 +127,6 @@ function api.DrawConsole()
 		)
 		
 		Font.SetSize(1)
-		
 		love.graphics.print(line.consoleText, 30, topPad + (i * Global.LINE_SPACING))
 	end
 	love.graphics.setColor(1, 1, 1)

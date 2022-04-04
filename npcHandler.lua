@@ -3,7 +3,7 @@ local IterableMap = require("include/IterableMap")
 local util = require("include/util")
 
 local CharacterDefs = util.LoadDefDirectory("defs/characters")
-local characterPlacementDef = require("defs/characterPlacementDef")
+local characterPlacementDef = (Global.USE_DEBUG_MAP and require("defs/debugCharPlaceDef")) or require("defs/characterPlacementDef")
 local NewGuy = require("objects/guy")
 
 local self = {}
@@ -20,7 +20,7 @@ end
 local function SetupInitialCharacters()
 	for i = 1, #characterPlacementDef do
 		local character = characterPlacementDef[i]
-		api.SpawnCharacter(character.name, character.pos)
+		api.SpawnCharacter(character.name, character.pos, character.data)
 	end
 end
 

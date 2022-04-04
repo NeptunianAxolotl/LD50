@@ -9,8 +9,7 @@ local def = {
 		items = {
 			log_item = 0,
 		}
-	},
-	isNpc = true,
+	},
 	behaviour = function (self, world, dt)
 		if self.behaviourDelay then
 			self.behaviourDelay = self.behaviourDelay - dt
@@ -65,52 +64,271 @@ local def = {
 		scenes = {
 			hello = {
 				msg = {{
-					text = {"..."},
-					sound = "chat_good",
+					text = "...",
 				}},
 				replyDelay = 0.1,
 				replies = {
 					{
 						msg = {
-							text = {"Sure, here you go"},
+							text = "Hi.",
 							sound = "chat_good",
 						},
-						leadsToFunc = function (self, player)
-							local logCount = player.GetInventoryCount("log_item")
-							if logCount > 0 then
-								player.RemoveInventory("log_item", logCount)
-								self.friendly = true
-								self.items.log_item = logCount
-								return "thanks", true
-							else
-								return "hang_on_no_logs", true
-							end
-						end
+						leadsTo = "silence1"
 					},
 					{
 						msg = {
-							text = {"No, they are mine"},
+							text = "I haven't seen much of you lately.  Are you doing okay?",
 							sound = "chat_good",
 						},
-						leadsTo = "are_you_sure",
+						leadsTo = "silence2"
 					},
 					{
 						msg = {
-							text = {"I don't have any"},
-							sound = "chat_good",
+							text = "[spend a while together in silence]",
 						},
-						leadsToFunc = function (self, player)
-							local logCount = player.GetInventoryCount("log_item")
-							if logCount > 0 then
-								return "behind_you"
-							else
-								return "no_logs", true
-							end
-						end
+						leadsTo = "silence3"
 					},
 					
 				}
 			},
+			silence1 = {
+				msg = {
+				{
+					text = "...",
+					delay = 3,
+				},
+				},
+				replyDelay = 6
+			},
+			silence2 = {
+				msg = {
+				{
+					text = "...",
+					delay = 3,
+				},
+				},
+				replyDelay = 6,
+				replies = {
+					{
+						msg = {
+							text = "Do you mind it if I stay a while, and talk?",
+							sound = "chat_good",
+						},
+						leadsTo = "silence21",
+					},
+					{
+						msg = {
+							text = "I worry about you.  You don't look so good.  Come closer to the fire.",
+							sound = "chat_good",
+						},
+						leadsTo = "silence22",
+					},
+					{
+						msg = {
+							text = "[leave]",
+						},
+					},
+				},
+			},
+			silence21 = {	
+				msg = {
+				{
+					text = "...",
+					delay = 4,
+				},
+				},		
+				replyDelay = 6.6,
+				replies = {
+					{
+						msg = {
+							text = "I remember you fondly from when I was young.",
+							sound = "chat_good",
+						},
+						leadsTo = "silence211",
+					},
+					{
+						msg = {
+							text = "[leave]",
+						},
+					},
+				},
+			},
+			silence211 = {
+				msg = {{
+					text = "...",
+					delay = 2.6,
+				}},
+				replyDelay = 4,
+					replies = {
+					{
+						msg = {
+							text = "I'm glad you're still around.",
+							sound = "chat_good",
+						},
+						leadsTo = "silence2111",
+					},
+					{
+						msg = {
+							text = "...I miss you.",
+							sound = "chat_good",
+						},
+						leadsTo = "silence2112",
+					},
+					{
+						msg = {
+							text = "[leave]",
+						},
+					},
+				},
+			},
+			silence2111 = {
+				msg = {
+				{
+					text = "...",
+					delay = 3,
+				},
+				},
+				replyDelay = 5,
+					replies = {
+					{
+						msg = {
+							text = "[leave]",
+						},
+					},
+				},
+			},
+			silence2112 = {
+				msg = {
+				{
+					text = "...",
+					delay = 3,
+				},
+				{
+					text = "(The aging bug shrugs.)",
+					delay = 7,
+				},
+				},
+				replyDelay = 9,
+			},
+			silence22 = {
+				msg = {
+				{
+					text = "...",
+					delay = 2,
+				},
+				{
+					text = "...mm.",
+					sound = "chat_good",
+					delay = 4.5,
+				},
+				},
+				replyDelay = 6,
+				--moves closer to the fire
+			},
+			silence3 = {
+				msg = {{
+					text = "...",
+					delay = 3,
+				}},		
+				replyDelay = 6,
+				replies = {
+					{
+						msg = {
+							text = "...",
+						},
+						leadsTo = "silence31",
+					},
+					{
+						msg = {
+							text = "[leave]",
+						},
+					},
+			},
+			},
+			silence31 = {
+				msg = {
+				{
+					text = "...",
+					delay = 3,
+				},
+				{
+					text = "...you've grown up, little flickerlight.",
+					sound = "chat_good",
+					delay = 6.5,
+				},
+				{
+					text = "I am sorry that so little remains here for you.",
+					sound = "chat_good",
+					delay = 11,
+				},
+				},	
+				replyDelay = 13,
+				replies = {
+					{
+						msg = {
+							text = "(shrug)",
+						},
+						leadsTo = "silence32",
+					},
+					{
+						msg = {
+							text = "...it's okay, I guess.  At least we still have this.",
+							sound = "chat_good",
+						},
+						leadsTo = "silence33",
+					},
+					{
+						msg = {
+							text = "[leave]",
+						},
+					},				
+			},
+			},
+			silence32 = {
+				msg = {
+				{
+					text = "...hmph.",
+					sound = "chat_good",
+					delay = 3,
+				},
+				{
+					text = "Go.",			
+					sound = "chat_good",
+					delay = 4.5,
+				},
+				{
+					text = "Run along.",
+					sound = "chat_good",			
+					delay = 6.2,
+				},
+				{
+					text = "Live.",
+					sound = "chat_good",	
+					delay = 10,
+				},
+				},	
+				replyDelay = 12,
+			},
+			silence33 = {
+				msg = {
+				{
+					text = "Hm.",
+					sound = "chat_good",
+					delay = 3,
+				},
+				{
+					text = "Thank you, flickerlight, for granting me a moment of your precious time.",
+					sound = "chat_good",
+					delay = 6.5,
+				},
+				{
+					text = "I wish you whatever luck remains.",
+					sound = "chat_good",
+					delay = 12,
+				},
+				},	
+				replyDelay = 15,
+			},	
 		},
 	}
 }

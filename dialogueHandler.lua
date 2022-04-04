@@ -10,20 +10,31 @@ local world
 -- Internals
 --------------------------------------------------
 
-local function SetNextScene(scene, concludes)
+local function SetNextScene(scene, concludes, sceneDelay)
 	self.currentScene = scene
 	
 	local messages = self.chatDef.scenes[self.currentScene].msg
 	for i = 1, #messages do
 		if messages[i].textFunc then
 			-- This overrides def data, which is pretty bad.
-			messages[i].text = messages[i].text or {}
-			messages[i].text[1] = messages[i].textFunc(self.chatGuy, PlayerHandler)
+			messages[i].text = messages[i].textFunc(self.chatGuy, PlayerHandler)
 		end
-		ChatHandler.AddTurnMessage(messages[i], false, (concludes and 5) or 2)
+		ChatHandler.AddTurnMessage(messages[i], false, (concludes and 5) or 2, sceneDelay)
 	end
 	self.hoveredReply = false
-	self.replyDelay = self.chatDef.scenes[self.currentScene].replyDelay or 0
+	
+	local scene = self.chatDef.scenes[self.currentScene]
+	if scene.onSceneFunc then
+		if scene.onSceneFuncDelay then
+			local function DelayFunc()
+				scene.onSceneFunc(self.chatGuy, PlayerHandler)
+			end
+			Delay(scene.onSceneFuncDelay, DelayFunc)
+		else
+			scene.onSceneFunc(self.chatGuy, PlayerHandler)
+		end
+	end
+	self.replyDelay = (scene.replyDelay or 0) + (sceneDelay or 0)
 	
 	if (self.chatGuy.friendly) then
 		self.portrate = self.chatGuy.GetDef().portraitHappy
@@ -53,11 +64,32 @@ local function DrawConsole()
 	local scalePos = world.ScreenToInterface({620, windowY - 100})
 	local drawPos = util.Average(scalePos, {240, windowY - 120})
 	
+	--width of background rectangle may have to be sensitive to the length of the longest option
+	maxWidth = 10
+	
+	for i = #replies, 1, -1 do
+		tempWidth = love.graphics.getFont():getWidth(replies[i].msg.text)
+	
+		if (maxWidth < tempWidth) then
+			maxWidth = tempWidth
+		end
+	end
+	
+	--draw reply background
+	love.graphics.setColor(0, 0, 0, 0.6)
+	love.graphics.rectangle("fill", 400, windowY - (117 + (#replies * 45)), maxWidth + 60, (#replies * 42) + 20, 0, 0, 5)
+	
 	local replyDrawPos = 1
 	for i = #replies, 1, -1 do
 		local reply = replies[i]
-		if (not reply.displayFunc) or reply.displayFunc(self.chatGuy, PlayerHandler) then
-			if util.PosInRectangle(mousePos, drawPos[1], drawPos[2] - (replyDrawPos * Global.REPLY_LINE_SPACING), 100000, Global.LINE_SPACING) then
+		local displayed, unclickable = true, false
+		if reply.displayFunc then
+			displayed, unclickable = reply.displayFunc(self.chatGuy, PlayerHandler)
+		end
+		if displayed then
+			if unclickable then
+				love.graphics.setColor(0.5, 0.5, 0.5, 1)
+			elseif util.PosInRectangle(mousePos, drawPos[1], drawPos[2] - (replyDrawPos * Global.REPLY_LINE_SPACING), 100000, Global.LINE_SPACING) then
 				love.graphics.setColor(1, 0.2, 0.2, 1)
 				self.hoveredReply = i
 			else
@@ -67,10 +99,9 @@ local function DrawConsole()
 			Font.SetSize(1)
 			if reply.msg.textFunc then
 				-- This overrides def data, which is pretty bad.
-				reply.msg.text = reply.msg.text or {}
-				reply.msg.text[1] = reply.msg.textFunc(self.chatGuy, PlayerHandler)
+				reply.msg.text = reply.msg.textFunc(self.chatGuy, PlayerHandler)
 			end
-			love.graphics.print(reply.msg.text[1], drawPos[1], drawPos[2] - (replyDrawPos * Global.REPLY_LINE_SPACING))
+			love.graphics.print(reply.msg.text, drawPos[1], drawPos[2] - (replyDrawPos * Global.REPLY_LINE_SPACING))
 			replyDrawPos = replyDrawPos + 1
 		end
 	end
@@ -90,29 +121,27 @@ local function CheckSelectReply()
 	if myReply.alternateReplyMsg then
 		if myReply.alternateReplyMsg.textFunc then
 			-- This overrides def data, which is pretty bad.
-			myReply.alternateReplyMsg.text = myReply.alternateReplyMsg.text or {}
-			myReply.alternateReplyMsg.text[1] = myReply.alternateReplyMsg.textFunc(self.chatGuy, PlayerHandler)
+			myReply.alternateReplyMsg.text = myReply.alternateReplyMsg.textFunc(self.chatGuy, PlayerHandler)
 		end
 		messageToAdd = myReply.alternateReplyMsg
 	elseif not myReply.skipReplyChat then
 		if myReply.msg.textFunc then
 			-- This overrides def data, which is pretty bad.
-			myReply.msg.text = myReply.msg.text or {}
-			myReply.msg.text[1] = myReply.msg.textFunc(self.chatGuy, PlayerHandler)
+			myReply.msg.text = myReply.msg.textFunc(self.chatGuy, PlayerHandler)
 		end
 		messageToAdd = myReply.msg
 	end
 	
 	-- Lead to after the message has been computed.
 	if myReply.leadsTo then
-		SetNextScene(myReply.leadsTo, concludes)
+		SetNextScene(myReply.leadsTo, concludes, myReply.delayNextScene)
 		if myReply.concludes then
 			api.ConcludeChat()
 		end
 	elseif myReply.leadsToFunc then
 		local leadsTo, concludes = myReply.leadsToFunc(self.chatGuy, PlayerHandler)
 		if leadsTo then
-			SetNextScene(leadsTo, concludes)
+			SetNextScene(leadsTo, concludes, myReply.delayNextScene)
 		end
 		if concludes or (not leadsTo) then
 			api.ConcludeChat()
@@ -153,10 +182,10 @@ function api.ConcludeChat()
 	end
 	ChatHandler.FlushChatTurns()
 	ChatHandler.SetChatTurnEnabled(false)
-	if self.chatGuy.SetTalkingTo then
+	if self.chatGuy.ClearMoveGoal then
 		self.chatGuy.ClearMoveGoal()
-		self.chatGuy.SetTalkingTo(false)
 	end
+	self.chatGuy.SetTalkingTo(false)
 	PlayerHandler.GetGuy().ClearMoveGoal()
 	PlayerHandler.GetGuy().SetTalkingTo(false)
 	

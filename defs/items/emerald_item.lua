@@ -1,5 +1,5 @@
 local def = {
-	image = "emerald_item",
+	image = "emerald_item_inventory",
 	dropAs = "emerald",
 }
 

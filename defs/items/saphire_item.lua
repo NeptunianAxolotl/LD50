@@ -1,7 +1,6 @@
 local def = {
-	image = "saphire_item",
+	image = "saphire_item_inventory",
 	dropAs = "saphire",
-	burnValue = -500,
 }
 
 return def

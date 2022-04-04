@@ -35,7 +35,7 @@ local def = {
 							return player.ItemHasSpace("stick_item") and (self.items.stick_item or 0) > 0
 						end,
 						msg = {
-							text = {"Take a stick"},
+							text = "Take a stick",
 							sound = "chat_good",
 						},
 						leadsToFunc = function (self, player)
@@ -44,7 +44,25 @@ local def = {
 							return "hello"
 						end,
 						alternateReplyMsg = {
-							text = {"You take a stick"}
+							text = "You take a stick"
+						},
+					},
+					{
+						displayFunc = function (self, player)
+							local visible = (player.ItemHasSpace("stick_item") and (self.items.stick_item or 0) > 0)
+							return visible, (self.items.stick_item or 0) < 5
+						end,
+						msg = {
+							text = "Take a bundle of five sticks",
+							sound = "chat_good",
+						},
+						leadsToFunc = function (self, player)
+							self.items.stick_item = self.items.stick_item - 5
+							player.AddItem("stick_bundle_item")
+							return "hello"
+						end,
+						alternateReplyMsg = {
+							text = "You take a bundle of sticks"
 						},
 					},
 					{
@@ -52,7 +70,7 @@ local def = {
 							return player.ItemHasSpace("log_item") and (self.items.log_item or 0) > 0
 						end,
 						msg = {
-							text = {"Take a log"},
+							text = "Take a log",
 							sound = "chat_good",
 						},
 						leadsToFunc = function (self, player)
@@ -61,16 +79,34 @@ local def = {
 							return "hello"
 						end,
 						alternateReplyMsg = {
-							text = {"You take a log"}
+							text = "You take a log"
+						},
+					},
+					{
+						displayFunc = function (self, player)
+							local visible = (player.ItemHasSpace("log_item") and (self.items.log_item or 0) > 0)
+							return visible, (self.items.log_item or 0) < 3
+						end,
+						msg = {
+							text = "Take a bundle of three logs",
+							sound = "chat_good",
+						},
+						leadsToFunc = function (self, player)
+							self.items.log_item = self.items.log_item - 3
+							player.AddItem("log_bundle_item")
+							return "hello"
+						end,
+						alternateReplyMsg = {
+							text = "You take a bundle of logs"
 						},
 					},
 					{
 						displayFunc = function (self, player)
 							local logCount, stickCount = player.GetConvertedWoodCounts()
-							return logCount > 0 or stickCount > 0
+							return true, not (logCount > 0 or stickCount > 0)
 						end,
 						msg = {
-							text = {"Dump all my wood"},
+							text = "Dump all my wood",
 							sound = "chat_good",
 						},
 						leadsToFunc = function (self, player)
@@ -92,7 +128,7 @@ local def = {
 					},
 					{
 						msg = {
-							text = {"Leave"},
+							text = "Leave",
 							sound = "chat_good",
 						},
 						skipReplyChat = true
