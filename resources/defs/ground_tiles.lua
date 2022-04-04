@@ -6,6 +6,6 @@ return {
 		xScale = 1,
 		yScale = 1,
 		xOffset = 0.5,
-		yOffset = 0.5,
+		yOffset = 0.375,
 	},
 }

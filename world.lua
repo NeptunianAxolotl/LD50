@@ -114,14 +114,6 @@ function api.ScreenToWorld(pos)
 	return {x, y}
 end
 
-function api.GetCameraExtents(buffer)
-	local screenWidth, screenHeight = love.window.getMode()
-	local topLeftPos = api.ScreenToWorld({0, 0})
-	local botRightPos = api.ScreenToWorld({screenWidth, screenHeight})
-	buffer = buffer or 0
-	return topLeftPos[1] - buffer, topLeftPos[2] - buffer, botRightPos[1] + buffer, botRightPos[2] + buffer
-end
-
 function api.ScreenToInterface(pos)
 	local x, y = self.interfaceTransform:inverse():transformPoint(pos[1], pos[2])
 	return {x, y}
@@ -140,6 +132,14 @@ end
 function api.WorldScaleToScreenScale()
 	local m11 = self.cameraTransform:getMatrix()
 	return m11
+end
+
+function api.GetCameraExtents(buffer)
+	local screenWidth, screenHeight = love.window.getMode()
+	local topLeftPos = api.ScreenToWorld({0, 0})
+	local botRightPos = api.ScreenToWorld({screenWidth, screenHeight})
+	buffer = buffer or 0
+	return topLeftPos[1] - buffer, topLeftPos[2] - buffer, botRightPos[1] + buffer, botRightPos[2] + buffer
 end
 
 function api.GetPhysicsWorld()

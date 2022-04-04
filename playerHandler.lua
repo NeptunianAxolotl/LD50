@@ -311,7 +311,6 @@ function api.Update(dt)
 	if self.playerGuy.IsDead() or self.buildMenuOpen then
 		return
 	end
-	GroundHandler.PosToTile(self.playerGuy.GetPos())
 	if self.heldSinceGroundGoal then
 		if love.mouse.isDown(self.heldSinceGroundGoal) then
 			self.playerGuy.SetMoveGoal(self.world.GetMousePosition(), 50)
@@ -352,6 +351,12 @@ function api.Draw(drawQueue)
 		return
 	end
 	self.playerGuy.Draw(drawQueue)
+	
+	local tileX, tileY = GroundHandler.PosToTile(self.playerGuy.GetPos())
+	local pos = GroundHandler.TileToPos(tileX, tileY)
+	love.graphics.setColor(GroundHandler.CheckTileExists(tileX, tileY) and 0 or 1, 0.5, 0.5, 1)
+	love.graphics.setLineWidth(4)
+	love.graphics.rectangle("line", pos[1] - Global.TILE_WIDTH/2, pos[2] - Global.TILE_HEIGHT/2, Global.TILE_WIDTH, Global.TILE_HEIGHT, 0, 0, 5)
 end
 
 local function DrawHoveredNpc()

@@ -19,40 +19,70 @@ local function SetupGround()
 			if self.ground.treeDensity[j][i] > 0 then
 				local density = self.ground.treeDensity[j][i]
 				while density >= 1 do
-					TerrainHandler.DropFeatureInFreeSpace(util.Add(util.RandomPointInCircle(Global.TREE_SPAWN_RAND), api.GetTerrainPos(i, j)), "tree", 1, true)
+					TerrainHandler.DropFeatureInFreeSpace(util.Add(util.RandomPointInCircle(Global.TREE_SPAWN_RAND), api.TileToPos(i, j)), "tree", 1, true)
 					density = density - 1
 				end
 				if math.random() < density then
-					TerrainHandler.DropFeatureInFreeSpace(util.Add(util.RandomPointInCircle(Global.TREE_SPAWN_RAND), api.GetTerrainPos(i, j)), "tree", 1, true)
+					TerrainHandler.DropFeatureInFreeSpace(util.Add(util.RandomPointInCircle(Global.TREE_SPAWN_RAND), api.TileToPos(i, j)), "tree", 1, true)
 				end
 			end
 		end
 	end
 end
 
-function api.GetTerrainPos(i, j)
+local function PosToTileNoTable(posX, posY)
+	local x = posX / Global.TILE_WIDTH - self.ground.offsetX + 1
+	local y = (2*posY / Global.TILE_HEIGHT) - self.ground.offsetY + 1
+	
+	local tileX, tileY = math.floor(x), math.floor(y/2)*2
+	local xf = x - tileX
+	local yf = (y - tileY)*0.5
+	
+	--local pos = GroundHandler.TileToPos(tileX, tileY)
+	--love.graphics.setColor(0, 1, 1, 1)
+	--love.graphics.setLineWidth(4)
+	--love.graphics.rectangle("line", pos[1] - Global.TILE_WIDTH, pos[2] - Global.TILE_HEIGHT/2, Global.TILE_WIDTH, Global.TILE_HEIGHT, 0, 0, 5)
+	
+	if xf > yf then
+		if xf + yf < 1 then
+			tileY = tileY - 1
+		end
+	else
+		if xf + yf < 1 then
+			tileX = tileX - 1
+		else
+			tileY = tileY + 1
+		end
+	end
+	
+	return tileX, tileY
+end
+
+function api.PosToTile(pos)
+	return PosToTileNoTable(pos[1], pos[2])
+end
+
+function api.TileToPos(i, j)
 	i = i + self.ground.offsetX
 	j = j + self.ground.offsetY
 	return {i * Global.TILE_WIDTH - (j%2 * Global.TILE_WIDTH * 0.5), j * Global.TILE_HEIGHT * 0.5}
 end
 
-function api.PosToTile(pos)
-	local x = pos[1] / Global.TILE_WIDTH - self.ground.offsetX
-	local y = pos[2] / Global.TILE_HEIGHT - self.ground.offsetY
-	
-	local xf = x%1
-	local yf = (y)%1
-	
-	local tileX, tileY = math.floor(x), math.floor(y)
-	
-	
-	--print(x, y)
-	local terPos = api.GetTerrainPos(math.floor(x), math.floor(y))
-	print(tileX, tileY, math.floor(pos[1]), math.floor(pos[2]), math.floor(terPos[1]), math.floor(terPos[2]))
+function api.CheckTileExists(i, j)
+	if not self.ground.tiles[j] then
+		return
+	end
+	return (self.ground.tiles[j][i] == 1)
 end
 
-function api.PositionHasGround(pos, radius)
-	return true -- TODO
+function api.PositionHasGround(checkPos, radius)
+	for i = 1, 8 do
+		local tileX, tileY = api.PosToTile(util.Add(util.PolarToCart(radius, math.pi*i/4), checkPos))
+		if not api.CheckTileExists(tileX, tileY) then
+			return false
+		end
+	end
+	return true
 end
 
 function api.Update(dt)
@@ -63,7 +93,7 @@ function api.Draw(drawQueue)
 	for i = 1, self.ground.width do
 		for j = 1, self.ground.height do
 			if self.ground.tiles[j][i] == 1 then
-				local pos = api.GetTerrainPos(i, j)
+				local pos = api.TileToPos(i, j)
 				if pos[1] > left and pos[2] > top and pos[1] < right and pos[2] < bot then
 					drawQueue:push({y=pos[2]; f=function()
 						Resources.DrawImage("ground_11", pos[1], pos[2])
