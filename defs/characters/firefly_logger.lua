@@ -72,9 +72,9 @@ local def = {
 					delay = 6
 				},
 				onSceneFunc = function (self, player)
+					-- Called with the scene is opened.
 					self.firstTalk = false
-					return true
-				end
+				end,
 				},
 				replyDelay = 9,
 				replies = {
