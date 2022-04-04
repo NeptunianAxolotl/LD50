@@ -22,6 +22,7 @@ local globals = {
 	
 	PLAYER_START_X = 400,
 	PLAYER_START_Y = 250,
+	DRAW_ENERGY_RINGS = true,
 	
 	DEBUG_MAP_METRICS = true,
 	--DEBUG_CAMERA_ZOOM = 10,

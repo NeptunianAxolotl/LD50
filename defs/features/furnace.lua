@@ -16,7 +16,7 @@ local def = {
 	},
 	deconstructMaterials = {"rock", "rock", "rock", "ruby"},
 	requiresPower = true,
-	toPowerRangeMult = 0.75,
+	toPowerRangeMult = 0.95,
 	isEnergyProvider = true,
 	bigLight = true,
 	lightFunc = function (self)

@@ -297,12 +297,11 @@ local function NewFeature(self, physicsWorld, world)
 			love.graphics.setLineWidth(2)
 			love.graphics.setColor(1, 1, 1, 1)
 			love.graphics.circle('line', pos[1], pos[2], def.radius)
-			
-			if self.energyRadius then
-				love.graphics.setLineWidth(60)
-				love.graphics.setColor(1, 0, 0, 1)
-				love.graphics.circle('line', pos[1], pos[2], self.energyRadius)
-			end
+		end
+		if Global.DRAW_ENERGY_RINGS and self.energyRadius then
+			love.graphics.setLineWidth(32)
+			love.graphics.setColor(1, 0, 0, 0.05)
+			love.graphics.circle('line', pos[1], pos[2], self.energyRadius)
 		end
 	end
 	
