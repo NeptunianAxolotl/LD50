@@ -23,6 +23,7 @@ local function SetNextScene(scene, concludes, sceneDelay)
 	end
 	self.hoveredReply = false
 	
+	local scene = self.chatDef.scenes[self.currentScene]
 	if scene.onSceneFunc then
 		if scene.onSceneFuncDelay then
 			local function DelayFunc()
@@ -33,8 +34,6 @@ local function SetNextScene(scene, concludes, sceneDelay)
 			scene.onSceneFunc(self.chatGuy, PlayerHandler)
 		end
 	end
-	
-	local scene = self.chatDef.scenes[self.currentScene]
 	self.replyDelay = (scene.replyDelay or 0) + (sceneDelay or 0)
 	
 	if (self.chatGuy.friendly) then
