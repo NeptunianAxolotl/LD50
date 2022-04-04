@@ -300,8 +300,20 @@ local function NewFeature(self, physicsWorld, world)
 			end
 		end
 		if Global.DRAW_DEBUG then
-			love.graphics.setLineWidth(2)
-			love.graphics.setColor(1, 1, 1, 1)
+			love.graphics.setLineWidth(20)
+			if def.name == "coal_mine" then
+				love.graphics.setColor(0,0,0, 1)
+			elseif def.name == "ruby_mine" then
+				love.graphics.setColor(1,0,0, 1)
+			elseif def.name == "emerald_mine" then
+				love.graphics.setColor(0,1,0, 1)
+			elseif def.name == "stone_mine" then
+				love.graphics.setColor(0.5,0.5,0.5, 1)
+			elseif def.name == "ore_mine" then
+				love.graphics.setColor(1,1,0, 1)
+			else
+				love.graphics.setColor(1,1,1, 1)
+			end
 			love.graphics.circle('line', pos[1], pos[2], def.radius * self.radiusScale)
 		end
 		if Global.DRAW_ENERGY_RINGS and self.energyRadius and def.isFire then

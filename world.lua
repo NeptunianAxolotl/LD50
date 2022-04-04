@@ -104,7 +104,8 @@ function api.MousePressed(x, y, button)
 		print("{")
 		print([[    name = "BLA",]])
 		print("    pos = {" .. (math.floor(x/10)*10) .. ", " .. (math.floor(y/10)*10) .. "},")
-		print("{,")
+		print("},")
+		return true
 	end
 	PlayerHandler.MousePressedWorld(x, y, button)
 end
