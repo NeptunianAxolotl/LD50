@@ -43,8 +43,7 @@ local function DropInventory(pos)
 end
 
 function api.AddItem(item)
-	local start = (ItemDefs[item].isTool and 1) or 2
-	for i = start, #self.inventory do
+	for i = 1, #self.inventory do
 		if self.inventory[i] == "empty" then
 			self.inventory[i] = item
 			return true
@@ -286,13 +285,21 @@ function api.MousePressedWorld(mx, my, button)
 		return
 	end
 	
-	local featurePos = self.hoveredFeature.GetPos()
-	if self.hoveredFeature.GetDef().collectAs then
-		self.playerGuy.SetMoveGoal(featurePos, self.hoveredFeature.GetRadius() + Global.DROP_LEEWAY, self.hoveredFeature, "collect", false, ActionCallback)
-	elseif self.hoveredFeature.CanBeTalkedTo() then
-		self.playerGuy.SetMoveGoal(featurePos, self.hoveredFeature.GetRadius() + Global.DROP_LEEWAY, self.hoveredFeature, "talk", false, ActionCallback)
+	local feature = self.hoveredFeature
+	local featurePos = feature.GetPos()
+	if feature.GetDef().isMine then
+		local canMine = (not feature.GetDef().mineTool) or (api.GetInventoryCount(feature.GetDef().mineTool) > 0)
+		if canMine then
+			self.playerGuy.SetMoveGoal(featurePos, feature.GetRadius() + Global.DROP_LEEWAY, feature, "mine", false, ActionCallback)
+		else
+			ChatHandler.AddMessage("Something about needing a tool " .. (feature.GetDef().mineTool or "???"))
+		end
+	elseif feature.GetDef().collectAs then
+		self.playerGuy.SetMoveGoal(featurePos, feature.GetRadius() + Global.DROP_LEEWAY, feature, "collect", false, ActionCallback)
+	elseif feature.CanBeTalkedTo() then
+		self.playerGuy.SetMoveGoal(featurePos, feature.GetRadius() + Global.DROP_LEEWAY, feature, "talk", false, ActionCallback)
 	else
-		self.playerGuy.SetMoveGoal(featurePos, self.hoveredFeature.GetRadius() + Global.DROP_LEEWAY)
+		self.playerGuy.SetMoveGoal(featurePos, feature.GetRadius() + Global.DROP_LEEWAY)
 	end
 end
 
@@ -372,10 +379,10 @@ end
 
 function api.DrawInterface()
 	local checkHover = (not DialogueHandler.InChat()) and (not self.buildMenuOpen)
-	self.hoveredItem = InventoryUtil.DrawInventoryBar(self.world, self.inventory, self.selectedItem, self.activeItem, ItemDefs, checkHover, 80, 15, 2, Global.INVENTORY_SLOTS + 1, 0.5, 0)
-	self.hoveredItem = InventoryUtil.DrawInventoryBar(self.world, self.inventory, self.selectedItem, self.activeItem, ItemDefs, checkHover, 80, 15, 1, 1, 0, 0.5) or self.hoveredItem
+	self.hoveredItem = InventoryUtil.DrawInventoryBar(self.world, self.inventory, self.selectedItem, self.activeItem, ItemDefs, checkHover, 80, 15, 2, Global.INVENTORY_SLOTS + 1, 0, 0)
+	self.hoveredItem = InventoryUtil.DrawInventoryBar(self.world, self.inventory, self.selectedItem, self.activeItem, ItemDefs, checkHover, 80, 15, 1, 1, 0, 0) or self.hoveredItem
 	
-	self.hoveredBuildMenu = InventoryUtil.DrawBuild(self.world, Global.INVENTORY_SLOTS + 1, (not DialogueHandler.InChat()), self.buildMenuOpen, 80, 15, 0.5, 120, 70)
+	self.hoveredBuildMenu = InventoryUtil.DrawBuild(self.world, Global.INVENTORY_SLOTS + 1, (not DialogueHandler.InChat()), self.buildMenuOpen, 80, 15, 0, 120, 70)
 	
 	self.hoveredFeature = false
 	self.hoveredNpc = false

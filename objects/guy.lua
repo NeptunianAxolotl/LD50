@@ -34,6 +34,12 @@ local function DoMoveGoalAction(self)
 		if ActionCallback(canPlace, feature, action, item) and canPlace then
 			TerrainHandler.SpawnFeature(item, actionPos)
 		end
+	elseif action == "mine" then
+		local success = (not feature.IsBusy())
+		ActionCallback(success, feature, action, item)
+		if success then
+			self.behaviourDelay = feature.DoMine(self, self.GetPos())
+		end
 	elseif feature and not feature.IsDead() and action == "transform" and item then
 		local success = (feature.HasPower() and not feature.IsBusy())
 		ActionCallback(success, feature, action, item)
@@ -186,6 +192,15 @@ local function NewGuy(self, physicsWorld, world)
 			end
 			self.moveGoalAction = false
 		end
+	end
+	
+	function self.AddToInventory(item)
+		if def.isPlayer then
+			PlayerHandler.AddItem(item)
+			return
+		end
+		self.items = self.items or {}
+		self.items[item] = (self.items[item] or 0) + 1
 	end
 	
 	function self.DealDamage(damage)

@@ -3,6 +3,7 @@ local util = require("include/util")
 local Resources = require("resourceHandler")
 local Font = require("include/font")
 local ShadowHandler = require("shadowHandler")
+local ItemDefs = util.LoadDefDirectory("defs/items")
 
 local function NewFeature(self, physicsWorld, world)
 	-- pos
@@ -13,6 +14,7 @@ local function NewFeature(self, physicsWorld, world)
 		self = util.CopyTable(def.initData, true, self)
 	end
 	
+	self.mineCapacity = def.mineCapacity
 	self.hasePower = false
 	self.hasLight = false
 	self.lightUpdateDt = false
@@ -105,15 +107,43 @@ local function NewFeature(self, physicsWorld, world)
 			self.hasPower = TerrainHandler.GetPositionEnergy(self.GetPos(), def.toPowerRangeMult)
 			self.lightUpdateDt = Global.LIGHT_SLOW_UPDATE
 		end
-		return self.hasPower
+		return (not self.IsDead()) or self.hasPower
+	end
+	
+	function self.DoMine(guy, createPos)
+		if self.mineSound then
+			SoundHandler.PlaySound(self.mineSound)
+		end
+		self.mineCapacity = self.mineCapacity - 1
+		
+		local function CreateItem()
+			if self.dead then
+				return
+			end
+			for i = 1, #def.mineItems do
+				local item = def.mineItems[i]
+				if def.mineItemsToInventory[i] and not guy.IsDead() then
+					guy.AddToInventory(item)
+				else
+					local itemDef = ItemDefs[item]
+					TerrainHandler.DropFeatureInFreeSpace(createPos, itemDef.dropAs, itemDef.dropMult)
+				end
+			end
+			if self.mineCapacity <= 0 then
+				self.Destroy()
+			end
+		end
+		Delay.Add(def.mineTime / (guy.GetDef().workMult or 1), CreateItem)
+		
+		return def.mineTime
 	end
 	
 	function self.IsBusy()
-		return self.busyTimer
+		return self.IsDead() or self.busyTimer
 	end
 	
 	function self.IsBusyOrTalking()
-		return self.busyTimer or self.talkingTo
+		return self.IsDead() or self.busyTimer or self.talkingTo or ((self.mineCapacity or 1) == 0)
 	end
 	
 	function self.SetBusy(newTimer)

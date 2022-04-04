@@ -50,6 +50,7 @@ local globals = {
 	AXE_COST = 2,
 	SWORD_COST = 3,
 	ORE_TO_METAL = 3,
+	PRYBAR_COST = 4,
 	
 	FURNACE_FUEL_USE = 15,
 }

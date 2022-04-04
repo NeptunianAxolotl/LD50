@@ -38,7 +38,7 @@ local def = {
 				replyDelay = 0,
 				replies = {
 					FeatureUtils.ForgeHelper(
-						"metal", "metal_item", "ore_item", Global.ORE_TO_METAL, "health_down",
+						"metal", "metal_item", "ore_item", Global.ORE_TO_METAL, Global.FURNACE_FUEL_USE, "health_down",
 						"Smelt ore into metal (" .. Global.ORE_TO_METAL .. " ore)",
 						"You spend some of the fire's heat to create shiny new metal."
 					),

@@ -33,22 +33,27 @@ local def = {
 				replyDelay = 0,
 				replies = {
 					FeatureUtils.ForgeHelper(
-						"hammer", "hammer_item", "metal_item", Global.HAMMER_COST, "health_down",
+						"prybar", "prybar_item", "metal_item", Global.PRYBAR_COST, false, "health_down",
+						"Forge Prybar (" .. Global.PRYBAR_COST .. " metal)",
+						"You forge a prybar to destroy even the most sturdy structures."
+					),
+					FeatureUtils.ForgeHelper(
+						"hammer", "hammer_item", "metal_item", Global.HAMMER_COST, false, "health_down",
 						"Forge Hammer (" .. Global.HAMMER_COST .. " metal)",
 						"You forge a hammer with which to build more complex structures."
 					),
 					FeatureUtils.ForgeHelper(
-						"sword", "sword_item", "metal_item", Global.SWORD_COST, "health_down",
+						"sword", "sword_item", "metal_item", Global.SWORD_COST, false, "health_down",
 						"Forge Sword (" .. Global.SWORD_COST .. " metal)",
 						"You forge a sword, but for good or ill?"
 					),
 					FeatureUtils.ForgeHelper(
-						"axe", "axe_item", "metal_item", Global.AXE_COST, "health_down",
+						"axe", "axe_item", "metal_item", Global.AXE_COST, false, "health_down",
 						"Forge Axe (" .. Global.AXE_COST .. " metal)",
 						"You forge an axe to fuel the fire with whole trees."
 					),
 					FeatureUtils.ForgeHelper(
-						"pick", "pick_item", "metal_item", Global.PICK_COST, "health_down",
+						"pick", "pick_item", "metal_item", Global.PICK_COST, false, "health_down",
 						"Forge Pick (" .. Global.PICK_COST .. " metal)",
 						"You forge a pick."
 					),
