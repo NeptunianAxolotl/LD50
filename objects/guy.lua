@@ -42,6 +42,7 @@ local function DoMoveGoalAction(self)
 			local busyTime = itemDef.craftingTime / (self.def.workMult or 1)
 			self.behaviourDelay = itemDef.craftingTime
 			feature.SetBusy(busyTime)
+			TerrainHandler.GetHomeFire().UseFuel(itemDef.fuelCost)
 			local createPos = self.GetPos()
 			local function CreateItem()
 				TerrainHandler.DropFeatureInFreeSpace(createPos, itemDef.dropAs, itemDef.dropMult)

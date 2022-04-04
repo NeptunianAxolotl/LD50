@@ -55,6 +55,13 @@ local function NewFeature(self, physicsWorld, world)
 		return self.dead
 	end
 	
+	function self.UseFuel(amount)
+		if not amount then
+			return
+		end
+		self.fuelValue = self.fuelValue - amount
+	end
+	
 	function self.Destroy()
 		if self.dead then
 			return false
