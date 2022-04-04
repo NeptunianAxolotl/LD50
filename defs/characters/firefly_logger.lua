@@ -131,9 +131,9 @@ local def = {
 								player.RemoveInventory("log_item", logCount)
 								self.friendly = true
 								self.items.log_item = logCount
-								return "thanks", true
+								return "thanks", false
 							else
-								return "hang_on_no_logs", true
+								return "hang_on_no_logs", false
 							end
 						end
 					},
@@ -266,7 +266,7 @@ local def = {
 				replyDelay = 8,
 			},
 			sure = {
-							msg = {		
+				msg = {		
 				{
 					text = "Well, go on then.",
 					sound = "chat_good",
@@ -282,6 +282,7 @@ local def = {
 				{
 					text = "Made you'self useful, eh.  Maybe you're good for something after all.",
 					sound = "chat_good",
+					delay = 0.5,
 				},
 				{
 					text = "Lemme just chuck these on, here.",
@@ -290,13 +291,6 @@ local def = {
 				},
 				},
 				replyDelay = 4,
-				leadsToFunc = function (self, player)
-					-- Called with the scene is opened.
-						local logCount = player.GetInventoryCount("log_item")
-
-						self.behaviourDelay = 1.2
-						return "dialogue_end", true
-				end,
 			},
 			hang_on_no_logs = {
 				msg = {
@@ -328,7 +322,7 @@ local def = {
 				replies = {
 					{
 						msg = {
-							text = "Sure, here you go",
+							text = "Sure, here you go.",
 							sound = "chat_good",
 						},
 						leadsToFunc = function (self, player)
@@ -348,14 +342,21 @@ local def = {
 							text = "Not yet",
 							sound = "chat_good",
 						},
-						leadsTo = "keep_looking",
+						leadsTo = "leave1",
 					},					
 					{
 						msg = {
 							text = "That crack in your chitin looks gnarly.",
 							sound = "chat_good",
 						},
-						leadsTo = "default_friendly_crack",
+						leadsTo = "chitin",
+					},
+					{
+						msg = {
+							text = "I'm gonna explor.",
+							sound = "chat_good",
+						},
+						leadsTo = "chitin",
 					},
 				}
 			},
