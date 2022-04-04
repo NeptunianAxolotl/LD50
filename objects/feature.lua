@@ -64,10 +64,11 @@ local function NewFeature(self, physicsWorld, world)
 		self.fuelValue = self.fuelValue - amount
 	end
 	
-	function self.Destroy()
+	function self.Destroy(dropMaterials)
 		if self.dead then
 			return false
 		end
+		local dropPos = self.GetPos()
 		self.body:destroy()
 		if self.shadow then
 			ShadowHandler.RemoveShadow(self.shadow)
@@ -80,6 +81,11 @@ local function NewFeature(self, physicsWorld, world)
 			self.noDigTiles = false
 		end
 		self.dead = true
+		if dropMaterials and def.deconstructMaterials then
+			for i = 1, #def.deconstructMaterials do
+				TerrainHandler.DropFeatureInFreeSpace(dropPos, def.deconstructMaterials[i])
+			end
+		end
 		return true
 	end
 	
