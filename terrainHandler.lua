@@ -119,7 +119,8 @@ function api.GetPositionEnergy(pos, toPowerRangeMult)
 		for i = 1, count do
 			local feature = dataByKey[keyByIndex[i]]
 			if feature.IsDead() then
-				IterableMap.Remove(self, i) -- This should be rare
+				IterableMap.ApplySelf(self.energyFeature, "IsDead") -- Remove dead ones, this should happen once per death
+				print("retry")
 				retry = true
 				break
 			elseif not (maxEnergy and feature.energyProvided <= maxEnergy) then
@@ -177,7 +178,7 @@ function api.Update(dt)
 end
 
 function api.Draw(drawQueue)
-	local left, top, right, bot = self.world.GetCameraExtents(400)
+	local left, top, right, bot = self.world.GetCameraExtents(800)
 	--IterableMap.ApplySelf(self.features, "Draw", drawQueue, left, top, right, bot)
 	
 	local indexMax, keyByIndex, dataByKey = IterableMap.GetBarbarianData(self.features)

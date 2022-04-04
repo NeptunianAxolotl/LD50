@@ -67,7 +67,7 @@ local terrain = {
 }
 
 for i = 1, 10 do
-	for j = 1, 100 do
+	for j = 1, 5 do
 		terrain[#terrain + 1] = {
 			name = "ore",
 			pos = {1200 + 150*i, 300 + 100*j},

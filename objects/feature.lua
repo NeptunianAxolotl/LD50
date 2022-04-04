@@ -112,6 +112,10 @@ local function NewFeature(self, physicsWorld, world)
 		return self.hasLight
 	end
 	
+	function self.GetLightLevel()
+		return self.HasLight() or 0
+	end
+	
 	function self.HasStock()
 		return (not def.stockCheckFunc) or def.stockCheckFunc(self)
 	end
