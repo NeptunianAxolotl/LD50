@@ -135,7 +135,7 @@ local function NewGuy(self, physicsWorld, world)
 	
 	self.shadow = ShadowHandler.AddCircleShadow(def.shadowRadius)
 	if def.lightFunc then
-		self.light = ShadowHandler.AddLight(def.bigLight, 200 * (def.lightRadiusMult or 1), def.lightColor, not def.isPlayer)
+		self.light = ShadowHandler.AddLight(def.isPlayer or def.bigLight, 200 * (def.lightRadiusMult or 1), def.lightColor, not def.isPlayer)
 	end
 	
 	function self.MoveWithVector(moveVec)

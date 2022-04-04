@@ -131,7 +131,7 @@ function api.Initialize(parentWorld)
 	self.groundShadow:SetColor(20, 20, 20)
 	self.visionShadow:SetColor(20, 20, 20)
 
-	self.mouseLight = api.AddLight(false, 300, {120, 120, 120})
+	self.mouseLight = api.AddLight(true, 300, {120, 120, 120})
 end
 
 return api

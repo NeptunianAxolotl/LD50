@@ -44,13 +44,16 @@ function api.Update(dt)
 end
 
 function api.Draw(drawQueue)
+	local left, top, right, bot = self.world.GetCameraExtents(700)
 	for i = 1, self.ground.width do
 		for j = 1, self.ground.height do
 			if self.ground.tiles[j][i] == 1 then
 				local pos = api.GetTerrainPos(i, j)
-				drawQueue:push({y=pos[2]; f=function()
-					Resources.DrawImage("ground_11", pos[1], pos[2])
-				end})
+				if pos[1] > left and pos[2] > top and pos[1] < right and pos[2] < bot then
+					drawQueue:push({y=pos[2]; f=function()
+						Resources.DrawImage("ground_11", pos[1], pos[2])
+					end})
+				end
 			end
 		end
 	end
