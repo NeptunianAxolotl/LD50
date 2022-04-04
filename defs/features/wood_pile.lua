@@ -6,6 +6,7 @@ local def = {
 	radius = 80,
 	collide = true,
 	image = "wood_pile",
+	humanName = "Wood Pile",
 	placementRadius = 130,
 	capacity = 10, -- TODO
 	portraitNeutral = "portrait_wood_pile",

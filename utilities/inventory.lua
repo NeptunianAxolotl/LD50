@@ -71,7 +71,7 @@ function api.DrawBuild(world, playerData, inventorySlots, checkHover, inBuildMen
 	local haveAnyTechs = false
 	for i = 1, #BuildDefs do
 		local def = BuildDefs[i]
-		if playerData.HasTech(name) then
+		if playerData.HasTech(def.unlockReq) then
 			haveAnyTechs = true
 			break
 		end
@@ -117,6 +117,7 @@ function api.DrawBuildMenu(world, playerData)
 	local mousePos = world.GetMousePositionInterface()
 
 	local menuWidth, menuHeight = 760, 640
+	local selectWidth = 700
 	local left, top = screenWidth*0.5 - menuWidth/2, screenHeight*0.48 - menuHeight/2
 
 	love.graphics.setColor(0.6*1.1, 0.7*1.1, 0.7*1.1, 1)
@@ -139,23 +140,23 @@ function api.DrawBuildMenu(world, playerData)
 	Font.SetSize(0)
 	love.graphics.print("Availible Structures", left + 200, top + 36)
 
-	local startX = left + 120
+	local startX = left + 100
 	local startY = top + 150
 
 	for i = 1, #BuildDefs do
 		local def = BuildDefs[i]
-		if playerData.HasTech(name) then
+		if playerData.HasTech(def.unlockReq) then
 			local featureDef = TerrainHandler.GetFeatureDef(def.feature)
 			local canAfford = playerData.CanAffordBuilding(def)
 			local isHover = false
-			if util.PosInRectangle(mousePos, startX - 60, startY - 40, screenWidth*0.6 - 60, 80) then
+			if util.PosInRectangle(mousePos, startX - 70, startY - 40, selectWidth, 80) then
 				if canAfford then
 					buildHover = def.name
 				end
 				isHover = true
 				love.graphics.setColor(1, 0.2, 0.2, (canAfford and 1) or 0.2)
 				love.graphics.setLineWidth(4)
-				love.graphics.rectangle("line", startX - 60, startY - 40, screenWidth*0.6 - 60, 80, 0, 0, 5)
+				love.graphics.rectangle("line", startX - 70, startY - 40, selectWidth, 80, 0, 0, 5)
 			end
 			
 			Font.SetSize(1)

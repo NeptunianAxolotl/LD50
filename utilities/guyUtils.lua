@@ -39,6 +39,22 @@ local fuelItems = {
 
 local api = {}
 
+function api.WallowWiggle(self)
+	if self.moveGoalPos then
+		return
+	end
+	if self.lightValue > 0.9 and self.wallowingInDarkness then
+		if not self.idleLocation then
+			self.idleLocation = self.GetPos()
+		end
+		if math.random() < 0.01 then
+			self.SetMoveGoal(util.Add(self.idleLocation, util.RandomPointInAnnulus(500, 600)), 200)
+			self.behaviourDelay = 5 + math.random()*10
+			return
+		end
+	end
+end
+
 function api.SeekAndCollectFeature(self, featureType, actionType)
 	actionType = actionType or "collect"
 	local feature, distance = TerrainHandler.GetClosetFeature(self.GetPos(), featureType, false, true, true, false, false, false, true)

@@ -140,7 +140,7 @@ function api.GetUnlocks()
 	return self.unlocks
 end
 
-function api.UnlockTeck(name, hasNewBuildOpt)
+function api.UnlockTech(name, hasNewBuildOpt)
 	self.unlocks[name] = true
 	self.hasNewBuildOpt = self.hasNewBuildOpt or hasNewBuildOpt
 end
@@ -484,7 +484,6 @@ function api.Initialize(parentWorld)
 		inventory = {
 		},
 		unlocks = {
-			wood_pile = true,
 		},
 		lastShunt = 1
 	}

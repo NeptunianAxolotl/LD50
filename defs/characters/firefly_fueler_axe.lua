@@ -15,6 +15,7 @@ local def = {
 	},
 	behaviour = function (self, world, dt)
 		if not self.friendly then
+			GuyUtils.WallowWiggle(self)
 			return
 		end
 		
