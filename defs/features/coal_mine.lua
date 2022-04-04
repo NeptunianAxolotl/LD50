@@ -11,6 +11,7 @@ local def = {
 	},
 	isMine = true,
 	mineTool = "pick_item",
+	mineToolDesc = "a pick",
 	mineCapacity = 5,
 	mineTime = 3.5,
 	mineSound = "coin_collect_2",

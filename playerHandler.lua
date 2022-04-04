@@ -341,7 +341,7 @@ function api.MousePressedWorld(mx, my, button)
 		if canMine then
 			self.playerGuy.SetMoveGoal(featurePos, feature.GetRadius() + Global.DROP_LEEWAY, feature, "mine", false, ActionCallback)
 		else
-			ChatHandler.AddMessage("Something about needing a tool " .. (feature.GetDef().mineTool or "???"))
+			ChatHandler.AddMessage("You need " .. (feature.GetDef().mineToolDesc or "???") .. " to harvest this resource!")
 		end
 	elseif feature.GetDef().collectAs then
 		self.playerGuy.SetMoveGoal(featurePos, feature.GetRadius() + Global.DROP_LEEWAY, feature, "collect", false, ActionCallback)
