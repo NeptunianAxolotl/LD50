@@ -206,7 +206,7 @@ function api.MousePressedInterface(mx, my, button)
 end
 
 function api.Update(dt)
-	if self.chatGuy and (self.chatGuy.IsDead() or self.chatGuy.IsBlockedUnitMoveGoal()) then
+	if self.chatGuy and (self.chatGuy.IsDead() or (self.chatGuy.IsBlockedUnitMoveGoal and self.chatGuy.IsBlockedUnitMoveGoal())) then
 		api.ConcludeChat()
 	end
 	if self.chatGuy then
