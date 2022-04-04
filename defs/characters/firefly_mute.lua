@@ -1,5 +1,5 @@
 local def = {
-	inheritFrom = "firefly",
+	inheritFrom = "firefly_fueler",
 	speedMult = 0.5,
 	workMult = 0.5,
 	initData = {
@@ -59,9 +59,22 @@ local def = {
 			return true
 		end,
 		getEntry = function(self, player)
-			return "hello"
+			return (self.friendly and "options") or "hello"
 		end,
 		scenes = {
+			options = {
+				msg = {{
+					text = "YOU HAVE REACHED THE OPERATOR",
+					sound = "chat_good",
+				},
+				{
+					text = "PLEASE STAND BY AND PREPARE TO BE EJECTED FROM THE MATRIX",
+					sound = "chat_good",
+					delay = 2,
+				},
+				},			
+				replyDelay = 4,
+			},
 			hello = {
 				msg = {{
 					text = "...",
@@ -221,7 +234,22 @@ local def = {
 					sound = "chat_good",
 					delay = 4.5,
 				},
+				{
+					text = "(The firefly decides to help you out.)",
+					sound = "chat_good",
+					delay = 2.5,
 				},
+				{
+					text = "(Talk to him again for options.)",
+					sound = "chat_good",
+					delay = 4,
+				},
+				},
+				onSceneFunc = function (self, player)
+					-- Called with the scene is opened.
+					--ChatHandler.AddMessage("SCENE FUNC")
+					self.friendly = true
+				end,
 				replyDelay = 6,
 				--moves closer to the fire
 			},
@@ -326,7 +354,22 @@ local def = {
 					sound = "chat_good",
 					delay = 12,
 				},
+				{
+					text = "(The firefly decides to help you out.)",
+					sound = "chat_good",
+					delay = 2.5,
+				},
+				{
+					text = "(Talk to him again for options.)",
+					sound = "chat_good",
+					delay = 4,
+				},
 				},	
+				onSceneFunc = function (self, player)
+					-- Called with the scene is opened.
+					--ChatHandler.AddMessage("SCENE FUNC")
+					self.friendly = true
+				end,
 				replyDelay = 15,
 			},	
 		},

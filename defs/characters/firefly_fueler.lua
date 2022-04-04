@@ -11,6 +11,10 @@ local def = {
 		}
 	},
 	behaviour = function (self, world, dt)
+		if not self.friendly then
+			return
+		end
+		
 		if self.moveGoalPos then
 			return
 		end
