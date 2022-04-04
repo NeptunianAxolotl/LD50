@@ -52,7 +52,7 @@ function api.AddItem(item)
 	-- Shunt an item
 	for i = 1, #self.inventory do
 		local toCheck = (self.lastShunt + i - 1)%(#self.inventory) + 1
-		local itemDef = ItemDefs[self.inventory[i]]
+		local itemDef = ItemDefs[self.inventory[toCheck]]
 		if itemDef and not itemDef.isTool then
 			self.lastShunt = toCheck
 			TerrainHandler.DropFeatureInFreeSpace(self.playerGuy.GetPos(), itemDef.dropAs, itemDef.dropMult)
