@@ -65,6 +65,7 @@ local placeList = {
 	--"fire", -- already got one
 	
 	"big_digger",
+	
 	"lamp_wood",
 	"miner_metal",
 	"miner_wood",

@@ -75,6 +75,13 @@ function api.CheckTileExists(i, j)
 	return (self.ground.tiles[j][i] == 1)
 end
 
+function api.RemoveTile(i, j)
+	if not self.ground.tiles[j] then
+		return
+	end
+	self.ground.tiles[j][i] = 0
+end
+
 function api.PositionHasGround(checkPos, radius)
 	for i = 1, 8 do
 		local tileX, tileY = api.PosToTile(util.Add(util.PolarToCart(radius, math.pi*i/4), checkPos))
@@ -85,7 +92,40 @@ function api.PositionHasGround(checkPos, radius)
 	return true
 end
 
+function api.GetTileHealth(tileX, tileY)
+	if not self.tileHealth[tileX] then
+		return 1
+	end
+	return (self.tileHealth[tileX][tileY] or 1)
+end
+
+function api.DealTileDamage(tileX, tileY, damage)
+	if not api.CheckTileExists(tileX, tileY) then
+		return false, true -- Stop because tile does not exist
+	end
+	self.tileHealth[tileX] = self.tileHealth[tileX] or {}
+	self.tileHealth[tileX][tileY] = (self.tileHealth[tileX][tileY] or 1) - damage
+	if self.tileHealth[tileX][tileY] > 0 then
+		return false
+	end
+	api.RemoveTile(tileX, tileY)
+	return true
+end
+
 function api.Update(dt)
+end
+
+local function GetTileImage(i, j)
+	local health = api.GetTileHealth(i, j)
+	if health > 0.95 then
+		return "ground_11"
+	elseif health > 0.6 then
+		return "ground_11_crack_1"
+	elseif health > 0.3 then
+		return "ground_11_crack_2"
+	else
+		return "ground_11_crack_3"
+	end
 end
 
 function api.Draw(drawQueue)
@@ -96,7 +136,7 @@ function api.Draw(drawQueue)
 				local pos = api.TileToPos(i, j)
 				if pos[1] > left and pos[2] > top and pos[1] < right and pos[2] < bot then
 					drawQueue:push({y=pos[2]; f=function()
-						Resources.DrawImage("ground_11", pos[1], pos[2])
+						Resources.DrawImage(GetTileImage(i, j), pos[1], pos[2])
 					end})
 				end
 			end
@@ -107,7 +147,8 @@ end
 function api.Initialize(world)
 	self = {
 		world = world,
-		ground = util.CopyTable(groundDef, true)
+		ground = util.CopyTable(groundDef, true),
+		tileHealth = {}
 	}
 	
 	SetupGround()
