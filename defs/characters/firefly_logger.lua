@@ -4,6 +4,7 @@ local def = {
 		pissed = false,
 		friendly = false,
 		firstTalk = true,
+		story = false,
 		branch1 = false,
 		branch2 = false, 
 		branch3 = false,
@@ -52,7 +53,7 @@ local def = {
 			return not self.pissed
 		end,
 		getEntry = function(self, player)
-			return (self.firstTalk and "intro1") or (self.friendly and "default_friendly") or "default"
+			return (self.firstTalk and "intro1") or (self.story and "story1") or (self.friendly and "default_friendly") or "default"
 		end,
 		scenes = {
 			intro1 = {
@@ -84,13 +85,24 @@ local def = {
 							text = "Sure.",
 							sound = "chat_good",
 						},
+						leadsTo = "sure"
 					},
 					{
 						msg = {
 							text = "Here's some wood, gramps.",
 							sound = "chat_good",
 						},
-						leadsTo = "thanks"
+						leadsToFunc = function (self, player)
+							local logCount = player.GetInventoryCount("log_item")
+							if logCount > 0 then
+								player.RemoveInventory("log_item", logCount)
+								self.friendly = true
+								self.items.log_item = logCount
+								return "thanks", true
+							else
+								return "hang_on_no_logs", true
+							end
+						end
 					},
 					{
 						msg = {
@@ -130,6 +142,7 @@ local def = {
 							text = "Why do we need the fire?  We have our own light.",
 							sound = "chat_good",
 						},
+						leadsTo = "why",
 					},
 					{
 						msg = {
@@ -138,13 +151,6 @@ local def = {
 						},
 						leadsTo = "looking",
 					},
-					{ --option should only appear if he's friendly
-						msg = {
-							text = "There's not much more wood close by.  Could you help me out?",
-							sound = "chat_good",
-						},
-						leadsTo = "help_get_wood",
-					},
 					{
 						msg = {
 							text = "Bye, old man. (Leave.)"
@@ -152,6 +158,92 @@ local def = {
 						leadsTo = "leave1"
 					},
 				}
+			},
+			why = {
+				msg = {		
+				{
+					text = "Why?",
+					sound = "chat_good",
+					delay = 1.5,
+				},
+				{
+					text = "You wanna know why, pupa, you better settle in for a story.",
+					sound = "chat_good",
+					delay = 3,
+				},
+				{
+					text = "Mayhaps best get some more wood first.  I can keep talkin' at yeh once you get back.",
+					sound = "chat_good",
+					delay = 6,
+				},
+				},
+				replyDelay = 9,
+				onSceneFunc = function (self, player)
+					-- Called with the scene is opened.
+					--ChatHandler.AddMessage("SCENE FUNC")
+					self.story = true
+				end,
+				replies = {
+					{
+						msg = {
+							text = "Nah, it's fine.  Go on.",
+							sound = "chat_good",
+						},
+						leadsTo = "story"
+					},
+					{
+						msg = {
+							text = "I'll bring back some more wood.",
+							sound = "chat_good",
+						},
+						leadsTo = "more_wood"
+					},
+				}
+			},
+			more_wood = {
+				msg = {		
+				{
+					text = "You do that, then.  I'll be here.",
+					sound = "chat_good",
+					delay = 3,
+				}
+				},
+				replyDelay = 6,
+			},
+			story1 = {
+				msg = {		
+				{
+					text = "You ready for the story, pupa?",
+					sound = "chat_good",
+					delay = 2,
+				}
+				},
+				replyDelay = 3.5,
+				replies = {
+					{
+						msg = {
+							text = "Alright, go on.",
+							sound = "chat_good",
+						},
+						leadsTo = "story2"
+					},
+					{
+						msg = {
+							text = "Got something to do.  I'll be back.",
+							sound = "chat_good",
+						},
+						leadsTo = "more_wood"
+					},
+				}
+			},
+			story2 = {
+				msg = {		
+				{
+					text = "[really cool but depressing story placeholder.]",
+					sound = "chat_good",
+					delay = 2,
+				}
+				},
 			},
 			looking = {
 				msg = {		
@@ -171,85 +263,19 @@ local def = {
 					delay = 7,
 				},
 				},
+				replyDelay = 8,
+			},
+			sure = {
+							msg = {		
+				{
+					text = "Well, go on then.",
+					sound = "chat_good",
+					delay = 0.5,
+				}
+				},
+				replyDelay = 1.5,
 			},
 			help_get_wood = {
-			},
-			are_you_sure = {
-				msg = {{
-					text = "Are you sure? I have a sword",
-					sound = "chat_good",
-				}},
-				replyDelay = 0.5,
-				replies = {
-					{
-						msg = {
-							text = "Yes",
-							sound = "chat_good",
-						},
-						leadsToFunc = function (self, player)
-							self.pissed = true
-							return "die", true
-						end,
-					},
-					{
-						msg = {
-							text = "Fine, take them",
-							sound = "chat_good",
-						},
-						leadsToFunc = function (self, player)
-							local logCount = player.GetInventoryCount("log_item")
-							if logCount > 0 then
-								player.RemoveInventory("log_item", logCount)
-								self.friendly = true
-								self.items.log_item = logCount
-								return "thanks", true
-							else
-								return "hang_on_no_logs", true
-							end
-						end
-					},
-				}
-			},
-			behind_you = {
-				msg = {
-					{
-						text = "Right...",
-						sound = "chat_good",
-						delay = 1
-					},
-					{
-						text = "Then what is that you're carrying?",
-						sound = "chat_good",
-						delay = 2.6
-					},
-				},
-				replyDelay = 3,
-				replies = {
-					{
-						msg = {
-							text = "Braised ham",
-							sound = "chat_good",
-						},
-						leadsToFunc = function (self, player)
-							self.pissed = true
-							return "die_lie", true
-						end,
-					},
-					{
-						msg = {
-							text = "Fine, take them",
-							sound = "chat_good",
-						},
-						leadsToFunc = function (self, player)
-							local logCount = player.GetInventoryCount("log_item")
-							player.RemoveInventory("log_item", logCount)
-							self.friendly = true
-							self.items.log_item = logCount
-							self.behaviourDelay = 1.2
-							return "thanks", true
-						end
-					},
-				}
 			},
 			thanks = {
 				msg = {
@@ -267,18 +293,25 @@ local def = {
 				leadsToFunc = function (self, player)
 					-- Called with the scene is opened.
 						local logCount = player.GetInventoryCount("log_item")
-						player.RemoveInventory("log_item", logCount)
-						self.friendly = true
-						self.items.log_item = logCount
+
 						self.behaviourDelay = 1.2
 						return "dialogue_end", true
 				end,
 			},
 			hang_on_no_logs = {
-				msg = {{
-					text = "Hang on, you don't even have any logs! Go find some.",
-					sound = "chat_bad",
-				}}
+				msg = {
+				{
+					text = "Where's them logs, then?  You ain't got any!  Go git some!",
+					sound = "chat_good",
+					delay = 1.5,
+				},				
+				{
+					text = "...sigh...",
+					sound = "chat_good",
+					delay = 3.5,
+				},
+				},
+				replyDelay = 4.5,
 			},
 			no_logs = {
 				msg = {{
