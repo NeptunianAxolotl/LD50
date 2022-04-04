@@ -415,9 +415,9 @@ local function DrawHoveredNpc()
 	local npc = NpcHandler.GetCharacterUnderMouse()
 	if npc then
 		local npcPos, npcWidth, npcHeight = npc.HitBoxToScreen()
-		love.graphics.setColor(1, 0.2, 0.2, 1)
-		love.graphics.setLineWidth(4)
-		love.graphics.rectangle("line", npcPos[1], npcPos[2], npcWidth, npcHeight, 0, 0, 5)
+		love.graphics.setColor(0.9, 0.7, 0.2, 1)
+		love.graphics.setLineWidth(3)
+		love.graphics.rectangle("line", npcPos[1], npcPos[2], npcWidth, npcHeight, 16, 16, 15)
 		
 		self.hoveredNpc = npc
 	end
@@ -427,9 +427,13 @@ local function DrawHoveredFeature()
 	local feature = TerrainHandler.GetFeatureUnderMouse()
 	if feature then
 		local featurePos, featureWidth, featureHeight = feature.HitBoxToScreen()
-		love.graphics.setColor(1, 0.2, 0.2, 1)
-		love.graphics.setLineWidth(4)
-		love.graphics.rectangle("line", featurePos[1], featurePos[2], featureWidth, featureHeight, 0, 0, 5)
+		if feature.def.collectAs then
+			love.graphics.setColor(0.2, 0.65, 0.5, 1)
+		else
+			love.graphics.setColor(0.3, 0.75, 0.2, 1)
+		end
+		love.graphics.setLineWidth(3)
+		love.graphics.rectangle("line", featurePos[1], featurePos[2], featureWidth, featureHeight, 16, 16, 15)
 		
 		self.hoveredFeature = feature
 	end
@@ -437,10 +441,12 @@ end
 
 function api.DrawInterface()
 	local checkHover = (not DialogueHandler.InChat()) and (not self.buildMenuOpen)
-	self.hoveredItem = InventoryUtil.DrawInventoryBar(self.world, self.inventory, self.selectedItem, self.activeItem, ItemDefs, checkHover, 80, 15, 2, Global.INVENTORY_SLOTS, 0, 0)
+	self.hoveredItem, startX, startY = InventoryUtil.DrawInventoryBar(self.world, self.inventory, self.selectedItem, self.activeItem, ItemDefs, checkHover, 80, 15, 2, Global.INVENTORY_SLOTS, 0, 0)
 	self.hoveredItem = InventoryUtil.DrawInventoryBar(self.world, self.inventory, self.selectedItem, self.activeItem, ItemDefs, checkHover, 80, 15, 1, 1, 0, 0) or self.hoveredItem
 	
 	self.hoveredBuildMenu = InventoryUtil.DrawBuild(self.world, api, Global.INVENTORY_SLOTS, (not DialogueHandler.InChat()), self.buildMenuOpen, 80, 15, 0, 120, 70)
+	
+	InventoryUtil.DrawTooltip(startX, startY, self.hoveredItem, self.hoveredFeature, self.hoveredNpc, self.hoveredBuildMenu)
 	
 	self.hoveredFeature = false
 	self.hoveredNpc = false

@@ -64,7 +64,7 @@ function api.DrawInventoryBar(world, inventory, selectedItem, activeItem, ItemDe
 		end
 	end
 	
-	return hoveredItem
+	return hoveredIte, startX, startY
 end
 
 function api.DrawBuild(world, playerData, inventorySlots, checkHover, inBuildMenu, boxSize, boxSpacing, inventorySpacing, buildSize, buildSpacing)
@@ -174,6 +174,26 @@ function api.DrawBuildMenu(world, playerData)
 	end
 	
 	return closeHover, buildHover
+end
+
+function api.DrawTooltip(startX, startY, item, feature, npc, buildMenu)
+	local text = false
+	if buildMenu then
+		text = "Spend resources to place a structure."
+	elseif npc then
+		text = "Talk with a fellow firefly"
+	elseif feature then
+		text = feature.def.desc or "Feature missing desc"
+	elseif feature then
+		local itemDef = ItemDefs[item]
+		text = itemDef.desc or "Item missing desc"
+	else
+		return
+	end
+
+	Font.SetSize(1)
+	love.graphics.setColor(1, 1, 1, 1)
+	love.graphics.print(text, startX + 95, startY - 40)
 end
 
 return api
