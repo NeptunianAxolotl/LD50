@@ -55,7 +55,7 @@ local def = {
 					},
 					{
 						msg = {
-							text = "[spend a while together in silence]",
+							text = "(Spend a while together in silence.)",
 						},
 						leadsTo = "silence3"
 					},
@@ -96,7 +96,7 @@ local def = {
 					},
 					{
 						msg = {
-							text = "[leave]",
+							text = "(Leave.)",
 						},
 					},
 				},
@@ -119,7 +119,7 @@ local def = {
 					},
 					{
 						msg = {
-							text = "[leave]",
+							text = "(Leave.)",
 						},
 					},
 				},
@@ -147,7 +147,7 @@ local def = {
 					},
 					{
 						msg = {
-							text = "[leave]",
+							text = "(Leave.)",
 						},
 					},
 				},
@@ -163,7 +163,7 @@ local def = {
 					replies = {
 					{
 						msg = {
-							text = "[leave]",
+							text = "(Leave.)",
 						},
 					},
 				},
@@ -228,7 +228,7 @@ local def = {
 					},
 					{
 						msg = {
-							text = "[leave]",
+							text = "(Leave.)",
 						},
 					},
 			},
@@ -254,7 +254,7 @@ local def = {
 				replies = {
 					{
 						msg = {
-							text = "(shrug)",
+							text = "(Shrug.)",
 						},
 						leadsTo = "silence32",
 					},
@@ -267,7 +267,7 @@ local def = {
 					},
 					{
 						msg = {
-							text = "[leave]",
+							text = "(Leave.)",
 						},
 					},				
 				},
@@ -292,10 +292,10 @@ local def = {
 				{
 					text = "Live.",
 					sound = "chat_good",	
-					delay = 10,
+					delay = 9,
 				},
 				},	
-				replyDelay = 12,
+				replyDelay = 10.5,
 			},
 			silence33 = {
 				msg = {
