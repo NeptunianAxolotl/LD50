@@ -257,7 +257,10 @@ local def = {
 							text = "Look, there you go, it came loose.",
 							sound = "chat_good",
 						},
-						leadsTo = "help_axe5",
+						leadsToFunc = function (self, player)
+							player.AddItem("axe_item")
+							return "help_axe5"
+						end,
 					},
 				}
 			},
