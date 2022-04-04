@@ -52,19 +52,66 @@ local def = {
 			return not self.pissed
 		end,
 		getEntry = function(self, player)
-			return (self.friendly and "hello_friendly") or "hello"
+			return (self.firstTalk and "intro1") or (self.friendly and "hello_friendly") or "default"
 		end,
 		scenes = {
-			hello = {
-				msg = {
-				
-				
+			intro1 = {
+				msg = {		
+				{
+					text = "There you are.  You gotta stop wannering off.",
+					sound = "chat_good",
+				},		
+				{
+					text = "Go git some wood.  Gotta keep the fire going.",
+					sound = "chat_good",
+					delay = 2.5,
+				},		
+				{
+					text = "Careful of goin' off too far.  The firelight becomes our own light.  'member to come back before you fade.",
+					sound = "chat_good",
+					delay = 6
+				},
+				onSceneFunc = function (self, player)
+					self.firstTalk = false
+					return true
+				end
+				},
+				replyDelay = 9,
+				replies = {
+					{
+						msg = {
+							text = "Sure.",
+							sound = "chat_good",
+						},
+					},
+					{
+						msg = {
+							text = "Here's some wood, gramps.",
+							sound = "chat_good",
+						},
+					},
+					{
+						msg = {
+							text = "(Leave.)",
+						},
+						leadsTo = "leave1"
+					},
+				}
+			},		
+			default = {
+				msg = {		
 				{
 					text = "What're you talking to me fer?  Go git some wood for the fire!",
 					sound = "chat_good",
 				}},
 				replyDelay = 0.5,
 				replies = {
+					{
+						msg = {
+							text = "Why do we need logs?",
+							sound = "chat_good",
+						},
+					},
 					{
 						msg = {
 							text = "Yeah, yeah.",
@@ -91,11 +138,9 @@ local def = {
 					},
 					{
 						msg = {
-							text = "[leave]"
+							text = "Bye, old man. (Leave.)"
 						},
 					},
-
-					
 				}
 			},
 			are_you_sure = {
@@ -248,10 +293,25 @@ local def = {
 					sound = "chat_good",
 				}},
 			},
+			leave1 = {
+				msg = {{
+					text = "Hmf.",
+					sound = "chat_good",
+					delay = 1,
+				}},
+				replyDelay = 1.8,
+			},
+			leave2 = {
+				msg = {{
+					text = "Safe travels.  Degenerate pupa.  Remember to fly over holes, not just walk into them.",
+					sound = "chat_good",
+					delay = 1,
+				}},
+				replyDelay = 3,
+			},
+			dialogue_end = {
+			},
 		}
-	
-	
-	
 	}
 }
 
