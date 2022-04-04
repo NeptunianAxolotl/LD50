@@ -94,11 +94,8 @@ function api.FindFreeSpace(centre, freeRadius)
 	while searchRadius < 1000 do
 		local pos = util.Add(centre, util.RandomPointInCircle(searchRadius))
 		local _, closeDist = api.GetClosetFeature(pos, featureType, true)
-		if closeDist > freeRadius then
+		if closeDist > freeRadius and GroundHandler.PositionHasGround(pos, freeRadius) then
 			return pos
-		end
-		if not GroundHandler.PositionHasGround(pos, freeRadius) then
-			return false
 		end
 		searchRadius = searchRadius + 20
 	end
