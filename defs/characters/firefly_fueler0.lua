@@ -3,7 +3,7 @@ local util = require("include/util")
 local GuyUtils = require("utilities/guyUtils")
 
 local def = {
-	inheritFrom = "firefly_fueler",
+	inheritFrom = "firefly",
 	speedMult = 0.7,
 	workMult = 0.7,
 	jobType = "job_fuel",

@@ -241,7 +241,7 @@ local function NewGuy(self, physicsWorld, world)
 		for key, value in pairs(self.items or {}) do
 			if not whiteMap[key] then
 				local itemDef = ItemDefs[key]
-				TerrainHandler.DropFeatureInFreeSpace(self.GetPos(), itemDef.dropAs, value * itemDef.dropMult)
+				TerrainHandler.DropFeatureInFreeSpace(self.GetPos(), itemDef.dropAs, value * (itemDef.dropMult or 1))
 				self.RemoveInventory(key, value)
 			end
 		end

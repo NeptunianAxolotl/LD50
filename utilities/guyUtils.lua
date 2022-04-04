@@ -17,6 +17,14 @@ local fuelFeatures = {
 	coal_bin = true,
 }
 
+local mineFeatures = {
+	stone_mine = true,
+	ore_mine = true,
+	coal_mine = true,
+	ruby_mine = true,
+	emerald_mine = true,
+}
+
 local pileForItem = {
 	["log_item"] = "wood_pile",
 	stick_item = "wood_pile",
@@ -150,11 +158,10 @@ function api.ReturnTo(self, featureType)
 	return api.SeekAndCollectFeature(self, featureType, "mine")
 end
 
-function api.MineFeature(self, featureType)
+function api.MineFeature(self, featureType, tool)
 	-- Find the tool I need
-	local featureDef = FeatureDefs[featureType]
-	if featureDef.mineTool and self.GetInventoryCount(featureDef.mineTool) < 1 then
-		if api.SeekAndCollectFeature(self, ItemDefs[featureDef.mineTool].dropAs) then
+	if tool and self.GetInventoryCount(tool) < 1 then
+		if api.SeekAndCollectFeature(self, ItemDefs[tool].dropAs) then
 			return true
 		end
 		return false -- Blocked, so go do something else.
@@ -184,6 +191,23 @@ function api.GatherAndCraft(self, gatherItem, craftCost, gatherFeature, craftFea
 		return true
 	end
 	return api.SeekAndCollectFeature(self, gatherFeature)
+end
+
+function api.FullyGeneralHelperGuy(self)
+	if self.jobType == "job_fuel" then
+		return api.FuelFire(self, fire, 0.9)
+	elseif self.jobType == "job_furnace" then
+		return api.GatherAndCraft(self, "ore_item", Global.ORE_TO_METAL, "ore", "furnace", "metal_item")
+	elseif self.jobType == "job_furnace" then
+		return api.GatherAndCraft(self, "metal_item", Global.METAL_TO_FRAME, "metal", "workshop", "metal_frame_item")
+	elseif self.jobType == "job_trees" then
+		return api.MineFeature(self, "tree", "axe_item")
+	elseif self.jobType == "job_mine" then
+		if api.MineFeature(self, self.mineType, "pick_item") then
+			return true
+		end
+		return api.MineFeature(self, mineFeatures, "pick_item")
+	end
 end
 
 api.generalHelperTable = {
@@ -393,7 +417,7 @@ api.generalHelperTable = {
 			-- Called with the scene is opened.
 			--ChatHandler.AddMessage("SCENE FUNC")
 			self.jobType = "job_mine"
-			self.mineType = "mine_coal"
+			self.mineType = "coal_mine"
 			self.FilterOutInventory({"pick_item"})
 		end,
 		replyDelay = 1.5,
@@ -407,7 +431,7 @@ api.generalHelperTable = {
 			-- Called with the scene is opened.
 			--ChatHandler.AddMessage("SCENE FUNC")
 			self.jobType = "job_mine"
-			self.mineType = "mine_metal"
+			self.mineType = "ore_mine"
 			self.FilterOutInventory({"pick_item"})
 		end,
 		replyDelay = 1.5,
@@ -421,7 +445,7 @@ api.generalHelperTable = {
 			-- Called with the scene is opened.
 			--ChatHandler.AddMessage("SCENE FUNC")
 			self.jobType = "job_mine"
-			self.mineType = "mine_ruby"
+			self.mineType = "ruby_mine"
 			self.FilterOutInventory({"pick_item"})
 		end,
 		replyDelay = 1.5,
@@ -434,8 +458,8 @@ api.generalHelperTable = {
 		onSceneFunc = function (self, player)
 			-- Called with the scene is opened.
 			--ChatHandler.AddMessage("SCENE FUNC")
-			self.jobType = "job_mine"
-			self.mineType = "mine_emerald"
+			self.jobType = "job_mine" 
+			self.mineType = "emerald_mine"
 			self.FilterOutInventory({"pick_item"})
 		end,
 		replyDelay = 1.5,
@@ -449,7 +473,7 @@ api.generalHelperTable = {
 			-- Called with the scene is opened.
 			--ChatHandler.AddMessage("SCENE FUNC")
 			self.jobType = "job_mine"
-			self.mineType = "mine_stone"
+			self.mineType = "stone_mine"
 			self.FilterOutInventory({"pick_item"})
 		end,
 		replyDelay = 1.5,
@@ -462,7 +486,7 @@ api.generalHelperTable = {
 		onSceneFunc = function (self, player)
 			-- Called with the scene is opened.
 			--ChatHandler.AddMessage("SCENE FUNC")
-			self.jobType = "job_fuel"
+			self.jobType = "job_fuel" 
 			self.mineType = "mine_none"
 			self.FilterOutInventory({"stick_item", "log_item", "coal_item"})
 		end,
@@ -490,7 +514,7 @@ api.generalHelperTable = {
 		onSceneFunc = function (self, player)
 			-- Called with the scene is opened.
 			--ChatHandler.AddMessage("SCENE FUNC")
-			self.jobType = "job_furnace"
+			self.jobType = "job_furnace" 
 			self.mineType = "mine_none"
 			self.FilterOutInventory({"ore_item"})
 		end,
@@ -504,7 +528,7 @@ api.generalHelperTable = {
 		onSceneFunc = function (self, player)
 			-- Called with the scene is opened.
 			--ChatHandler.AddMessage("SCENE FUNC")
-			self.jobType = "job_workshop"
+			self.jobType = "job_workshop" 
 			self.mineType = "mine_none"
 			self.FilterOutInventory({"metal_item"})
 		end,
