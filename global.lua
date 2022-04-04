@@ -21,7 +21,7 @@ local globals = {
 	
 	TREE_SPAWN_RAND = 400,
 	
-	INVENTORY_SLOTS = 5,
+	INVENTORY_SLOTS = 7,
 	
 	NPC_PICKUP_TIME = 0.2,
 	NPC_DROP_TIME = 0.05,

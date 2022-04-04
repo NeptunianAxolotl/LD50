@@ -14,6 +14,7 @@ local def = {
 		energyRadius = 10,
 		energyProvided = 0,
 	},
+	deconstructMaterials = {"rock", "rock", "rock", "ruby"},
 	requiresPower = true,
 	toPowerRangeMult = 0.75,
 	isEnergyProvider = true,
@@ -49,6 +50,11 @@ local def = {
 				}},
 				replyDelay = 0,
 				replies = {
+					FeatureUtils.DestoryHelper(
+						"prybar_item", false, 5, false,
+						"Destroy the furnace.",
+						"You dismantle the furnace."
+					),
 					FeatureUtils.ForgeHelper(
 						"metal", "metal_item", "ore_item", Global.ORE_TO_METAL, Global.FURNACE_FUEL_USE, "health_down",
 						"Smelt ore into metal (" .. Global.ORE_TO_METAL .. " ore)",

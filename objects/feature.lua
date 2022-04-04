@@ -85,6 +85,11 @@ local function NewFeature(self, physicsWorld, world)
 			for i = 1, #def.deconstructMaterials do
 				TerrainHandler.DropFeatureInFreeSpace(dropPos, def.deconstructMaterials[i])
 			end
+			if self.items then
+				for name, count in pairs(self.items) do
+					TerrainHandler.DropFeatureInFreeSpace(dropPos, ItemDefs[name].dropAs, count)
+				end
+			end
 		end
 		return true
 	end

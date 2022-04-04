@@ -136,7 +136,7 @@ local function CheckSelectReply()
 	if myReply.leadsTo then
 		SetNextScene(myReply.leadsTo, concludes, myReply.delayNextScene)
 		if myReply.concludes then
-			api.ConcludeChat()
+			api.ConcludeChat(myReply.delayNextScene)
 		end
 	elseif myReply.leadsToFunc then
 		local leadsTo, concludes = myReply.leadsToFunc(self.chatGuy, PlayerHandler)
@@ -144,10 +144,10 @@ local function CheckSelectReply()
 			SetNextScene(leadsTo, concludes, myReply.delayNextScene)
 		end
 		if concludes or (not leadsTo) then
-			api.ConcludeChat()
+			api.ConcludeChat(myReply.delayNextScene)
 		end
 	else
-		api.ConcludeChat()
+		api.ConcludeChat(myReply.delayNextScene)
 	end
 	
 	-- Print message after leadTo, so that it appears after the replay (if instant)
@@ -176,10 +176,11 @@ function api.InChat()
 	return self.chatGuy
 end
 
-function api.ConcludeChat()
+local function ConcludeChatRaw()
 	if not self.chatGuy then
 		return
 	end
+	
 	ChatHandler.FlushChatTurns()
 	ChatHandler.SetChatTurnEnabled(false)
 	if self.chatGuy.ClearMoveGoal then
@@ -197,6 +198,15 @@ function api.ConcludeChat()
 	self.replyDelay = false
 end
 
+function api.ConcludeChat(delay)
+	if delay then
+		Delay.Add(delay, ConcludeChatRaw)
+		self.replyDelay = delay
+	else
+		ConcludeChatRaw()
+	end
+end
+
 --------------------------------------------------
 -- Updating
 --------------------------------------------------
@@ -206,7 +216,7 @@ function api.MousePressedInterface(mx, my, button)
 end
 
 function api.Update(dt)
-	if self.chatGuy and self.chatGuy.IsDead() then
+	if self.chatGuy and (self.chatGuy.IsDead() or (self.chatGuy.IsBlockedUnitMoveGoal and self.chatGuy.IsBlockedUnitMoveGoal())) then
 		api.ConcludeChat()
 	end
 	if self.chatGuy then

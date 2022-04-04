@@ -9,6 +9,10 @@ local NewFeature = require("objects/feature")
 local self = {}
 local api = {}
 
+function api.GetFeatureDef(name)
+	return FeatureDefs[name]
+end
+
 function api.GetHomeFire()
 	return self.homeFire
 end
@@ -17,9 +21,9 @@ function api.FindFreeSpaceFeature(centre, feature, usePlaceDistance)
 	return api.FindFreeSpace(centre, ((usePlaceDistance and FeatureDefs[feature].placementRadius) or FeatureDefs[feature].radius))
 end
 
-function api.SpawnFeature(name, pos, items)
+function api.SpawnFeature(name, pos, items, data)
 	local def = FeatureDefs[name]
-	local data = {}
+	data = data or {}
 	data.pos = pos
 	data.def = def
 	local feature = NewFeature(data, self.world.GetPhysicsWorld(), self.world)
@@ -162,7 +166,7 @@ end
 local function SetupTerrain()
 	for i = 1, #terrainDef do
 		local featurePlaceDef = terrainDef[i]
-		local feature = api.SpawnFeature(featurePlaceDef.name, featurePlaceDef.pos, featurePlaceDef.items)
+		local feature = api.SpawnFeature(featurePlaceDef.name, featurePlaceDef.pos, featurePlaceDef.items, featurePlaceDef.data)
 		if featurePlaceDef.name == "fire" then
 			self.homeFire = feature
 		end

@@ -3,6 +3,7 @@ local util = require("include/util")
 local Resources = require("resourceHandler")
 local BuildDefs = require("defs/buildDefs")
 local ItemDefs = util.LoadDefDirectory("defs/items")
+local Font = require("include/font")
 
 local api = {}
 
@@ -90,30 +91,36 @@ function api.DrawBuildMenu(world, playerData)
 	local screenWidth, screenHeight = love.window.getMode()
 	local mousePos = world.GetMousePositionInterface()
 
+	local menuWidth, menuHeight = 760, 640
+	local left, top = screenWidth*0.5 - menuWidth/2, screenHeight*0.48 - menuHeight/2
+
 	love.graphics.setColor(0.6*1.1, 0.7*1.1, 0.7*1.1, 1)
 	love.graphics.setLineWidth(4)
-	love.graphics.rectangle("fill", screenWidth*0.2, screenHeight*0.1, screenWidth*0.6, screenHeight*0.75, 0, 0, 5)
+	love.graphics.rectangle("fill", left, top, menuWidth, menuHeight, 0, 0, 5)
 	
 	love.graphics.setColor(0.7, 0.9, 0.9, 1)
 	love.graphics.setLineWidth(4)
-	love.graphics.rectangle("line", screenWidth*0.2, screenHeight*0.1, screenWidth*0.6, screenHeight*0.75, 0, 0, 5)
+	love.graphics.rectangle("line", left, top, menuWidth, menuHeight, 0, 0, 5)
 	
 	local closeHover, buildHover = false, false
 	
-	if util.PosInRectangle(mousePos, screenWidth*0.8 - 104, screenHeight*0.1 + 20, 84, 84) then
+	if util.PosInRectangle(mousePos, left + menuWidth - 54, top + 10, 40, 40) then
 		closeHover = true
-		Resources.DrawImage("close_button_highlight", screenWidth*0.8 - 63, screenHeight*0.1 + 20)
+		Resources.DrawImage("close_button_highlight", left + menuWidth - 54, top + 10)
 	else
-		Resources.DrawImage("close_button", screenWidth*0.8 - 63, screenHeight*0.1 + 20)
+		Resources.DrawImage("close_button", left + menuWidth - 54, top + 10)
 	end
 	
-	local startX = screenWidth*0.2 + 90
-	local startY = screenHeight*0.2 + 40
-	
-	local unlocks = playerData.GetUnlocks()
+	Font.SetSize(0)
+	love.graphics.print("Availible Structures", left + 200, top + 36)
+
+	local startX = left + 120
+	local startY = top + 150
+
 	for i = 1, #BuildDefs do
 		local def = BuildDefs[i]
-		if unlocks[def.unlockReq] then
+		if playerData.HasTech(name) then
+			local featureDef = TerrainHandler.GetFeatureDef(def.feature)
 			local canAfford = playerData.CanAffordBuilding(def)
 			local isHover = false
 			if util.PosInRectangle(mousePos, startX - 60, startY - 40, screenWidth*0.6 - 60, 80) then
@@ -125,13 +132,18 @@ function api.DrawBuildMenu(world, playerData)
 				love.graphics.setLineWidth(4)
 				love.graphics.rectangle("line", startX - 60, startY - 40, screenWidth*0.6 - 60, 80, 0, 0, 5)
 			end
+			
+			Font.SetSize(1)
+			love.graphics.setColor((canAfford and 1) or 0.5, (canAfford and 1) or 0.5, (canAfford and 1) or 0.5, (canAfford and 1) or 0.5)
+			love.graphics.print(featureDef.humanName or "NEED A NAME", startX + 70, startY - 40)
+			
 			Resources.DrawImage(def.buildImage, startX, startY, false, 1, false, (not canAfford) and {0.7, 0.7, 0.7})
 			local resourceCol = (not canAfford) and {isHover and 1 or 0.7, isHover and 0.2 or 0.7, isHover and 0.2 or 0.7}
 			for j = 1, #def.cost do
 				local item = ItemDefs[def.cost[j]]
-				Resources.DrawImage(item.image, startX + 20 + 90*j, startY, false, 1, false, resourceCol)
+				Resources.DrawImage(item.image, startX + 28 + 75*j, startY + 12, false, 1, 0.8, resourceCol)
 			end
-			startY = startY + 120
+			startY = startY + 84
 		end
 	end
 	
