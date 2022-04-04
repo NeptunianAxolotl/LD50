@@ -4,7 +4,7 @@ local def = {
 	collide = true,
 	image = "tree",
 	shadowRadius = 27,
-	placementRadius = 90,
+	placementRadius = 220,
 	mouseHit = {rx = -45, ry = -220, width = 90, height = 260},
 }
 

@@ -18,6 +18,8 @@ local globals = {
 	UNLOCK_ALL_TECH = true,
 	DRAW_DEBUG = false,
 	
+	TREE_SPAWN_RAND = 400,
+	
 	INVENTORY_SLOTS = 5,
 	
 	NPC_PICKUP_TIME = 0.2,
