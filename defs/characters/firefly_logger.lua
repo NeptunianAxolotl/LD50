@@ -66,15 +66,15 @@ local def = {
 				{
 					text = "Go git some wood.  Gotta keep the fire going.",
 					sound = "chat_good",
-					delay = 2.5,
+					delay = 1.5,
 				},		
 				{
 					text = "Careful of goin' off too far.  The firelight becomes our own light.  'member to come back before you fade.",
 					sound = "chat_good",
-					delay = 6
+					delay = 3.5,
 				},
 				},		
-				replyDelay = 9,
+				replyDelay = 5,
 				onSceneFunc = function (self, player)
 					-- Called with the scene is opened.
 					--ChatHandler.AddMessage("SCENE FUNC")
