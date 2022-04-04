@@ -243,7 +243,7 @@ local def = {
 			},
 			options_mine_metal = {
 				msg = {{
-					text = "Just coal me when you need me.",
+					text = "That's metal, dude.",
 					sound = "chat_good",
 				}},		
 				onSceneFunc = function (self, player)
