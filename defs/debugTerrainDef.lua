@@ -64,6 +64,42 @@ end
 local placeList = {
 	--"fire", -- already got one
 	
+	"big_digger",
+	"lamp_wood",
+	"tele_metal",
+	"tele_wood",
+	"miner_metal",
+	"big_teleport",
+	"miner_wood",
+	"lamp_metal",
+	"tele_in",
+	
+	-- Huts
+	"metal_hut",
+	"wood_hut",
+	"big_wood_hut",
+	
+	-- NEED NPC INTERACTION
+	"wood_pile",
+	"coal_bin",
+	
+	-- Mines
+	"emerald_mine",
+	"saphire_mine",
+	"ruby_mine",
+	"ore_mine",
+	"stone_mine",
+	"coal_mine",
+	"tree",
+	
+	-- NEED SCALING
+	
+	-- benches
+	"workshop",
+	"anvil",
+	"furnace",
+	
+	-- MOSTLY DONE
 	--Tools
 	"prybar",
 	"hammer",
@@ -84,39 +120,6 @@ local placeList = {
 	"emerald",
 	"coal",
 	
-	"workshop",
-	"anvil",
-	"furnace",
-	
-	-- Piles
-	"wood_pile",
-	"coal_bin",
-	
-	
-	-- Advanced
-	"big_digger",
-	"lamp_wood",
-	"tele_metal",
-	"tele_wood",
-	"miner_metal",
-	"big_teleport",
-	"miner_wood",
-	"lamp_metal",
-	"tele_in",
-	
-	-- Huts
-	"metal_hut",
-	"wood_hut",
-	"big_wood_hut",
-	
-	-- Mines - tested
-	"emerald_mine",
-	"saphire_mine",
-	"ruby_mine",
-	"ore_mine",
-	"stone_mine",
-	"coal_mine",
-	"tree",
 }
 
 local angle = math.pi

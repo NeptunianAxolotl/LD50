@@ -75,6 +75,7 @@ local def = {
 				replyDelay = 9,
 				onSceneFunc = function (self, player)
 					-- Called with the scene is opened.
+					ChatHandler.AddMessage("SCENE FUNC")
 					self.firstTalk = false
 				end,
 				replies = {

@@ -36,6 +36,21 @@ function api.GetTerrainPos(i, j)
 	return {i * Global.TILE_WIDTH - (j%2 * Global.TILE_WIDTH * 0.5), j * Global.TILE_HEIGHT * 0.5}
 end
 
+function api.PosToTile(pos)
+	local x = pos[1] / Global.TILE_WIDTH - self.ground.offsetX
+	local y = pos[2] / Global.TILE_HEIGHT - self.ground.offsetY
+	
+	local xf = x%1
+	local yf = (y)%1
+	
+	local tileX, tileY = math.floor(x), math.floor(y)
+	
+	
+	--print(x, y)
+	local terPos = api.GetTerrainPos(math.floor(x), math.floor(y))
+	print(tileX, tileY, math.floor(pos[1]), math.floor(pos[2]), math.floor(terPos[1]), math.floor(terPos[2]))
+end
+
 function api.PositionHasGround(pos, radius)
 	return true -- TODO
 end
