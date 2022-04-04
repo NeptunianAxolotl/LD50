@@ -76,7 +76,6 @@ local def = {
 				onSceneFunc = function (self, player)
 					-- Called with the scene is opened.
 					self.firstTalk = false
-					return
 				end,
 				replies = {
 					{
@@ -90,6 +89,17 @@ local def = {
 							text = "Here's some wood, gramps.",
 							sound = "chat_good",
 						},
+						leadsToFunc = function (self, player)
+							local logCount = player.GetInventoryCount("log_item")
+							if logCount > 0 then
+								player.RemoveInventory("log_item", logCount)
+								self.friendly = true
+								self.items.log_item = logCount
+								return "thanks", true
+							else
+								return "hang_on_no_logs", true
+							end
+						end
 					},
 					{
 						msg = {
@@ -109,13 +119,7 @@ local def = {
 				replies = {
 					{
 						msg = {
-							text = "Why do we need logs?",
-							sound = "chat_good",
-						},
-					},
-					{
-						msg = {
-							text = "Yeah, yeah.",
+							text = "Here's some wood, gramps.",
 							sound = "chat_good",
 						},
 						leadsToFunc = function (self, player)
@@ -132,17 +136,52 @@ local def = {
 					},
 					{
 						msg = {
-							text = "Stuff it, old man.  The fire can wait.",
+							text = "Why do we need the fire?  We have our own light.",
 							sound = "chat_good",
 						},
-						leadsTo = "are_you_sure",
+					},
+					{
+						msg = {
+							text = "Yeah, yeah.  I'm looking.",
+							sound = "chat_good",
+						},
+						leadsTo = "looking",
+					},
+					{ --option should only appear if he's friendly
+						msg = {
+							text = "There's not much more wood close by.  Could you help me out?",
+							sound = "chat_good",
+						},
+						leadsTo = "help_get_wood",
 					},
 					{
 						msg = {
 							text = "Bye, old man. (Leave.)"
 						},
+						leadsTo = "leave1"
 					},
 				}
+			},
+			looking = {
+				msg = {		
+				{
+					text = "I already looked around here, soft-shell.  That's how the fire happened!",
+					sound = "chat_good",
+					delay = 0.5,
+				},
+				{
+					text = "Go look further afield, give your thorax a workout!",
+					sound = "chat_good",
+					delay = 3,
+				},
+				{
+					text = "...kids these days...",
+					sound = "chat_good",
+					delay = 7,
+				},
+				},
+			},
+			help_get_wood = {
 			},
 			are_you_sure = {
 				msg = {{
