@@ -143,10 +143,10 @@ local placeList = {
 
 local angle = math.pi
 for i = 1, #placeList do
-	--terrain[#terrain + 1] = {
-	--	name = placeList[i],
-	--	pos = {-1200 + 400*((i - 1)%8), -120 - 400*(math.floor((i - 1)/8))}
-	--}
+	terrain[#terrain + 1] = {
+		name = placeList[i],
+		pos = {-1200 + 400*((i - 1)%8), -120 - 400*(math.floor((i - 1)/8))}
+	}
 end
 
 return terrain

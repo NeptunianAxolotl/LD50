@@ -30,6 +30,25 @@ local fuelItems = {
 
 local api = {}
 
+function api.MineFeature(self, featureType)
+	local feature, distance = TerrainHandler.GetClosetFeature(self.GetPos(), featureType, false, true, true, false, false, false, true)
+	if feature then
+		if distance > Global.START_SPOT_SEARCH then
+			self.SetMoveGoal(feature.GetPos(), feature.GetRadius() + Global.APPROACH_LEEWAY * (math.random()*0.4 + 0.4))
+			return true
+		else
+			local newFeature, newDistance = TerrainHandler.GetClosetFeature(self.GetPos(), featureType, false, true, true, true, true, false, true)
+			if newFeature then
+				self.SetMoveGoal(newFeature.GetPos(), newFeature.GetRadius() + Global.DROP_LEEWAY, newFeature, "collect", false)
+				return true
+			else
+				self.behaviourDelay = math.random() + 2.5
+			end
+		end
+	end
+	return false
+end
+
 function api.SeekAndCollectFeature(self, featureType)
 	local feature, distance = TerrainHandler.GetClosetFeature(self.GetPos(), featureType, false, true, true, false, false, false, true)
 	if feature then
@@ -89,24 +108,7 @@ function api.DumpInCloserPile(self, fire)
 	end
 end
 
-function api.OrganiseFuel(self, fire)
-	if api.DumpInCloserPile(self, fire) then
-		return true
-	end
-	return api.SeekAndCollectFeature(self, loseFuelFeatures)
-end
-
-function api.FuelFire(self, fire, organiseChance)
-	if organiseChance and math.random() < organiseChance and api.OrganiseFuel(self, fire)then
-		return true
-	end
-	if api.SeekAndFuelFire(self, fire) then
-		return true
-	end
-	return api.SeekAndCollectFeature(self, fuelFeatures)
-end
-
-function api.GatherAndCraft(self, gatherItem, craftCost, gatherFeature, craftFeature, craftResult)
+function api.UseWorkshop(self, gatherItem, craftCost, craftFeature, craftResult)
 	if self.GetInventoryCount(gatherItem) >= craftCost then
 		local function UseItem(success)
 			if success then
@@ -132,10 +134,37 @@ function api.GatherAndCraft(self, gatherItem, craftCost, gatherFeature, craftFea
 				end
 			end
 		end
-		return
+		return true
 	end
-	
-	api.SeekAndCollectFeature(self, gatherFeature)
+	return false
+end
+
+------------------------------------
+-- Things suitable to be called by general buy behaviour are below
+------------------------------------
+
+function api.OrganiseFuel(self, fire)
+	if api.DumpInCloserPile(self, fire) then
+		return true
+	end
+	return api.SeekAndCollectFeature(self, loseFuelFeatures)
+end
+
+function api.FuelFire(self, fire, organiseChance)
+	if organiseChance and math.random() < organiseChance and api.OrganiseFuel(self, fire)then
+		return true
+	end
+	if api.SeekAndFuelFire(self, fire) then
+		return true
+	end
+	return api.SeekAndCollectFeature(self, fuelFeatures)
+end
+
+function api.GatherAndCraft(self, gatherItem, craftCost, gatherFeature, craftFeature, craftResult)
+	if api.UseWorkshop(self, gatherItem, craftCost, craftFeature, craftResult) then
+		return true
+	end
+	return api.SeekAndCollectFeature(self, gatherFeature)
 end
 
 
