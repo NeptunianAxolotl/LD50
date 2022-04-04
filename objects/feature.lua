@@ -108,6 +108,9 @@ local function NewFeature(self, physicsWorld, world)
 				end
 			end
 		end
+		if def.dieAs and GroundHandler.CheckTileAtPosExists(dropPos) then
+			TerrainHandler.SpawnFeature(def.dieAs, dropPos)
+		end
 		return true
 	end
 	
@@ -286,7 +289,6 @@ local function NewFeature(self, physicsWorld, world)
 					local scale = self.radiusScale and self.radiusScale > 1 and self.radiusScale
 					Resources.DrawAnimation(def.animation, pos[1], pos[2], self.animTime, false, false, scale)
 				end
-						
 				if Global.DRAW_DEBUG then
 					love.graphics.setLineWidth(20)
 					if def.name == "coal_mine" then

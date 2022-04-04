@@ -101,7 +101,7 @@ end
 function api.FindFreeSpace(centre, freeRadius)
 	local searchRadius = 0
 	local searchInc = 15
-	while searchRadius < 2000 do
+	while searchRadius < 4000 do
 		local pos = util.Add(centre, util.RandomPointInCircle(searchRadius))
 		local _, closeDist = api.GetClosetFeature(pos, featureType, true)
 		if closeDist > freeRadius and GroundHandler.PositionHasGround(pos, freeRadius) then
@@ -124,7 +124,6 @@ function api.GetPositionEnergy(pos, toPowerRangeMult)
 			local feature = dataByKey[keyByIndex[i]]
 			if feature.IsDead() then
 				IterableMap.ApplySelf(self.energyFeature, "IsDead") -- Remove dead ones, this should happen once per death
-				print("retry")
 				retry = true
 				break
 			elseif not (maxEnergy and feature.energyProvided <= maxEnergy) then
@@ -136,6 +135,13 @@ function api.GetPositionEnergy(pos, toPowerRangeMult)
 		end
 		return maxEnergy
 	end
+end
+
+function api.SpawnTileGoodies(pos)
+	local coals = math.floor(math.random()*4 + 2)
+	local ores = math.floor(math.random()*2 + 0.2)
+	api.DropFeatureInFreeSpace(pos, "coal", coals)
+	api.DropFeatureInFreeSpace(pos, "ore", ores)
 end
 
 function api.CheckFeaturePlace(featureName, pos)

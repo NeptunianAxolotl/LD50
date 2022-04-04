@@ -124,8 +124,12 @@ function api.RemoveTile(i, j)
 	if not self.ground.tiles[j] then
 		return
 	end
+	if (self.ground.tiles[j][i] or 0) == 0 then
+		return
+	end
 	self.ground.tiles[j][i] = 0
 	self.staleGround = self.staleGround + 1
+	TerrainHandler.SpawnTileGoodies(api.TileToPos(i, j))
 end
 
 function api.PositionHasGround(checkPos, radius)
