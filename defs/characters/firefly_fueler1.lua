@@ -1,14 +1,17 @@
-
+local util = require("include/util")
 local GuyUtils = require("utilities/guyUtils")
 
 local def = {
 	inheritFrom = "firefly",
 	speedMult = 0.7,
 	workMult = 0.7,
+	jobType = "job_fuel",
+	mineType = "mine_none",
 	initData = {
 		items = {
 			ore_item = 0,
-		}
+		},
+		wallowingInDarkness = true,
 	},
 	behaviour = function (self, world, dt)
 		if not self.friendly then
@@ -19,7 +22,7 @@ local def = {
 			return
 		end
 		
-		GuyUtils.FuelFire(self, TerrainHandler.GetHomeFire(), 0.9)
+		GuyUtils.FullyGeneralHelperGuy(self)
 	end,
 	chat = {
 		acceptsChat = function(self)
@@ -29,13 +32,6 @@ local def = {
 			return (self.friendly and "options") or "hello"
 		end,
 		scenes = {
-			options = {
-				msg = {{
-					text = "HELP OPTIONS PLACEHOLDER",
-					sound = "chat_good",
-				}},			
-				replyDelay = 2,
-			},
 			hello = {
 				msg = {{
 					text = "Oh.  It's you.",
@@ -52,7 +48,7 @@ local def = {
 					},
 					{
 						msg = {
-							text = "Back by unpopular demand.",
+							text = "Back by unpupa-lar demand.",
 							sound = "chat_good",
 						},
 						leadsTo = "itmeb",
@@ -118,23 +114,22 @@ local def = {
 					sound = "chat_good",
 					delay = 1,
 				},
-				{
-					text = "(The firefly decides to help you out.)",
-					sound = "chat_good",
-					delay = 2.5,
-				},
-				{
-					text = "(Talk to him again for options.)",
-					sound = "chat_good",
-					delay = 4,
-				},
 				},
 				onSceneFunc = function (self, player)
 					-- Called with the scene is opened.
 					--ChatHandler.AddMessage("SCENE FUNC")
 					self.friendly = true
 				end,	
-				replyDelay = 5,
+				replyDelay = 2.5,
+				replies = {
+					{
+						msg = {
+							text = "Thanks. Ready to get started?",
+							sound = "chat_good",
+						},
+						leadsTo = "options_first",
+					},
+				}
 			},
 			helpme = {
 				msg = {{
@@ -192,23 +187,22 @@ local def = {
 					sound = "chat_good",
 					delay = 3,
 				},
-				{
-					text = "(The firefly decides to help you out.)",
-					sound = "chat_good",
-					delay = 4.5,
-				},
-				{
-					text = "(Talk to him again for options.)",
-					sound = "chat_good",
-					delay = 6,
-				},
 				},	
 				onSceneFunc = function (self, player)
 					-- Called with the scene is opened.
 					--ChatHandler.AddMessage("SCENE FUNC")
 					self.friendly = true
 				end,				
-				replyDelay = 7.5,
+				replyDelay = 4.5,
+				replies = {
+					{
+						msg = {
+							text = "At least it'll keep us busy.",
+							sound = "chat_good",
+						},
+						leadsTo = "options_first",
+					},
+				}
 			},
 			help_lost = {
 				msg = {
@@ -228,5 +222,7 @@ local def = {
 		},
 	}
 }
+
+def.chat.scenes = util.CopyTable(GuyUtils.generalHelperTable, true, def.chat.scenes)
 
 return def
