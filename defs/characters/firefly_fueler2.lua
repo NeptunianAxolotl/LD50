@@ -1,10 +1,12 @@
-
+local util = require("include/util")
 local GuyUtils = require("utilities/guyUtils")
 
 local def = {
 	inheritFrom = "firefly",
 	speedMult = 0.7,
 	workMult = 0.7,
+	jobType = "job_fuel",
+	mineType = "mine_none",
 	initData = {
 		items = {
 			ore_item = 0,
@@ -19,7 +21,7 @@ local def = {
 			return
 		end
 		
-		GuyUtils.FuelFire(self, TerrainHandler.GetHomeFire(), 0.9)
+		GuyUtils.FullyGeneralHelperGuy(self)
 	end,
 	chat = {
 		acceptsChat = function(self)
@@ -140,6 +142,7 @@ local def = {
 					-- Called with the scene is opened.
 					--ChatHandler.AddMessage("SCENE FUNC")
 					self.friendly = true
+					self.wallowingInDarkness = false
 				end,			
 				replyDelay = 2.5,
 				replies = {
@@ -155,5 +158,7 @@ local def = {
 		},
 	}
 }
+
+def.chat.scenes = util.CopyTable(GuyUtils.generalHelperTable, true, def.chat.scenes)
 
 return def
