@@ -6,6 +6,7 @@ local def = {
 	placementRadius = 130,
 	capacity = 10, -- TODO
 	portraitNeutral = "portrait_wood_pile",
+	voidDestroys = true,
 	mouseHit = {rx = -100, ry = -100, width = 200, height = 200},
 	initData = {
 		items = {
@@ -13,6 +14,13 @@ local def = {
 			stick_item = 0,
 		}
 	},
+	isPile = {
+		{"log_item", 3},
+		{"stick_item", 5},
+	},
+	stockCheckFunc = function (self)
+		return (self.items.stick_item or 0) > 0 or (self.items.log_item or 0) > 0
+	end,
 	chat = {
 		acceptsChat = function(self)
 			return true

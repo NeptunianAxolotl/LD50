@@ -5,6 +5,7 @@ local def = {
 	image = "saphire_mine",
 	placementRadius = 130,
 	portraitNeutral = "saphire_mine",
+	voidDestroys = true,
 	mouseHit = {rx = -100, ry = -100, width = 200, height = 200},
 	initData = {
 	},

@@ -8,6 +8,7 @@ local def = {
 	image = "workshop",
 	placementRadius = 130,
 	portraitNeutral = "workshop",
+	voidDestroys = true,
 	mouseHit = {rx = -100, ry = -100, width = 200, height = 200},
 	initData = {
 	},

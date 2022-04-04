@@ -5,12 +5,19 @@ local def = {
 	image = "coal_bin",
 	placementRadius = 130,
 	portraitNeutral = "coal_bin",
+	voidDestroys = true,
 	mouseHit = {rx = -100, ry = -100, width = 200, height = 200},
 	initData = {
 		items = {
 			coal_item = 0,
 		}
 	},
+	isPile = {
+		{"coal_item", 2},
+	},
+	stockCheckFunc = function (self)
+		return (self.items.coal_item or 0) > 0
+	end,
 	chat = {
 		acceptsChat = function(self)
 			return true

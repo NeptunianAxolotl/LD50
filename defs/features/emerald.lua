@@ -5,6 +5,7 @@ local def = {
 	collide = false,
 	image = "emerald_item",
 	collectAs = "emerald_item",
+	voidMoves = true,
 	mouseHit = {rx = -50, ry = -50, width = 100, height = 100},
 }
 

@@ -5,6 +5,7 @@ local def = {
 	image = "big_wood_hut",
 	placementRadius = 130,
 	portraitNeutral = "big_wood_hut",
+	voidDestroys = true,
 	mouseHit = {rx = -100, ry = -100, width = 200, height = 200},
 	initData = {
 	},

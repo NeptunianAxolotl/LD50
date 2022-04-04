@@ -52,6 +52,7 @@ local def = {
 	image = "big_digger",
 	placementRadius = 130,
 	portraitNeutral = "big_digger",
+	voidDestroys = true,
 	mouseHit = {rx = -100, ry = -100, width = 200, height = 200},
 	initData = {
 		behaviourDelay = 0,

@@ -142,6 +142,9 @@ local def = {
 						end
 					},
 					{
+						displayFunc = function (self, player)
+							return self.story
+						end,
 						msg = {
 							text = "Why do we need the fire?  We have our own light.",
 							sound = "chat_good",
@@ -182,7 +185,7 @@ local def = {
 					delay = 6,
 				},
 				},
-				replyDelay = 9,
+				replyDelay = 8,
 				onSceneFunc = function (self, player)
 					-- Called with the scene is opened.
 					--ChatHandler.AddMessage("SCENE FUNC")
@@ -197,7 +200,7 @@ local def = {
 							text = "It's fine.  Go on.",
 							sound = "chat_good",
 						},
-						leadsTo = "story1"
+						leadsTo = "story1a"
 					},
 					{
 						msg = {
@@ -216,7 +219,7 @@ local def = {
 					delay = 1.5,
 				}
 				},
-				replyDelay = 3.5,
+				replyDelay = 3,
 			},
 			story1 = {
 				msg = {		
@@ -226,7 +229,7 @@ local def = {
 					delay = 0.5,
 				}
 				},
-				replyDelay = 2.5,
+				replyDelay = 2,
 				replies = {
 					{
 						msg = {
@@ -249,30 +252,30 @@ local def = {
 				{
 					text = "Well.",
 					sound = "chat_good",
-					delay = 1.5,
+					delay = 1,
 				},
 				{
 					text = "Not so long ago, there were other lights out there. More lights than just ours.",
 					sound = "chat_good",
-					delay = 3.5,
+					delay = 3,
 				},
 				{
 					text = "Sparkles over the horizon, and a beacon in the sky.",
 					sound = "chat_good",
-					delay = 6,
+					delay = 7,
 				},
 				{
 					text = "Back then, only monsters you'd see were in the sleep-fears of the little ones.",
 					sound = "chat_good",
-					delay = 8,
+					delay = 9,
 				},
 				{
 					text = "Then, ever so slowly, it all went away.",
 					sound = "chat_good",
-					delay = 11,
+					delay = 12,
 				},
 				},
-				replyDelay = 13,
+				replyDelay = 14,
 				replies = {
 					{
 						msg = {
@@ -293,7 +296,7 @@ local def = {
 				msg = {		
 				{
 					text = "(The aging bug shoots you a look.)",
-					delay = 1.5,
+					delay = 1,
 				},
 				{
 					text = "I'm gettin' to that.",
@@ -316,17 +319,17 @@ local def = {
 				{
 					text = "It was a slow fade.",
 					sound = "chat_good",
-					delay = 2.5,
+					delay = 1.5,
 				},
 				{
 					text = "We grew, and we built - up, and up, and up - and the world grew smaller.",
 					sound = "chat_good",
-					delay = 5,
+					delay = 4,
 				},
 				{
 					text = "We tore up the ground to reach the sky.",
 					sound = "chat_good",
-					delay = 8,
+					delay = 7,
 				},			
 				{
 					text = "(The old man lets out a quiet sigh.)",
@@ -335,17 +338,17 @@ local def = {
 				{
 					text = "The world grew smaller, and the beacon in the sky drifted away until one day, it didn't rise.",
 					sound = "chat_good",
-					delay = 12,
+					delay = 13,
 				},	
 				{
 					text = "All we had left was our own light.",
 					sound = "chat_good",
-					delay = 15,
+					delay = 17,
 				},				
 				{
 					text = "But even that began to fade, without the beacon to give back what we lost.",
 					sound = "chat_good",
-					delay = 18,
+					delay = 19.5,
 				},						
 				},
 				onSceneFunc = function (self, player)
@@ -354,7 +357,7 @@ local def = {
 					self.story2 = true
 					self.story3 = false
 				end,
-				replyDelay = 20.5,
+				replyDelay = 21,
 				replies = {
 					{
 						msg = 
@@ -378,25 +381,25 @@ local def = {
 				{
 					text = "Sure, pupa.  Go get us some more wood.  Take a look around.",
 					sound = "chat_good",
-					delay = 2.5,
+					delay = 1.5,
 				},
 				{
 					text = "I'll be here.",
 					sound = "chat_good",
-					delay = 5,
+					delay = 4,
 				},
 				},
-				replyDelay = 6
+				replyDelay = 5.5,
 			},
 			story2 = {
 				msg = {		
 				{
 					text = "You ready to keep goin'?",
 					sound = "chat_good",
-					delay = 2,
+					delay = 0.5,
 				},
 				},
-				replyDelay = 3,
+				replyDelay = 2,
 				replies = {
 					{
 						msg = 
@@ -421,17 +424,17 @@ local def = {
 				{
 					text = "Awright.",
 					sound = "chat_good",
-					delay = 2.5,
+					delay = 1.5,
 				},
 				{
 					text = "With the beacon gone, and our light fading, we didn't have a choice.",
 					sound = "chat_good",
-					delay = 5,
+					delay = 4,
 				},
 				{
 					text = "However much our industry had eaten up the world, the only way that we could get more light was to keep going.",
 					sound = "chat_good",
-					delay = 8,
+					delay = 7,
 				},
 				{
 					text = "We planted orchards to grow into trees just to burn, and tore into the ground itself for fuel.",
@@ -440,7 +443,7 @@ local def = {
 				},
 				{
 					text = "(Another quiet sigh.)",
-					delay = 14,
+					delay = 14.5,
 				},
 				{
 					text = "And the world shrank faster still.",
@@ -453,7 +456,7 @@ local def = {
 					delay = 19.5,
 				},
 				},
-				replyDelay = 22,
+				replyDelay = 21,
 				replies = {
 					{
 						msg = 
@@ -477,7 +480,7 @@ local def = {
 				{
 					text = "The others, pupa.  The crickets, the beetles, the blade-armed mantises.",
 					sound = "chat_good",
-					delay = 2.5,
+					delay = 2,
 				},
 				{
 					text = "You might still see them, if you go exploring farther out.",
@@ -487,10 +490,10 @@ local def = {
 				{
 					text = "...if there are any left.",
 					sound = "chat_good",
-					delay = 9,
+					delay = 8.5,
 				},
 				},
-				replyDelay = 11,
+				replyDelay = 10,
 				replies = {
 					{
 						msg = 
@@ -506,12 +509,12 @@ local def = {
 				{
 					text = "They came to us, once.  For advice.  But we had none to offer.",
 					sound = "chat_good",
-					delay = 2.5,
+					delay = 1.5,
 				},
 				{
 					text = "We had always had our own light, after all.  Why would we trouble ourselves to create light beyond this?",
 					sound = "chat_good",
-					delay = 5,
+					delay = 4,
 				},
 				{
 					text = "While the crickets went to search for thickets of wild trees, and the beetles bit and tore into the earth itself...",
@@ -521,21 +524,21 @@ local def = {
 				{
 					text = "We fireflies decided that what we had would be enough.  A dry log or a dead stick would do to help our blessed spark persist.",
 					sound = "chat_good",
-					delay = 11,
+					delay = 12,
 				},
 				{
 					text = "(A pause.  The old bug takes a moment to breathe heavily.  Whatever he is thinking of, he doesn't share.)",
-					delay = 14,
+					delay = 16,
 				},
 				{
 					text = "And so, here we are.",
 					sound = "chat_good",
-					delay = 18.5,
+					delay = 21.5,
 				},
 				{
 					text = "And this is all that's left.",
 					sound = "chat_good",
-					delay = 20.5,
+					delay = 24,
 				},
 				},
 				onSceneFunc = function (self, player)
@@ -544,14 +547,14 @@ local def = {
 					self.story2 = false
 					self.story3 = true
 				end,
-				replyDelay = 23,
+				replyDelay = 25.5,
 				replies = {
 					{
 						msg = 
 						{
 							text = "(Stay silent.)",
 						},
-						leadsTo = "story3a_passive"
+						leadsTo = "story3_passive"
 					},
 					{
 						msg = 
@@ -559,7 +562,7 @@ local def = {
 							text = "...is this really all that's left?",
 							sound = "chat_good",
 						},
-						leadsTo = "story3a_active"
+						leadsTo = "story3_active"
 					},
 					{
 						msg = 
@@ -576,32 +579,32 @@ local def = {
 				{
 					text = "Go.  Enjoy what's left, pupa, and have a think about it.",
 					sound = "chat_good",
-					delay = 2.5,
+					delay = 1.5,
 				},
 				{
 					text = "I'll be here.",
 					sound = "chat_good",
-					delay = 5.5,
+					delay = 4,
 				},
 				},
-				replyDelay = 7,
+				replyDelay = 5.5,
 			},
 			story3 = {
 				msg = {		
 				{
 					text = "...how're you holdin' up, pupa?",
 					sound = "chat_good",
-					delay = 2.5,
+					delay = 0.5,
 				}
 				},
-				replyDelay = 4,
+				replyDelay = 3,
 				replies = {
 					{
 						msg = 
 						{
 							text = "(Shrug.)",
 						},
-						leadsTo = "story3a_passive"
+						leadsTo = "story3_passive"
 					},
 					{
 						msg = 
@@ -609,7 +612,7 @@ local def = {
 							text = "...is this really all that's left?",
 							sound = "chat_good",
 						},
-						leadsTo = "story3a_active"
+						leadsTo = "story3_active"
 					},
 					{
 						msg = 
@@ -617,7 +620,7 @@ local def = {
 							text = "...sorry, I have to go.",
 							sound = "chat_good",
 						},
-						leadsTo = "story3a_depart"
+						leadsTo = "story3_depart"
 					},
 				}
 			},
@@ -626,12 +629,12 @@ local def = {
 				{
 					text = "...I can't believe that, pupa.",
 					sound = "chat_good",
-					delay = 2.5,
+					delay = 1.5,
 				},
 				{
 					text = "With how quickly it's all gone, I don't think this is the end.",
 					sound = "chat_good",
-					delay = 5,
+					delay = 4,
 				},
 				{
 					text = "...I hope it's not the end.",
@@ -641,22 +644,22 @@ local def = {
 				{
 					text = "You never know, though.  Go see what you can find.  There might be others out there.",
 					sound = "chat_good",
-					delay = 10,
+					delay = 11,
 				},
 				{
 					text = "They might be thriving.",
 					sound = "chat_good",
-					delay = 13,
+					delay = 14,
 				},
 				{
 					text = "Whatever you find...",
 					sound = "chat_good",
-					delay = 16,
+					delay = 16.5,
 				},
 				{
 					text = "...try not to think about it.",
 					sound = "chat_good",
-					delay = 18.5,
+					delay = 19,
 				},
 				{
 					text = "You can still live well, pupa.",
@@ -676,24 +679,24 @@ local def = {
 					self.story2 = false
 					self.story3 = false
 				end,
-				replyDelay = 28.5,
+				replyDelay = 27,
 			},
 			story3_passive = {
 				msg = {		
 				{
 					text = "...I think this might be all there is, for us.",
 					sound = "chat_good",
-					delay = 2.5,
+					delay = 1.5,
 				},
 				{
 					text = "With how quickly it's all gone, I think this is the end.",
 					sound = "chat_good",
-					delay = 5,
+					delay = 4,
 				},
 				{
 					text = "You never know, though.  Go see what you can find.  There might be others out there.",
 					sound = "chat_good",
-					delay = 8.5,
+					delay = 7,
 				},
 				{
 					text = "They might be thriving.",
@@ -703,15 +706,15 @@ local def = {
 				{
 					text = "Whatever you find...",
 					sound = "chat_good",
-					delay = 13,
+					delay = 13.5,
 				},
 				{
 					text = "...try not to think about it.",
 					sound = "chat_good",
-					delay = 17,
+					delay = 16,
 				},
 				},
-				replyDelay = 19,
+				replyDelay = 18,
 				onSceneFunc = function (self, player)
 					-- Called with the scene is opened.
 					self.story = false
@@ -727,15 +730,15 @@ local def = {
 				{
 					text = "I'm done, pupa. I need a rest.",
 					sound = "chat_good",
-					delay = 2.5,
+					delay = 0.5,
 				},
 				{
 					text = "Go bother someone else.",
 					sound = "chat_good",
-					delay = 5,
+					delay = 3,
 				},
 				},	
-				replyDelay = 7,
+				replyDelay = 5,
 					onSceneFunc = function (self, player)
 					-- Called with the scene is opened.
 					self.done2 = true
@@ -746,10 +749,10 @@ local def = {
 				{
 					text = "Git.  Go away.",
 					sound = "chat_good",
-					delay = 2.5,
+					delay = 0.5,
 				}
 				},	
-				replyDelay = 4.5,
+				replyDelay = 3,
 					onSceneFunc = function (self, player)
 					-- Called with the scene is opened.
 					self.done3 = true
@@ -759,64 +762,62 @@ local def = {
 				msg = {		
 				{
 					text = "...",
-					delay = 2,
+					delay = 0,
 				}
 				},
-				replyDelay = 4.5,
+				replyDelay = 2.5,
 			},
 			looking = {
 				msg = {		
 				{
 					text = "I already looked around here, soft-shell.  That's how the fire happened!",
 					sound = "chat_good",
-					delay = 0.5,
+					delay = 1.5,
 				},
 				{
 					text = "Go look further afield, give your thorax a workout!",
 					sound = "chat_good",
-					delay = 3,
+					delay = 4,
 				},
 				{
 					text = "...kids these days...",
 					sound = "chat_good",
-					delay = 7,
+					delay = 7.5,
 				},
 				},
-				replyDelay = 8,
+				replyDelay = 9,
 			},
 			sure = {
 				msg = {		
 				{
 					text = "Well, go on then.",
 					sound = "chat_good",
-					delay = 0.5,
+					delay = 1.5,
 				}
 				},
-				replyDelay = 1.5,
-			},
-			help_get_wood = {
+				replyDelay = 3,
 			},
 			thanks = {
 				msg = {
 				{
 					text = "Made you'self useful, eh.  Maybe you're good for something after all.",
 					sound = "chat_good",
-					delay = 0.5,
+					delay = 1,
 				},
 				{
 					text = "Lemme just chuck these on, here.",
 					sound = "chat_good",
-					delay = 2,
+					delay = 3,
 				},
 				},
-				replyDelay = 4,
+				replyDelay = 5,
 			},
 			hang_on_no_logs = {
 				msg = {
 				{
 					text = "Where's them logs, then?  You ain't got any!  Go git some!",
 					sound = "chat_good",
-					delay = 1.5,
+					delay = 1,
 				},				
 				{
 					text = "...sigh...",
@@ -826,18 +827,12 @@ local def = {
 				},
 				replyDelay = 4.5,
 			},
-			no_logs = {
-				msg = {{
-					text = "Well go get me some! The fire needs more logs!",
-					sound = "chat_good",
-				}},
-			},
 			default_friendly = {
 				msg = {{
 					text = "'ey, pupa.  Found any more wood?",
 					sound = "chat_good",
 				}},
-				replyDelay = 0.5,
+				replyDelay = 1,
 				replies = {
 					{
 						msg = {
@@ -896,15 +891,15 @@ local def = {
 				{
 					text = "Maybe I got a little more left in me.",
 					sound = "chat_good",
-					delay = 3,
+					delay = 3.5,
 				},
 				{
 					text = "(The old man goes to search for wood.)",
 					sound = "chat_good",
-					delay = 5,
+					delay = 6,
 				},
 				},
-				replyDelay = 5.5,
+				replyDelay = 7.5,
 				--TODO set logger to go gather wood				
 			},
 			chitin = {
@@ -912,11 +907,10 @@ local def = {
 				{
 					text = "Naw, I'll be fine.  Made it this far, 'aven't I?",
 					sound = "chat_good",
-					delay = 2,
+					delay = 1.5,
 				},
 				{
 					text = "...",
-					sound = "chat_good",
 					delay = 4,
 				},
 				{
@@ -953,15 +947,15 @@ local def = {
 				{
 					text = "Gotta strike a balance, pupa. Trying too hard is how we ended up here. 'n those who don't try end up dead.",
 					sound = "chat_good",
-					delay = 2,
+					delay = 1,
 				},
 				{
 					text = "Be safe, now.",
 					sound = "chat_good",
-					delay = 4.5,
+					delay = 4,
 				},
 				},
-				replyDelay = 7,
+				replyDelay = 5.5,
 			},
 			leave1 = {
 				msg = {{
@@ -969,15 +963,15 @@ local def = {
 					sound = "chat_good",
 					delay = 1,
 				}},
-				replyDelay = 1.8,
+				replyDelay = 2,
 			},
 			leave2 = {
 				msg = {{
 					text = "Safe travels.  Degenerate pupa.  Remember to fly over holes, not just walk into them.",
 					sound = "chat_good",
-					delay = 1,
+					delay = 1.5,
 				}},
-				replyDelay = 3,
+				replyDelay = 4.5,
 			},
 			dialogue_end = {
 			},

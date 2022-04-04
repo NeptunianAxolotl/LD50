@@ -64,10 +64,11 @@ local function NewFeature(self, physicsWorld, world)
 		self.fuelValue = self.fuelValue - amount
 	end
 	
-	function self.Destroy()
+	function self.Destroy(dropMaterials)
 		if self.dead then
 			return false
 		end
+		local dropPos = self.GetPos()
 		self.body:destroy()
 		if self.shadow then
 			ShadowHandler.RemoveShadow(self.shadow)
@@ -80,6 +81,11 @@ local function NewFeature(self, physicsWorld, world)
 			self.noDigTiles = false
 		end
 		self.dead = true
+		if dropMaterials and def.deconstructMaterials then
+			for i = 1, #def.deconstructMaterials do
+				TerrainHandler.DropFeatureInFreeSpace(dropPos, def.deconstructMaterials[i])
+			end
+		end
 		return true
 	end
 	
@@ -91,6 +97,10 @@ local function NewFeature(self, physicsWorld, world)
 		end
 	end
 	
+	function self.GetItems(item)
+		return (self.items and self.items[item]) or 0
+	end
+	
 	function self.HasLight()
 		if not self.lightUpdateDt then
 			self.hasLight = TerrainHandler.GetPositionEnergy(self.GetPos())
@@ -100,6 +110,10 @@ local function NewFeature(self, physicsWorld, world)
 			self.lightUpdateDt = Global.LIGHT_SLOW_UPDATE
 		end
 		return self.hasLight
+	end
+	
+	function self.HasStock()
+		return (not def.stockCheckFunc) or def.stockCheckFunc(self)
 	end
 	
 	function self.HasPower()
@@ -146,7 +160,10 @@ local function NewFeature(self, physicsWorld, world)
 		return self.IsDead() or self.busyTimer
 	end
 	
-	function self.IsBusyOrTalking()
+	function self.IsBusyOrTalking(ignorePile)
+		if ignorePile and def.isPile then
+			return self.IsDead()
+		end
 		return self.IsDead() or self.busyTimer or self.talkingTo or ((self.mineCapacity or 1) == 0)
 	end
 	
@@ -158,7 +175,10 @@ local function NewFeature(self, physicsWorld, world)
 		self.moveTarget = 0.5
 	end
 	
-	function self.IsMoveTarget()
+	function self.IsMoveTarget(ignorePile)
+		if ignorePile and def.isPile then
+			return self.IsDead()
+		end
 		return self.moveTarget
 	end
 	
@@ -177,6 +197,9 @@ local function NewFeature(self, physicsWorld, world)
 	function self.Update(dt)
 		if self.dead then
 			return true
+		end
+		if GroundHandler.CheckStaleGround(self) then
+			return
 		end
 		if def.noDigRadius and not self.noDigTiles then
 			self.noDigTiles = GroundHandler.SetPosDigProtection(self.GetPos(), def.noDigRadius)
