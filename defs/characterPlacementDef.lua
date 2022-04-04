@@ -1,5 +1,10 @@
 local characters = {
 	{
+		name = "cricket",	
+		data = {animDir = 0},
+		pos = {200, -200},
+	},
+	{
 		name = "firefly_logger",	
 		data = {animDir = 0},
 		pos = {-400, 100},
