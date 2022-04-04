@@ -48,6 +48,7 @@ end
 local def = {
 	name = "big_digger",
 	radius = 80,
+	desc = "Excavate the ground",
 	noDigRadius = 100,
 	collide = true,
 	image = "big_digger",

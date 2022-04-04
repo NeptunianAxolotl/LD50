@@ -4,6 +4,7 @@ local FeatureUtils = require("utilities/featureUtils")
 local def = {
 	name = "anvil",
 	radius = 80,
+	desc = "Forge item",
 	collide = true,
 	image = "anvil",
 	placementRadius = 130,

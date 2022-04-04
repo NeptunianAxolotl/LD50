@@ -12,6 +12,7 @@ local def = {
 	noDigRadius = 50,
 	collide = true,
 	animation = "fire",
+	desc = "Throw all your wood into the fire",
 	isFire = true,
 	isEnergyProvider = true,
 	bigLight = true,

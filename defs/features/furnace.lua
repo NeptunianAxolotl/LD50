@@ -6,6 +6,7 @@ local def = {
 	radius = 80,
 	collide = true,
 	image = "furnace",
+	desc = "Smelt ore",
 	placementRadius = 130,
 	portraitNeutral = "furnace_portrait",
 	humanName = "Furnace",

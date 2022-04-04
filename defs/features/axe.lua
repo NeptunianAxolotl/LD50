@@ -1,6 +1,7 @@
 local def = {
 	name = "axe",
 	radius = 25,
+	desc = "Take axe",
 	collide = false,
 	image = "axe_item",
 	collectAs = "axe_item",

@@ -3,6 +3,7 @@ local def = {
 	radius = 80,
 	collide = true,
 	image = "big_wood_hut",
+	desc = "Wooden hut",
 	placementRadius = 130,
 	portraitNeutral = "big_wood_hut",
 	voidDestroys = true,

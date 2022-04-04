@@ -2,6 +2,7 @@ local def = {
 	name = "hammer",
 	radius = 25,
 	collide = false,
+	desc = "Take hammer",
 	image = "hammer_item",
 	collectAs = "hammer_item",
 	voidMoves = true,

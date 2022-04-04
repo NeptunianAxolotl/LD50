@@ -3,6 +3,7 @@ local def = {
 	radius = 80,
 	collide = true,
 	image = "big_teleport",
+	desc = "Teleport",
 	placementRadius = 130,
 	portraitNeutral = "big_teleport",
 	voidDestroys = true,

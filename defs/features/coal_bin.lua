@@ -6,6 +6,7 @@ local def = {
 	radius = 80,
 	collide = true,
 	image = "coal_bin",
+	desc = "Take/store coal",
 	humanName = "Coal Bin",
 	placementRadius = 130,
 	portraitNeutral = "coal_bin_portrait",
