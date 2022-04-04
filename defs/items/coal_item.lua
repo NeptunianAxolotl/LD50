@@ -1,7 +1,7 @@
 local def = {
 	image = "coal_item_inventory",
 	dropAs = "coal",
-	burnValue = 250,
+	burnValue = 20,
 }
 
 return def

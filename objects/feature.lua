@@ -112,6 +112,10 @@ local function NewFeature(self, physicsWorld, world)
 		return self.hasLight
 	end
 	
+	function self.GetLightLevel()
+		return self.HasLight() or 0
+	end
+	
 	function self.HasStock()
 		return (not def.stockCheckFunc) or def.stockCheckFunc(self)
 	end
@@ -140,7 +144,7 @@ local function NewFeature(self, physicsWorld, world)
 			end
 			for i = 1, #def.mineItems do
 				local item = def.mineItems[i]
-				if def.mineItemsToInventory[i] and not guy.IsDead() then
+				if guy.def.isPlayer and def.mineItemsToInventory[i] and not guy.IsDead() then
 					guy.AddToInventory(item)
 				else
 					local itemDef = ItemDefs[item]

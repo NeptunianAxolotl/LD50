@@ -8,7 +8,7 @@ local characters = {
 		pos = {-100, 160},
 	},
 	{
-		name = "firefly_workshop",
+		name = "firefly_mine",
 		pos = {-100, 160},
 	},
 	--{

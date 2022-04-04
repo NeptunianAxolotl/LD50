@@ -23,7 +23,11 @@ local function DoMoveGoalAction(self)
 			print(action, feature and feature.def.name, item)
 		elseif (not ActionCallback) or ActionCallback(true, feature, action, item) then
 			local itemDef = ItemDefs[item]
-			TerrainHandler.DropFeatureInFreeSpace(actionPos, itemDef.dropAs, itemDef.dropMult)
+			if itemDef then
+				TerrainHandler.DropFeatureInFreeSpace(actionPos, itemDef.dropAs, itemDef.dropMult)
+			else
+				print("itemDefError", self.def.name, item, action)
+			end
 		end
 	elseif action == "collect" and feature then
 		if (not ActionCallback) or ActionCallback(not feature.IsDead(), feature, action, item) then
@@ -58,8 +62,7 @@ local function DoMoveGoalAction(self)
 		end
 	elseif action == "mine" then
 		local success = (not feature.IsBusy())
-		ActionCallback(success, feature, action, item)
-		if success then
+		if ((not ActionCallback) or ActionCallback(success, feature, action, item)) and success then
 			self.behaviourDelay = feature.DoMine(self, self.GetPos())
 		end
 	elseif feature and not feature.IsDead() and action == "transform" and item then

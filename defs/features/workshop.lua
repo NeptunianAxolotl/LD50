@@ -7,7 +7,7 @@ local def = {
 	collide = true,
 	image = "workshop",
 	placementRadius = 130,
-	portraitNeutral = "workshop",
+	portraitNeutral = "workshop_portrait",
 	voidDestroys = true,
 	mouseHit = {rx = -100, ry = -100, width = 200, height = 200},
 	initData = {
