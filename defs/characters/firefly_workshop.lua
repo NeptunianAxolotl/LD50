@@ -15,7 +15,7 @@ local def = {
 			return
 		end
 		
-		GuyUtils.GatherAndCraft(self, "ore_item", Global.ORE_TO_METAL, "ore", "furnace", "metal_item")
+		GuyUtils.GatherAndCraft(self, "metal_item", Global.METAL_TO_FRAME, "metal", "workshop", "metal_frame_item")
 	end,
 }
 

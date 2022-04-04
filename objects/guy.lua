@@ -195,6 +195,15 @@ local function NewGuy(self, physicsWorld, world)
 		end
 	end
 	
+	function self.RemoveInventory(item, count)
+		if def.isPlayer then
+			PlayerHandler.RemoveInventory(item, count)
+			return
+		end
+		self.items = self.items or {}
+		self.items[item] = math.max(0, (self.items[item] or 0) - count)
+	end
+	
 	function self.AddToInventory(item)
 		if def.isPlayer then
 			PlayerHandler.AddItem(item)
@@ -202,6 +211,16 @@ local function NewGuy(self, physicsWorld, world)
 		end
 		self.items = self.items or {}
 		self.items[item] = (self.items[item] or 0) + 1
+	end
+	
+	function self.GetInventoryCount(item)
+		if def.isPlayer then
+			return PlayerHandler.GetInventoryCount(item)
+		end
+		if not (self.items and self.items[item]) then
+			return 0
+		end
+		return self.items[item]
 	end
 	
 	function self.DealDamage(damage)
