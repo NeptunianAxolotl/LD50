@@ -64,7 +64,7 @@ function love.load(arg)
 	local major, minor, revision, codename = love.getVersion()
 	print(string.format("Version %d.%d.%d - %s", major, minor, revision, codename))
 
-	love.graphics.setDefaultFilter("nearest", "nearest")
+	love.graphics.setDefaultFilter("nearest", "nearest") -- Removing this helps some things and really hurts others
 
 	love.graphics.setBackgroundColor(0/255, 0/225, 0/255, 1)
 

@@ -4,6 +4,7 @@ local Font = require("include/font")
 local ShadowHandler = require("shadowHandler")
 local ItemDefs = util.LoadDefDirectory("defs/items")
 local ItemAction = require("defs/itemActions")
+local GuyUtils = require("utilities/guyUtils")
 
 local function DoMoveGoalAction(self)
 	local actionPos = self.moveGoalPos
@@ -101,6 +102,7 @@ local function CheckMoveGoal(self)
 	end
 	if self.moveGoalChar then
 		if self.moveGoalChar.IsDead() then
+			self.blockedUntilMoveFinished = false
 			self.ClearMoveGoal()
 			return
 		end
@@ -115,6 +117,7 @@ local function CheckMoveGoal(self)
 		if self.moveGoalAction then
 			DoMoveGoalAction(self)
 		end
+		self.blockedUntilMoveFinished = false
 		self.ClearMoveGoal()
 		return
 	end
@@ -124,6 +127,7 @@ local function CheckMoveGoal(self)
 	if self.moveGoalAction and self.moveGoalAction.feature then
 		if self.moveGoalAction.feature.IsDead() then
 			if not self.def.isPlayer then
+				self.blockedUntilMoveFinished = false
 				self.ClearMoveGoal()
 			end
 		else
@@ -183,6 +187,9 @@ local function NewGuy(self, physicsWorld, world)
 	end
 	
 	function self.SetMoveGoal(pos, radius, feature, action, item, ActionCallback)
+		if self.blockedUntilMoveFinished then
+			return
+		end
 		self.moveGoalChar = false
 		self.moveGoalPos = pos
 		self.moveGoalRadius = radius
@@ -202,6 +209,9 @@ local function NewGuy(self, physicsWorld, world)
 	end
 	
 	function self.SetMoveCharGoal(guy, radius, action, item, ActionCallback)
+		if self.blockedUntilMoveFinished then
+			return
+		end
 		self.moveGoalChar = guy
 		self.moveGoalPos = guy.GetPos()
 		self.moveGoalRadius = radius
@@ -267,6 +277,9 @@ local function NewGuy(self, physicsWorld, world)
 	end
 	
 	function self.ClearMoveGoal()
+		if self.blockedUntilMoveFinished then
+			return
+		end
 		if self.moveGoalAction and self.moveGoalAction.ActionCallback then
 			self.moveGoalAction.ActionCallback(false)
 		end
@@ -306,8 +319,12 @@ local function NewGuy(self, physicsWorld, world)
 		return true
 	end
 	
+	function self.IsBlockedUnitMoveGoal()
+		return self.blockedUntilMoveFinished
+	end
+	
 	function self.CanBeTalkedTo()
-		return def.chat and def.chat.acceptsChat(self)
+		return (not self.blockedUntilMoveFinished) and def.chat and def.chat.acceptsChat(self)
 	end
 	
 	function self.GetType()
@@ -320,17 +337,36 @@ local function NewGuy(self, physicsWorld, world)
 		end
 		self.animTime = self.animTime + dt
 		self.behaviourDelay = util.UpdateTimer(self.behaviourDelay, dt * (def.workMult or 1))
+		if self.unblockMoveTimer then
+			self.unblockMoveTimer = util.UpdateTimer(self.unblockMoveTimer, dt)
+			if not self.unblockMoveTimer then
+				self.blockedUntilMoveFinished = false
+			end
+		end
 		if self.behaviourDelay then
 			return
+		end
+		if def.updateFunc then
+			def.updateFunc(self, world, dt)
+		end
+		if def.coldRunLevel and self.lightValue < def.coldRunLevel then
+			if GuyUtils.RunToFire(self) then
+				if def.isPlayer and not self.blockedUntilMoveFinished then
+					ChatHandler.AddMessage("It's so cold here, I have to go back to the fire")
+				end
+				self.blockedUntilMoveFinished = true
+			end
+			if self.blockedUntilMoveFinished then
+				CheckMoveGoal(self)
+				UpdateAnimDir(self)
+				return true
+			end
 		end
 		if def.behaviour then
 			def.behaviour(self, world, dt)
 		end
 		CheckMoveGoal(self)
 		UpdateAnimDir(self)
-		if def.updateFunc then
-			def.updateFunc(self, world, dt)
-		end
 	end
 	
 	function self.GetPos()

@@ -144,6 +144,10 @@ end
 --------------------------------------------------
 
 local function DoGuyMovement()
+	if self.playerGuy.IsBlockedUnitMoveGoal() then
+		return
+	end
+
 	local dir = false
 	if love.keyboard.isDown("d") then
 		if love.keyboard.isDown("s") then

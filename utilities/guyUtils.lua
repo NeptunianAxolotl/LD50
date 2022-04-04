@@ -126,7 +126,19 @@ end
 -- Things suitable to be called by general buy behaviour are below
 ------------------------------------
 
-function api.MineFeature(self, featureType)
+function api.RunToFire(self, fire)
+	if not fire then
+		fire = TerrainHandler.GetHomeFire()
+	end
+	if fire and (not self.blockedUntilMoveFinished) then
+		self.SetMoveGoal(fire.GetPos(), (fire.energyRadius or (fire.GetRadius() + Global.APPROACH_LEEWAY*5)) * 0.5 * (math.random()*0.4 + 0.4))
+		self.unblockMoveTimer = 15
+		return true
+	end
+	return false
+end
+
+function api.ReturnTo(self, featureType)
 	-- Find the tool I need
 	local featureDef = FeatureDefs[featureType]
 	if featureDef.mineTool and self.GetInventoryCount(featureDef.mineTool) < 1 then
@@ -138,6 +150,17 @@ function api.MineFeature(self, featureType)
 	return api.SeekAndCollectFeature(self, featureType, "mine")
 end
 
+function api.MineFeature(self, featureType)
+	-- Find the tool I need
+	local featureDef = FeatureDefs[featureType]
+	if featureDef.mineTool and self.GetInventoryCount(featureDef.mineTool) < 1 then
+		if api.SeekAndCollectFeature(self, ItemDefs[featureDef.mineTool].dropAs) then
+			return true
+		end
+		return false -- Blocked, so go do something else.
+	end
+	return api.SeekAndCollectFeature(self, featureType, "mine")
+end
 
 function api.OrganiseFuel(self, fire)
 	if api.DumpInCloserPile(self, fire) then
