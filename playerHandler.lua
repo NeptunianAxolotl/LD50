@@ -492,6 +492,7 @@ function api.Initialize(parentWorld)
 		inventory = {
 		},
 		unlocks = {
+			metal = true,
 		},
 		lastShunt = 1
 	}

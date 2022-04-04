@@ -3,8 +3,8 @@ local terrain = {
 		name = "wood_pile",
 		pos = {-550, 150},
 		items = {
-			log_item = 3,
-			stick_item = 6
+			log_item = 0,
+			stick_item = 3
 		}
 	},
 	{
@@ -920,7 +920,22 @@ local terrain = {
     name = "prybar",
     pos = {-9870, 920},
 },
-
+{
+    name = "ruby",
+    pos = {-1160, 3480},
+},
+{
+    name = "pick",
+    pos = {-840, 3290},
+},
+{
+    name = "anvil",
+    pos = {2310, -5730},
+},
+{
+    name = "wood_pile",
+    pos = {-6660, -500},
+},
 }
 
 return terrain

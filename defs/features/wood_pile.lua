@@ -15,8 +15,8 @@ local def = {
 	mouseHit = {rx = -100, ry = -100, width = 200, height = 200},
 	initData = {
 		items = {
-			log_item = 0,
-			stick_item = 0,
+			log_item = 3,
+			stick_item = 3,
 		}
 	},
 	isPile = {

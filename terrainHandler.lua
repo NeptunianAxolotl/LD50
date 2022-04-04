@@ -138,7 +138,7 @@ function api.GetPositionEnergy(pos, toPowerRangeMult)
 end
 
 function api.SpawnTileGoodies(pos)
-	local coals = math.floor(math.random()*4 + 2)
+	local coals = math.floor(math.random()*5 + 2.5)
 	local ores = math.floor(math.random()*2 + 0.2)
 	api.DropFeatureInFreeSpace(pos, "coal", coals)
 	api.DropFeatureInFreeSpace(pos, "ore", ores)
