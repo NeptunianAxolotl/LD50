@@ -71,12 +71,13 @@ local def = {
 					sound = "chat_good",
 					delay = 6
 				},
+				},		
+				replyDelay = 9,
 				onSceneFunc = function (self, player)
 					-- Called with the scene is opened.
 					self.firstTalk = false
+					return
 				end,
-				},
-				replyDelay = 9,
 				replies = {
 					{
 						msg = {
