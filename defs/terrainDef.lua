@@ -916,6 +916,10 @@ local terrain = {
     name = "pick",
     pos = {-7000, 5310},
 },
+{
+    name = "prybar",
+    pos = {-9870, 920},
+},
 
 }
 

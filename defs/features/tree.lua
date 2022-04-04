@@ -7,6 +7,7 @@ local def = {
 	desc = "Chop down tree",
 	placementRadius = 220,
 	voidDestroys = true,
+	dieAs = "stump",
 	imageAlpha = 0.82,
 	mouseHit = {rx = -45, ry = -160, width = 90, height = 200},
 	initData = {
@@ -15,11 +16,10 @@ local def = {
 	mineTool = "axe_item",
 	mineToolDesc = "an axe",
 	mineCapacity = 1,
-	mineTime = 6,
+	mineTime = 2.8,
 	mineSound = "chat_bad",
 	mineItems = {
-		"log_item",
-		"stick_item"
+		"log_item"
 	},
 	mineItemsToInventory = {
 		true,
