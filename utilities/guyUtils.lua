@@ -1,6 +1,7 @@
 
 local util = require("include/util")
 local ItemDefs = util.LoadDefDirectory("defs/items")
+local FeatureDefs = util.LoadDefDirectory("defs/features")
 
 local loseFuelFeatures = {
 	["log"] = true,
@@ -30,7 +31,8 @@ local fuelItems = {
 
 local api = {}
 
-function api.MineFeature(self, featureType)
+function api.SeekAndCollectFeature(self, featureType, actionType)
+	actionType = actionType or "collect"
 	local feature, distance = TerrainHandler.GetClosetFeature(self.GetPos(), featureType, false, true, true, false, false, false, true)
 	if feature then
 		if distance > Global.START_SPOT_SEARCH then
@@ -39,26 +41,7 @@ function api.MineFeature(self, featureType)
 		else
 			local newFeature, newDistance = TerrainHandler.GetClosetFeature(self.GetPos(), featureType, false, true, true, true, true, false, true)
 			if newFeature then
-				self.SetMoveGoal(newFeature.GetPos(), newFeature.GetRadius() + Global.DROP_LEEWAY, newFeature, "collect", false)
-				return true
-			else
-				self.behaviourDelay = math.random() + 2.5
-			end
-		end
-	end
-	return false
-end
-
-function api.SeekAndCollectFeature(self, featureType)
-	local feature, distance = TerrainHandler.GetClosetFeature(self.GetPos(), featureType, false, true, true, false, false, false, true)
-	if feature then
-		if distance > Global.START_SPOT_SEARCH then
-			self.SetMoveGoal(feature.GetPos(), feature.GetRadius() + Global.APPROACH_LEEWAY * (math.random()*0.4 + 0.4))
-			return true
-		else
-			local newFeature, newDistance = TerrainHandler.GetClosetFeature(self.GetPos(), featureType, false, true, true, true, true, false, true)
-			if newFeature then
-				self.SetMoveGoal(newFeature.GetPos(), newFeature.GetRadius() + Global.DROP_LEEWAY, newFeature, "collect", false)
+				self.SetMoveGoal(newFeature.GetPos(), newFeature.GetRadius() + Global.DROP_LEEWAY, newFeature, actionType, false)
 				return true
 			else
 				self.behaviourDelay = math.random() + 2.5
@@ -142,6 +125,19 @@ end
 ------------------------------------
 -- Things suitable to be called by general buy behaviour are below
 ------------------------------------
+
+function api.MineFeature(self, featureType)
+	-- Find the tool I need
+	local featureDef = FeatureDefs[featureType]
+	if featureDef.mineTool and self.GetInventoryCount(featureDef.mineTool) < 1 then
+		if api.SeekAndCollectFeature(self, ItemDefs[featureDef.mineTool].dropAs) then
+			return true
+		end
+		return false -- Blocked, so go do something else.
+	end
+	return api.SeekAndCollectFeature(self, featureType, "mine")
+end
+
 
 function api.OrganiseFuel(self, fire)
 	if api.DumpInCloserPile(self, fire) then

@@ -58,8 +58,7 @@ local function DoMoveGoalAction(self)
 		end
 	elseif action == "mine" then
 		local success = (not feature.IsBusy())
-		ActionCallback(success, feature, action, item)
-		if success then
+		if ((not ActionCallback) or ActionCallback(success, feature, action, item)) and success then
 			self.behaviourDelay = feature.DoMine(self, self.GetPos())
 		end
 	elseif feature and not feature.IsDead() and action == "transform" and item then
