@@ -354,7 +354,7 @@ local function NewGuy(self, physicsWorld, world)
 		end
 		if def.coldRunLevel and self.lightValue < def.coldRunLevel then
 			if GuyUtils.RunToFire(self) then
-				if def.isPlayer and not self.blockedUntilMoveFinished then
+				if def.isPlayer and not self.blockedUntilMoveFinished and not TerrainHandler.GetPositionEnergy(self.GetPos()) then
 					ChatHandler.AddMessage("It's so cold here, I have to go back to the fire")
 				end
 				self.blockedUntilMoveFinished = true

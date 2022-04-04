@@ -53,7 +53,7 @@ local function NewFeature(self, physicsWorld, world)
 	end
 	
 	function self.GetRadius()
-		return def.radius
+		return def.radius * math.max(1, self.radiusScale)
 	end
 	
 	function self.GetDef()
@@ -220,6 +220,13 @@ local function NewFeature(self, physicsWorld, world)
 		return "feature"
 	end
 	
+	function self.UpdateRadius(radius)
+		self.radiusScale = radius
+		self.shape:setRadius(def.radius * self.radiusScale)
+		self.fixture:destroy()
+		self.fixture = love.physics.newFixture(self.body, self.shape)
+	end
+	
 	function self.Update(dt)
 		if self.dead then
 			return true
@@ -241,9 +248,7 @@ local function NewFeature(self, physicsWorld, world)
 			if self.radiusScale > 1 then
 				self.radiusScale = 1
 			end
-			self.shape:setRadius(def.radius * self.radiusScale)
-			self.fixture:destroy()
-			self.fixture = love.physics.newFixture(self.body, self.shape)
+			self.UpdateRadius(self.radiusScale)
 		end
 		self.animTime = self.animTime + dt
 	end
@@ -276,7 +281,8 @@ local function NewFeature(self, physicsWorld, world)
 				if def.image then
 					Resources.DrawImage(def.image, pos[1], pos[2])
 				elseif def.animation then
-					Resources.DrawAnimation(def.animation, pos[1], pos[2], self.animTime)
+					local scale = self.radiusScale and self.radiusScale > 1 and self.radiusScale
+					Resources.DrawAnimation(def.animation, pos[1], pos[2], self.animTime, false, false, scale)
 				end
 			end})
 		end
@@ -296,7 +302,7 @@ local function NewFeature(self, physicsWorld, world)
 		if Global.DRAW_DEBUG then
 			love.graphics.setLineWidth(2)
 			love.graphics.setColor(1, 1, 1, 1)
-			love.graphics.circle('line', pos[1], pos[2], def.radius)
+			love.graphics.circle('line', pos[1], pos[2], def.radius * self.radiusScale)
 		end
 		if Global.DRAW_ENERGY_RINGS and self.energyRadius and def.isFire then
 			love.graphics.setLineWidth(32)

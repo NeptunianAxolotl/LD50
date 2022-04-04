@@ -67,23 +67,48 @@ function api.DrawInventoryBar(world, inventory, selectedItem, activeItem, ItemDe
 	return hoveredItem
 end
 
-function api.DrawBuild(world, inventorySlots, checkHover, inBuildMenu, boxSize, boxSpacing, inventorySpacing, buildSize, buildSpacing)
+function api.DrawBuild(world, playerData, inventorySlots, checkHover, inBuildMenu, boxSize, boxSpacing, inventorySpacing, buildSize, buildSpacing)
+	local haveAnyTechs = false
+	for i = 1, #BuildDefs do
+		local def = BuildDefs[i]
+		if playerData.HasTech(name) then
+			haveAnyTechs = true
+			break
+		end
+	end
+	if not haveAnyTechs then
+		return false
+	end
+	
 	local screenWidth, screenHeight = love.window.getMode()
 	local mousePos = world.GetMousePositionInterface()
+	
+	local animTime = (playerData.HasNewBuildOpt() and math.floor((world.GetLifetime()%1) * 2)) or 0
 
 	local startX = (screenWidth - boxSize*(inventorySlots + 2) - boxSpacing*(inventorySlots + 1)) * 0.5
-	startX = startX + (inventorySlots + 1)*(boxSize + boxSpacing)
+	startX = startX + (inventorySlots + 1)*(boxSize + boxSpacing) - boxSize/2
 	local startY = screenHeight - boxSize - boxSpacing*0.6
 	
-	local buildHighlight = false
-	if checkHover and util.PosInRectangle(mousePos, startX + buildSpacing, startY, buildSize, boxSize) then
-		Resources.DrawImage("build_button_highlight", startX + buildSpacing - 2, startY - 2)
-		buildHighlight = true
-	elseif inBuildMenu then
-		Resources.DrawImage("build_button_open", startX + buildSpacing - 2, startY - 2)
-	else
-		Resources.DrawImage("build_button", startX + buildSpacing - 2, startY - 2)
+	local buildHighlight = checkHover and util.PosInRectangle(mousePos, startX + buildSpacing, startY, buildSize, boxSize)
+	local colorMult = 1
+	if inBuildMenu then
+		colorMult = 1.05
+		animTime = 0
+	elseif buildHighlight then
+		colorMult = 1.1
 	end
+	
+	love.graphics.setColor(0.7*colorMult - 0.2*animTime, 0.9*colorMult - 0.2*animTime, 0.9*colorMult - 0.2*animTime, 1)
+	love.graphics.setLineWidth(4)
+	love.graphics.rectangle("fill", startX + buildSpacing, startY, boxSize*1.618, boxSize, 0, 0, 5)
+	
+	love.graphics.setColor(0.63*colorMult - 0.2*animTime, 0.81*colorMult - 0.2*animTime, 0.81*colorMult - 0.2*animTime, 1)
+	love.graphics.setLineWidth(4)
+	love.graphics.rectangle("line", startX + buildSpacing, startY, boxSize*1.618, boxSize, 0, 0, 5)
+	
+	love.graphics.setColor(0, 0, 0, 1)
+	Font.SetSize(0)
+	love.graphics.print("Build", startX + buildSpacing + 24, startY + 24)
 	return buildHighlight
 end
 

@@ -6,6 +6,7 @@ local DialogueHandler = require("dialogueHandler")
 
 local util = require("include/util")
 local InventoryUtil = require("utilities/inventory")
+local TechUtil = require("utilities/techs")
 local ItemAction = require("defs/itemActions")
 
 local NewGuy = require("objects/guy")
@@ -139,6 +140,15 @@ function api.GetUnlocks()
 	return self.unlocks
 end
 
+function api.UnlockTeck(name, hasNewBuildOpt)
+	self.unlocks[name] = true
+	self.hasNewBuildOpt = self.hasNewBuildOpt or hasNewBuildOpt
+end
+
+function api.HasNewBuildOpt()
+	return self.hasNewBuildOpt
+end
+
 --------------------------------------------------
 -- Guy Callbacks and control
 --------------------------------------------------
@@ -248,6 +258,7 @@ function api.MousePressedInterface(mx, my, button)
 	end
 	if self.hoveredBuildMenu then
 		self.buildMenuOpen = not self.buildMenuOpen
+		self.hasNewBuildOpt = false
 		if self.buildMenuOpen and not self.playerGuy.IsDead() then
 			self.playerGuy.ClearMoveGoal()
 		end
@@ -322,6 +333,7 @@ end
 --------------------------------------------------
 
 function api.Update(dt)
+	TechUtil.CheckUnlocks(self.world, api, dt)
 	if self.playerGuy.IsDead() or self.buildMenuOpen then
 		return
 	end
@@ -404,7 +416,7 @@ function api.DrawInterface()
 	self.hoveredItem = InventoryUtil.DrawInventoryBar(self.world, self.inventory, self.selectedItem, self.activeItem, ItemDefs, checkHover, 80, 15, 2, Global.INVENTORY_SLOTS, 0, 0)
 	self.hoveredItem = InventoryUtil.DrawInventoryBar(self.world, self.inventory, self.selectedItem, self.activeItem, ItemDefs, checkHover, 80, 15, 1, 1, 0, 0) or self.hoveredItem
 	
-	self.hoveredBuildMenu = InventoryUtil.DrawBuild(self.world, Global.INVENTORY_SLOTS, (not DialogueHandler.InChat()), self.buildMenuOpen, 80, 15, 0, 120, 70)
+	self.hoveredBuildMenu = InventoryUtil.DrawBuild(self.world, api, Global.INVENTORY_SLOTS, (not DialogueHandler.InChat()), self.buildMenuOpen, 80, 15, 0, 120, 70)
 	
 	self.hoveredFeature = false
 	self.hoveredNpc = false

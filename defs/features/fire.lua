@@ -8,7 +8,7 @@ end
 
 local def = {
 	name = "fire",
-	radius = 110,
+	radius = 45,
 	noDigRadius = 50,
 	collide = true,
 	animation = "fire",
@@ -39,6 +39,8 @@ local def = {
 		self.smoothedValue = util.AverageScalar(self.smoothedValue, self.fuelValue + self.fuelBoostValue, 0.11)
 		self.energyRadius = math.pow(self.smoothedValue, 0.85) * 12
 		--print(math.floor(self.energyRadius), math.floor(self.fuelValue))
+		
+		self.UpdateRadius((self.energyRadius*Global.FIRE_SIZE_SCALE + 45)/45)
 	end,
 	mouseHit = {rx = -100, ry = -100, width = 200, height = 200},
 }
