@@ -4,7 +4,11 @@ local def = {
 		pissed = false,
 		friendly = false,
 		firstTalk = true,
-		story = false,
+		story = true,
+		story1 = false,
+		story2 = false,
+		story3 = false,
+		done = false,
 		branch1 = false,
 		branch2 = false, 
 		branch3 = false,
@@ -53,7 +57,7 @@ local def = {
 			return not self.pissed
 		end,
 		getEntry = function(self, player)
-			return (self.firstTalk and "intro1") or (self.story and "story1") or (self.friendly and "default_friendly") or "default"
+			return (self.firstTalk and "intro1") or (self.done3 and "done3") or (self.done2 and "done2") or (self.done1 and "done1") or (self.story3 and "story3") or (self.story2 and "story2") or (self.story1 and "story1") or (self.friendly and "default_friendly") or "default"
 		end,
 		scenes = {
 			intro1 = {
@@ -98,9 +102,9 @@ local def = {
 								player.RemoveInventory("log_item", logCount)
 								self.friendly = true
 								self.items.log_item = logCount
-								return "thanks", true
+								return "thanks", false
 							else
-								return "hang_on_no_logs", true
+								return "hang_on_no_logs", false
 							end
 						end
 					},
@@ -153,7 +157,8 @@ local def = {
 					},
 					{
 						msg = {
-							text = "Bye, old man. (Leave.)"
+							text = "Bye, old man. (Leave.)",
+							sound = "chat_good",
 						},
 						leadsTo = "leave1"
 					},
@@ -181,15 +186,18 @@ local def = {
 				onSceneFunc = function (self, player)
 					-- Called with the scene is opened.
 					--ChatHandler.AddMessage("SCENE FUNC")
-					self.story = true
+					self.story = false
+					self.story1 = true
+					self.story2 = false
+					self.story3 = false
 				end,
 				replies = {
 					{
 						msg = {
-							text = "Nah, it's fine.  Go on.",
+							text = "It's fine.  Go on.",
 							sound = "chat_good",
 						},
-						leadsTo = "story"
+						leadsTo = "story1"
 					},
 					{
 						msg = {
@@ -205,27 +213,27 @@ local def = {
 				{
 					text = "You do that, then.  I'll be here.",
 					sound = "chat_good",
-					delay = 3,
+					delay = 1.5,
 				}
 				},
-				replyDelay = 6,
+				replyDelay = 3.5,
 			},
 			story1 = {
 				msg = {		
 				{
 					text = "You ready for the story, pupa?",
 					sound = "chat_good",
-					delay = 2,
+					delay = 0.5,
 				}
 				},
-				replyDelay = 3.5,
+				replyDelay = 2.5,
 				replies = {
 					{
 						msg = {
-							text = "Alright, go on.",
+							text = "Yeah.  I'm listening.",
 							sound = "chat_good",
 						},
-						leadsTo = "story2"
+						leadsTo = "story1a"
 					},
 					{
 						msg = {
@@ -236,14 +244,525 @@ local def = {
 					},
 				}
 			},
+			story1a = {
+				msg = {		
+				{
+					text = "Well.",
+					sound = "chat_good",
+					delay = 1.5,
+				},
+				{
+					text = "Not so long ago, there were other lights out there. More lights than just ours.",
+					sound = "chat_good",
+					delay = 3.5,
+				},
+				{
+					text = "Sparkles over the horizon, and a beacon in the sky.",
+					sound = "chat_good",
+					delay = 6,
+				},
+				{
+					text = "Back then, only monsters you'd see were in the sleep-fears of the little ones.",
+					sound = "chat_good",
+					delay = 8,
+				},
+				{
+					text = "Then, ever so slowly, it all went away.",
+					sound = "chat_good",
+					delay = 11,
+				},
+				},
+				replyDelay = 13,
+				replies = {
+					{
+						msg = {
+							text = "(Stay silent, and listen.)",
+						},
+						leadsTo = "story1b"
+					},
+					{
+						msg = {
+							text = "What happened?",
+							sound = "chat_good",
+						},
+						leadsTo = "story1a_interrupt"
+					},
+				}
+			},
+			story1a_interrupt = {
+				msg = {		
+				{
+					text = "(The aging bug shoots you a look.)",
+					delay = 1.5,
+				},
+				{
+					text = "I'm gettin' to that.",
+					sound = "chat_good",
+					delay = 4,
+				},
+				},
+				replyDelay = 5.5,
+				replies = {
+					{
+						msg = {
+							text = "(Stay silent, and listen.)",
+						},
+						leadsTo = "story1b"
+					},
+				}
+			},
+			story1b = {
+				msg = {		
+				{
+					text = "It was a slow fade.",
+					sound = "chat_good",
+					delay = 2.5,
+				},
+				{
+					text = "We grew, and we built - up, and up, and up - and the world grew smaller.",
+					sound = "chat_good",
+					delay = 5,
+				},
+				{
+					text = "We tore up the ground to reach the sky.",
+					sound = "chat_good",
+					delay = 8,
+				},			
+				{
+					text = "(The old man lets out a quiet sigh.)",
+					delay = 10,
+				},
+				{
+					text = "The world grew smaller, and the beacon in the sky drifted away until one day, it didn't rise.",
+					sound = "chat_good",
+					delay = 12,
+				},	
+				{
+					text = "All we had left was our own light.",
+					sound = "chat_good",
+					delay = 15,
+				},				
+				{
+					text = "But even that began to fade, without the beacon to give back what we lost.",
+					sound = "chat_good",
+					delay = 18,
+				},						
+				},
+				onSceneFunc = function (self, player)
+					-- Called with the scene is opened.
+					self.story1 = false
+					self.story2 = true
+					self.story3 = false
+				end,
+				replyDelay = 20.5,
+				replies = {
+					{
+						msg = 
+						{
+							text = "(Stay silent, and listen.)",
+						},
+						leadsTo = "story2a"
+					},
+					{
+						msg = 
+						{
+							text = "I have to go.  Can we pick up here next time?",
+							sound = "chat_good",
+						},
+						leadsTo = "story2_depart"
+					},
+				}
+			},
+			story2_depart = {
+				msg = {		
+				{
+					text = "Sure, pupa.  Go get us some more wood.  Take a look around.",
+					sound = "chat_good",
+					delay = 2.5,
+				},
+				{
+					text = "I'll be here.",
+					sound = "chat_good",
+					delay = 5,
+				},
+				},
+				replyDelay = 6
+			},
 			story2 = {
 				msg = {		
 				{
-					text = "[really cool but depressing story placeholder.]",
+					text = "You ready to keep goin'?",
 					sound = "chat_good",
+					delay = 2,
+				},
+				},
+				replyDelay = 3,
+				replies = {
+					{
+						msg = 
+						{
+							text = "I'm listening.",
+							sound = "chat_good",
+						},
+						leadsTo = "story2a"
+					},
+					{
+						msg = 
+						{
+							text = "Hold on, I've gotta do something.",
+							sound = "chat_good",
+						},
+						leadsTo = "story2_depart"
+					},
+				}
+			},
+			story2a = {
+				msg = {		
+				{
+					text = "Awright.",
+					sound = "chat_good",
+					delay = 2.5,
+				},
+				{
+					text = "With the beacon gone, and our light fading, we didn't have a choice.",
+					sound = "chat_good",
+					delay = 5,
+				},
+				{
+					text = "However much our industry had eaten up the world, the only way that we could get more light was to keep going.",
+					sound = "chat_good",
+					delay = 8,
+				},
+				{
+					text = "We planted orchards to grow into trees just to burn, and tore into the ground itself for fuel.",
+					sound = "chat_good",
+					delay = 11,
+				},
+				{
+					text = "(Another quiet sigh.)",
+					delay = 14,
+				},
+				{
+					text = "And the world shrank faster still.",
+					sound = "chat_good",
+					delay = 17,
+				},
+				{
+					text = "As much as us fireflies need the light, the others need it all the more, for they have none to call their own.",
+					sound = "chat_good",
+					delay = 19.5,
+				},
+				},
+				replyDelay = 22,
+				replies = {
+					{
+						msg = 
+						{
+							text = "(Stay silent.)",
+						},
+						leadsTo = "story2b"
+					},
+					{
+						msg = 
+						{
+							text = "The others?",
+							sound = "chat_good",
+						},
+						leadsTo = "story2a_others"
+					},
+				}
+			},
+			story2a_others = {
+				msg = {		
+				{
+					text = "The others, pupa.  The crickets, the beetles, the blade-armed mantises.",
+					sound = "chat_good",
+					delay = 2.5,
+				},
+				{
+					text = "You might still see them, if you go exploring farther out.",
+					sound = "chat_good",
+					delay = 5,
+				},
+				{
+					text = "...if there are any left.",
+					sound = "chat_good",
+					delay = 9,
+				},
+				},
+				replyDelay = 11,
+				replies = {
+					{
+						msg = 
+						{
+							text = "(Stay silent.)",
+						},
+						leadsTo = "story2b"
+					},
+				}
+			},
+			story2b = {
+				msg = {		
+				{
+					text = "They came to us, once.  For advice.  But we had none to offer.",
+					sound = "chat_good",
+					delay = 2.5,
+				},
+				{
+					text = "We had always had our own light, after all.  Why would we trouble ourselves to create light beyond this?",
+					sound = "chat_good",
+					delay = 5,
+				},
+				{
+					text = "While the crickets went to search for thickets of wild trees, and the beetles bit and tore into the earth itself...",
+					sound = "chat_good",
+					delay = 8,
+				},
+				{
+					text = "We fireflies decided that what we had would be enough.  A dry log or a dead stick would do to help our blessed spark persist.",
+					sound = "chat_good",
+					delay = 11,
+				},
+				{
+					text = "(A pause.  The old bug takes a moment to breathe heavily.  Whatever he is thinking of, he doesn't share.)",
+					delay = 14,
+				},
+				{
+					text = "And so, here we are.",
+					sound = "chat_good",
+					delay = 18.5,
+				},
+				{
+					text = "And this is all that's left.",
+					sound = "chat_good",
+					delay = 20.5,
+				},
+				},
+				onSceneFunc = function (self, player)
+					-- Called with the scene is opened.
+					self.story1 = false
+					self.story2 = false
+					self.story3 = true
+				end,
+				replyDelay = 23,
+				replies = {
+					{
+						msg = 
+						{
+							text = "(Stay silent.)",
+						},
+						leadsTo = "story3a_passive"
+					},
+					{
+						msg = 
+						{
+							text = "...is this really all that's left?",
+							sound = "chat_good",
+						},
+						leadsTo = "story3a_active"
+					},
+					{
+						msg = 
+						{
+							text = "...I have to go.",
+							sound = "chat_good",
+						},
+						leadsTo = "story3_depart"
+					},
+				}
+			},
+			story3_depart = {
+				msg = {		
+				{
+					text = "Go.  Enjoy what's left, pupa, and have a think about it.",
+					sound = "chat_good",
+					delay = 2.5,
+				},
+				{
+					text = "I'll be here.",
+					sound = "chat_good",
+					delay = 5.5,
+				},
+				},
+				replyDelay = 7,
+			},
+			story3 = {
+				msg = {		
+				{
+					text = "...how're you holdin' up, pupa?",
+					sound = "chat_good",
+					delay = 2.5,
+				}
+				},
+				replyDelay = 4,
+				replies = {
+					{
+						msg = 
+						{
+							text = "(Shrug.)",
+						},
+						leadsTo = "story3a_passive"
+					},
+					{
+						msg = 
+						{
+							text = "...is this really all that's left?",
+							sound = "chat_good",
+						},
+						leadsTo = "story3a_active"
+					},
+					{
+						msg = 
+						{
+							text = "...sorry, I have to go.",
+							sound = "chat_good",
+						},
+						leadsTo = "story3a_depart"
+					},
+				}
+			},
+			story3_active = {
+				msg = {		
+				{
+					text = "...I can't believe that, pupa.",
+					sound = "chat_good",
+					delay = 2.5,
+				},
+				{
+					text = "With how quickly it's all gone, I don't think this is the end.",
+					sound = "chat_good",
+					delay = 5,
+				},
+				{
+					text = "...I hope it's not the end.",
+					sound = "chat_good",
+					delay = 8,
+				},
+				{
+					text = "You never know, though.  Go see what you can find.  There might be others out there.",
+					sound = "chat_good",
+					delay = 10,
+				},
+				{
+					text = "They might be thriving.",
+					sound = "chat_good",
+					delay = 13,
+				},
+				{
+					text = "Whatever you find...",
+					sound = "chat_good",
+					delay = 16,
+				},
+				{
+					text = "...try not to think about it.",
+					sound = "chat_good",
+					delay = 18.5,
+				},
+				{
+					text = "You can still live well, pupa.",
+					sound = "chat_good",
+					delay = 22,
+				},
+				{
+					text = "Even if you're all that's left.",
+					sound = "chat_good",
+					delay = 25,
+				},
+				},		
+				onSceneFunc = function (self, player)
+					-- Called with the scene is opened.
+					self.story = false
+					self.story1 = false
+					self.story2 = false
+					self.story3 = false
+				end,
+				replyDelay = 28.5,
+			},
+			story3_passive = {
+				msg = {		
+				{
+					text = "...I think this might be all there is, for us.",
+					sound = "chat_good",
+					delay = 2.5,
+				},
+				{
+					text = "With how quickly it's all gone, I think this is the end.",
+					sound = "chat_good",
+					delay = 5,
+				},
+				{
+					text = "You never know, though.  Go see what you can find.  There might be others out there.",
+					sound = "chat_good",
+					delay = 8.5,
+				},
+				{
+					text = "They might be thriving.",
+					sound = "chat_good",
+					delay = 11,
+				},
+				{
+					text = "Whatever you find...",
+					sound = "chat_good",
+					delay = 13,
+				},
+				{
+					text = "...try not to think about it.",
+					sound = "chat_good",
+					delay = 17,
+				},
+				},
+				replyDelay = 19,
+				onSceneFunc = function (self, player)
+					-- Called with the scene is opened.
+					self.story = false
+					self.story1 = false
+					self.story2 = false
+					self.story3 = false
+					self.friendly = false
+					self.done1 = true
+				end,
+			},
+			done1 = {
+				msg = {		
+				{
+					text = "I'm done, pupa. I need a rest.",
+					sound = "chat_good",
+					delay = 2.5,
+				},
+				{
+					text = "Go bother someone else.",
+					sound = "chat_good",
+					delay = 5,
+				},
+				},	
+				replyDelay = 7,
+					onSceneFunc = function (self, player)
+					-- Called with the scene is opened.
+					self.done2 = true
+				end,
+			},
+			done2 = {
+				msg = {		
+				{
+					text = "Git.  Go away.",
+					sound = "chat_good",
+					delay = 2.5,
+				}
+				},	
+				replyDelay = 4.5,
+					onSceneFunc = function (self, player)
+					-- Called with the scene is opened.
+					self.done3 = true
+				end,
+			},
+			done3 = {
+				msg = {		
+				{
+					text = "...",
 					delay = 2,
 				}
 				},
+				replyDelay = 4.5,
 			},
 			looking = {
 				msg = {		
@@ -331,18 +850,25 @@ local def = {
 								player.RemoveInventory("log_item", logCount)
 								self.friendly = true
 								self.items.log_item = logCount
-								return "thanks", true
+								return "thanks", false
 							else
-								return "hang_on_no_logs", true
+								return "hang_on_no_logs", false
 							end
 						end
 					},
 					{
 						msg = {
-							text = "Not yet",
+							text = "Not yet.",
 							sound = "chat_good",
 						},
 						leadsTo = "leave1",
+					},	
+					{
+						msg = {
+							text = "There's not much more wood close by.  Could you help me out?",
+							sound = "chat_good",
+						},
+						leadsTo = "help_get_wood",
 					},					
 					{
 						msg = {
@@ -353,18 +879,89 @@ local def = {
 					},
 					{
 						msg = {
-							text = "I'm gonna explor.",
+							text = "I'm gonna explore a bit further afield.",
 							sound = "chat_good",
 						},
-						leadsTo = "chitin",
+						leadsTo = "leave2",
 					},
 				}
 			},
-			keep_looking = {
-				msg = {{
-					text = "Well keep looking, we always need more logs.",
+			help_get_wood = {
+				msg = {
+				{
+					text = "Ya think?",
 					sound = "chat_good",
-				}},
+					delay = 1,
+				},
+				{
+					text = "Maybe I got a little more left in me.",
+					sound = "chat_good",
+					delay = 3,
+				},
+				{
+					text = "(The old man goes to search for wood.)",
+					sound = "chat_good",
+					delay = 5,
+				},
+				},
+				replyDelay = 5.5,
+				--TODO set logger to go gather wood				
+			},
+			chitin = {
+				msg = {
+				{
+					text = "Naw, I'll be fine.  Made it this far, 'aven't I?",
+					sound = "chat_good",
+					delay = 2,
+				},
+				{
+					text = "...",
+					sound = "chat_good",
+					delay = 4,
+				},
+				{
+					text = "Sure, it aches a bit.  Nothing I can't handle.",
+					sound = "chat_good",
+					delay = 6.5,
+				},
+				{
+					text = "You look out for yourself, pupa.",
+					sound = "chat_good",
+					delay = 9,
+				},
+				},
+				replyDelay = 10.5,
+				replies = {
+					{
+						msg = {
+							text = "I'll try.",
+							sound = "chat_good",
+						},
+						leadsTo = "try_be_safe"
+					},
+					{
+						msg = {
+							text = "I'll be fine, gramps.  Gonna explore a little farther out.",
+							sound = "chat_good",
+						},
+						leadsTo = "leave2"
+					},
+				}
+			},			
+			try_be_safe = {
+				msg = {
+				{
+					text = "Gotta strike a balance, pupa. Trying too hard is how we ended up here. 'n those who don't try end up dead.",
+					sound = "chat_good",
+					delay = 2,
+				},
+				{
+					text = "Be safe, now.",
+					sound = "chat_good",
+					delay = 4.5,
+				},
+				},
+				replyDelay = 7,
 			},
 			leave1 = {
 				msg = {{
