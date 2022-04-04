@@ -1,68 +1,38 @@
+
+local util = require("include/util")
+local GuyUtils = require("utilities/guyUtils")
+
 local def = {
 	inheritFrom = "firefly",
 	speedMult = 0.5,
 	workMult = 0.5,
+	jobType = "job_fuel",
+	mineType = "mine_none",
 	initData = {
-		pissed = false,
-		friendly = false,
 		done1 = false,
 		done2 = false,
-		fire_walk = false,
-		mood = 0,
 		items = {
-			log_item = 0,
-		}
+			ore_item = 0,
+		},
+		wallowingInDarkness = true,
 	},
 	behaviour = function (self, world, dt)
-		if self.behaviourDelay then
-			self.behaviourDelay = self.behaviourDelay - dt
-			if self.behaviourDelay < 0 then
-				self.behaviourDelay = false
-			else
-				return
-			end
-		end
-		if self.items.log_item > 0 and not self.moveGoalPos then
-			local function UseLog(success)
-				if success then
-					self.items.log_item = self.items.log_item - 1
-					self.behaviourDelay = 0.8
-				end
-				return true
-			end
-			local feature = TerrainHandler.GetClosetFeature(self.GetPos(), "fire")
-			self.SetMoveGoal(feature.GetPos(), feature.GetRadius() + Global.DROP_LEEWAY, feature, "burn", "log_item", UseLog)
+		if not self.friendly then
+			return
 		end
 		
-		if self.pissed and not self.moveGoalPos then
-			local function Attack(success)
-				if success then
-					local playerGuy = PlayerHandler.GetGuy()
-					if not playerGuy.IsDead() then
-						self.behaviourDelay = 0.5
-						playerGuy.DealDamage(20 + math.floor(math.random()*10))
-						ChatHandler.AddMessage("Angry logger hits you to " .. math.floor(playerGuy.GetHealth()) .. "%!", 4, false, {1, 0, 0, 1}, "chat_bad")
-					end
-				end
-				return true
-			end
-			local playerGuy = PlayerHandler.GetGuy()
-			if not playerGuy.IsDead() then
-				self.SetMoveCharGoal(playerGuy, playerGuy.GetRadius() + Global.DROP_LEEWAY, "self_handle", false, Attack)
-			else
-				local feature = TerrainHandler.GetClosetFeature(self.GetPos(), "log")
-				if feature then
-					self.SetMoveGoal(feature.GetPos(), feature.GetRadius() + Global.DROP_LEEWAY, feature, "collect", false)
-				end
-			end
+		if self.moveGoalPos then
+			return
 		end
+		
+		GuyUtils.FullyGeneralHelperGuy(self)
 	end,
 	chat = {
 		acceptsChat = function(self)
 			return true
 		end,
 		getEntry = function(self, player)
-			return (self.done2 and "done2") or (self.done1 and "done1") or "hello"
+			return (self.friendly and "options") or (self.done2 and "done2") or (self.done1 and "done1") or "hello"
 		end,
 		scenes = {
 			hello = {
@@ -353,15 +323,24 @@ local def = {
 					text = "...okay.",
 					sound = "chat_good",
 					delay = 1.5
-				}
+				},
 				},
 				onSceneFunc = function (self, player)
 					-- Called with the scene is opened.
 					--ChatHandler.AddMessage("SCENE FUNC")
-					self.fire_walk = true
+					self.friendly = true
 				end,
 				replyDelay = 3,
-				--walk dude to fire.
+				replies = {
+					{
+						msg = {
+							text = "Maybe you can help me out?",				
+							sound = "chat_good",
+						},
+						leadsTo = "options_first",
+					},
+				}
+				--walk dude to the labour market.
 			},
 			not_much_to_do = {
 				msg = {
@@ -418,5 +397,7 @@ local def = {
 		},
 	}
 }
+
+def.chat.scenes = util.CopyTable(GuyUtils.generalHelperTable, true, def.chat.scenes)
 
 return def

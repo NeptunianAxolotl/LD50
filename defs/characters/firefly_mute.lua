@@ -4,8 +4,8 @@ local GuyUtils = require("utilities/guyUtils")
 
 local def = {
 	inheritFrom = "firefly",
-	speedMult = 0.7,
-	workMult = 0.7,
+	speedMult = 0.5,
+	workMult = 0.5,
 	jobType = "job_fuel",
 	mineType = "mine_none",
 	initData = {
