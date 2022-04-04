@@ -12,8 +12,9 @@ local def = {
 		energyRadius = 10,
 		energyProvided = 1, -- In units of fires, so fire is permanently at 1.
 	},
+	lightCopies = 2,
 	lightFunc = function (self)
-		return self.energyRadius * (0.4 + 0.03*math.random()) * 3.6
+		return self.energyRadius * (0.4 + 0.03*math.random()) * 3.6, 1.2
 	end,
 	updateFunc = function (self, dt)
 		self.fuelValue = Global.LINEAR_FUEL_DRAIN*dt + self.fuelValue*math.exp(dt*Global.FUEL_DECAY_COEFF)

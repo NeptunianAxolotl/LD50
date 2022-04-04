@@ -30,7 +30,14 @@ local function NewFeature(self, physicsWorld, world)
 		self.shadow = ShadowHandler.AddCircleShadow(def.shadowRadius)
 	end
 	if def.lightFunc then
-		self.light = ShadowHandler.AddLight(def.bigLight)
+		if def.lightCopies then
+			self.lightTable = {}
+			for i = 1, def.lightCopies do
+				self.lightTable[i] = ShadowHandler.AddLight(def.bigLight, false, {128, 128, 128})
+			end
+		else
+			self.light = ShadowHandler.AddLight(def.bigLight)
+		end
 	end
 	
 	function self.GetPos()
@@ -75,6 +82,11 @@ local function NewFeature(self, physicsWorld, world)
 		end
 		if self.light then
 			ShadowHandler.RemoveLight(self.light)
+		end
+		if self.lightTable then
+			for i = 1, #self.lightTable do
+				ShadowHandler.RemoveLight(self.lightTable[i])
+			end
 		end
 		if self.noDigTiles then
 			GroundHandler.ReleaseDigProtection(self.noDigTiles)
@@ -264,11 +276,17 @@ local function NewFeature(self, physicsWorld, world)
 			end})
 		end
 		if self.shadow then
-			ShadowHandler.UpdateShadowParams(self.shadow, {pos[1], pos[2]}, def.shadowRadius)
+			ShadowHandler.UpdateShadowParams(self.shadow, pos, def.shadowRadius)
 		end
 		if self.light then
 			local lightGround = def.lightFunc(self)
-			ShadowHandler.UpdateLightParams(self.light, {pos[1], pos[2]}, lightGround)
+			ShadowHandler.UpdateLightParams(self.light, pos, lightGround)
+		end
+		if self.lightTable then
+			local lightGround, danceRadius = def.lightFunc(self)
+			for i = 1, #self.lightTable do
+				ShadowHandler.UpdateLightParams(self.lightTable[i], util.Add(pos, util.RandomPointInCircle(danceRadius)), lightGround)
+			end
 		end
 		if Global.DRAW_DEBUG then
 			love.graphics.setColor(1, 1, 1, 1)
