@@ -25,6 +25,16 @@ local function SetupGround()
 				if math.random() < density then
 					TerrainHandler.DropFeatureInFreeSpace(util.Add(util.RandomPointInCircle(Global.TREE_SPAWN_RAND), api.TileToPos(i, j)), "tree", 1, true)
 				end
+				
+				
+				local density = self.ground.treeDensity[j][i] * 0.45
+				while density >= 1 do
+					TerrainHandler.DropFeatureInFreeSpace(util.Add(util.RandomPointInCircle(Global.TREE_SPAWN_RAND), api.TileToPos(i, j)), "stick", 1, true)
+					density = density - 1
+				end
+				if math.random() < density then
+					TerrainHandler.DropFeatureInFreeSpace(util.Add(util.RandomPointInCircle(Global.TREE_SPAWN_RAND), api.TileToPos(i, j)), "stick", 1, true)
+				end
 			end
 		end
 	end

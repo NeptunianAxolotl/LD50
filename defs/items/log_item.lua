@@ -1,7 +1,8 @@
 local def = {
 	image = "log_item",
 	dropAs = "log",
-	burnValue = 15,
+	burnValue = Global.LOG_FUEL,
+	boostValue = Global.LOG_FUEL_BOOST,
 }
 
 return def

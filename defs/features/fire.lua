@@ -1,3 +1,11 @@
+
+local function GetNewFuelValue(world, value, dt)
+	local minutes = world.GetLifetime()/60
+	local linearDrain = Global.LINEAR_FUEL_DRAIN + minutes * Global.LINEAR_DRAIN_INCREASE_PER_MINUTE
+	local decayCoeff = Global.FUEL_DECAY_COEFF + minutes * Global.FUEL_DECAY_COEFF_INCREASE_PER_MINUTE
+	return math.max(0, linearDrain*dt + value*math.exp(dt*decayCoeff))
+end
+
 local def = {
 	name = "fire",
 	radius = 110,
@@ -8,7 +16,9 @@ local def = {
 	isEnergyProvider = true,
 	bigLight = true,
 	initData = {
-		fuelValue = Global.DEBUG_FIRE_OVERRIDE or 1500,
+		fuelValue = Global.DEBUG_FIRE_OVERRIDE or Global.FIRE_START_FUEL,
+		fuelBoostValue = 0,
+		smoothedValue = Global.DEBUG_FIRE_OVERRIDE or Global.FIRE_START_FUEL,
 		energyRadius = 10,
 		energyProvided = 1, -- In units of fires, so fire is permanently at 1.
 	},
@@ -16,9 +26,12 @@ local def = {
 	lightFunc = function (self)
 		return self.energyRadius * (0.4 + 0.03*math.random()) * 3.6, 1.2
 	end,
-	updateFunc = function (self, dt)
-		self.fuelValue = Global.LINEAR_FUEL_DRAIN*dt + self.fuelValue*math.exp(dt*Global.FUEL_DECAY_COEFF)
-		self.energyRadius = math.pow(self.fuelValue, 0.85) * 12
+	updateFunc = function (self, dt, world)
+		self.fuelValue = GetNewFuelValue(world, self.fuelValue, dt)
+		self.fuelBoostValue = GetNewFuelValue(world, self.fuelBoostValue, dt*6) -- Burns faster
+		
+		self.smoothedValue = util.AverageScalar(self.smoothedValue, self.fuelValue + self.fuelBoostValue, 0.98)
+		self.energyRadius = math.pow(self.smoothedValue, 0.85) * 12
 		--print(math.floor(self.energyRadius), math.floor(self.fuelValue))
 	end,
 	mouseHit = {rx = -100, ry = -100, width = 200, height = 200},

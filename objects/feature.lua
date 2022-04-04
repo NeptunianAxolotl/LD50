@@ -226,7 +226,7 @@ local function NewFeature(self, physicsWorld, world)
 			self.noDigTiles = GroundHandler.SetPosDigProtection(self.GetPos(), def.noDigRadius)
 		end
 		if def.updateFunc then
-			def.updateFunc(self, dt)
+			def.updateFunc(self, dt, world)
 		end
 		self.busyTimer = util.UpdateTimer(self.busyTimer, dt)
 		self.moveTarget = util.UpdateTimer(self.moveTarget, dt)

@@ -23,7 +23,7 @@ end
 
 function api.SpawnFeature(name, pos, items, data)
 	local def = FeatureDefs[name]
-	data = data or {}
+	data = util.CopyTable(data or {})
 	data.pos = pos
 	data.def = def
 	local feature = NewFeature(data, self.world.GetPhysicsWorld(), self.world)

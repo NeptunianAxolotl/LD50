@@ -53,6 +53,10 @@ function api.Restart()
 	api.Initialize()
 end
 
+function api.GetLifetime()
+	return self.lifetime
+end
+
 function api.TakeScreenshot()
 	love.filesystem.setIdentity("TheMilesHigh/screenshots")
 	love.graphics.captureScreenshot("screenshot_" .. math.floor(math.random()*100000) .. "_.png")
@@ -153,6 +157,7 @@ function api.Update(dt, realDt)
 		return
 	end
 	
+	self.lifetime = self.lifetime + dt
 	Delay.Update(dt)
 	--ModuleTest.Update(dt)
 	ComponentHandler.Update(dt)
@@ -233,6 +238,7 @@ function api.Initialize()
 	self.emptyTransform = love.math.newTransform()
 	self.paused = false
 	self.musicEnabled = true
+	self.lifetime = 0
 	
 	Delay.Initialise()
 	ShadowHandler.Initialize(api)

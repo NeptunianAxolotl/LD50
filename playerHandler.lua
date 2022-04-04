@@ -223,7 +223,7 @@ function api.GetViewRestriction()
 	if self.playerGuy.IsDead() then
 		return
 	end
-	return {{pos = util.Add(self.playerGuy.GetPos(), util.Mult(0.01, self.playerGuy.GetVelocity())), radius = 800 * (Global.DEBUG_CAMERA_ZOOM or 1)}}
+	return {{pos = util.Add(self.playerGuy.GetPos(), util.Mult(0.01, self.playerGuy.GetVelocity())), radius = 960 * (Global.DEBUG_CAMERA_ZOOM or 1)}}
 end
 
 
