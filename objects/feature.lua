@@ -102,6 +102,11 @@ local function NewFeature(self, physicsWorld, world)
 					TerrainHandler.DropFeatureInFreeSpace(dropPos, ItemDefs[name].dropAs, count)
 				end
 			end
+			if self.mineCapacity then
+				for i = 1, #def.mineItems do
+					TerrainHandler.DropFeatureInFreeSpace(dropPos, ItemDefs[def.mineItems[i]].dropAs, self.mineCapacity)
+				end
+			end
 		end
 		return true
 	end
