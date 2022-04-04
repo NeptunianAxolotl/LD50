@@ -1,9 +1,11 @@
+local util = require("include/util")
+local GuyUtils = require("utilities/guyUtils")
+
 local def = {
 	inheritFrom = "firefly",
 	initData = {
-		pissed = false,
-		friendly = false,
 		firstTalk = true,
+		gotLogs = false,
 		story = true,
 		story1 = false,
 		story2 = false,
@@ -11,50 +13,36 @@ local def = {
 		done = false,
 		items = {
 			log_item = 0,
-		}
+		},
+		wallowingInDarkness = true,
 	},
 	behaviour = function (self, world, dt)
-		if self.items.log_item > 0 and not self.moveGoalPos then
-			local function UseLog(success)
-				if success then
-					self.items.log_item = self.items.log_item - 1
-					self.behaviourDelay = 0.8
+		if not self.friendly then
+			if self.items.log_item > 0 and not self.moveGoalPos then
+				local function UseLog(success)
+					if success then
+						self.items.log_item = self.items.log_item - 1
+						self.behaviourDelay = 0.8
+					end
+					return true
 				end
-				return true
+				local feature = TerrainHandler.GetClosetFeature(self.GetPos(), "fire")
+				self.SetMoveGoal(feature.GetPos(), feature.GetRadius() + Global.DROP_LEEWAY, feature, "burn", "log_item", UseLog)
 			end
-			local feature = TerrainHandler.GetClosetFeature(self.GetPos(), "fire")
-			self.SetMoveGoal(feature.GetPos(), feature.GetRadius() + Global.DROP_LEEWAY, feature, "burn", "log_item", UseLog)
 		end
 		
-		if self.pissed and not self.moveGoalPos then
-			local function Attack(success)
-				if success then
-					local playerGuy = PlayerHandler.GetGuy()
-					if not playerGuy.IsDead() then
-						self.behaviourDelay = 0.5
-						playerGuy.DealDamage(20 + math.floor(math.random()*10))
-						ChatHandler.AddMessage("Angry logger hits you to " .. math.floor(playerGuy.GetHealth()) .. "%!", 4, false, {1, 0, 0, 1}, "chat_bad")
-					end
-				end
-				return true
-			end
-			local playerGuy = PlayerHandler.GetGuy()
-			if not playerGuy.IsDead() then
-				self.SetMoveCharGoal(playerGuy, playerGuy.GetRadius() + Global.DROP_LEEWAY, "self_handle", false, Attack)
-			else
-				local feature = TerrainHandler.GetClosetFeature(self.GetPos(), "log")
-				if feature then
-					self.SetMoveGoal(feature.GetPos(), feature.GetRadius() + Global.DROP_LEEWAY, feature, "collect", false)
-				end
-			end
+		if self.moveGoalPos then
+			return
 		end
+		
+		GuyUtils.FullyGeneralHelperGuy(self)
 	end,
 	chat = {
 		acceptsChat = function(self)
-			return not self.pissed
+			return true
 		end,
 		getEntry = function(self, player)
-			return (self.firstTalk and "intro1") or (self.done3 and "done3") or (self.done2 and "done2") or (self.done1 and "done1") or (self.story3 and "story3") or (self.story2 and "story2") or (self.story1 and "story1") or (self.friendly and "default_friendly") or "default"
+			return (self.friendly and "options") or (self.firstTalk and "intro1") or (self.done3 and "done3") or (self.done2 and "done2") or (self.done1 and "done1") or (self.story3 and "story3") or (self.story2 and "story2") or (self.story1 and "story1") or (self.gotLogs and "default_friendly") or "default"
 		end,
 		scenes = {
 			intro1 = {
@@ -100,7 +88,7 @@ local def = {
 								player.SetItemCount("log_bundle_item", 0)
 								player.SetItemCount("stick_item", 0)
 								player.SetItemCount("stick_bundle_item", 0)
-								self.friendly = true
+								self.gotLogs = true
 								self.items.log_item = logCount
 								self.items.stick_item = stickCount
 								return "thanks", false
@@ -137,7 +125,7 @@ local def = {
 								player.SetItemCount("log_bundle_item", 0)
 								player.SetItemCount("stick_item", 0)
 								player.SetItemCount("stick_bundle_item", 0)
-								self.friendly = true
+								self.gotLogs = true
 								self.items.log_item = logCount
 								self.items.stick_item = stickCount
 								return "thanks", false
@@ -726,7 +714,7 @@ local def = {
 					self.story1 = false
 					self.story2 = false
 					self.story3 = false
-					self.friendly = false
+					self.gotLogs = false
 					self.done1 = true
 				end,
 			},
@@ -851,7 +839,7 @@ local def = {
 								player.SetItemCount("log_bundle_item", 0)
 								player.SetItemCount("stick_item", 0)
 								player.SetItemCount("stick_bundle_item", 0)
-								self.friendly = true
+								self.gotLogs = true
 								self.items.log_item = logCount
 								self.items.stick_item = stickCount
 								return "thanks", false
@@ -902,14 +890,23 @@ local def = {
 					sound = "chat_good",
 					delay = 3.5,
 				},
-				{
-					text = "(The old man goes to search for wood.)",
-					sound = "chat_good",
-					delay = 6,
 				},
-				},
-				replyDelay = 7.5,
-				--TODO set logger to go gather wood				
+				replyDelay = 5,
+				onSceneFunc = function (self, player)
+					-- Called with the scene is opened.
+					--ChatHandler.AddMessage("SCENE FUNC")
+					self.friendly = true
+				end,
+				--TODO set logger to go gather wood	
+				replies = {
+					{
+						msg = {
+							text = "Thanks, gramps.",
+							sound = "chat_good",
+						},
+						leadsTo = "options_first"
+					},
+				}				
 			},
 			chitin = {
 				msg = {
@@ -982,10 +979,10 @@ local def = {
 				}},
 				replyDelay = 4.5,
 			},
-			dialogue_end = {
-			},
 		}
 	}
 }
+
+def.chat.scenes = util.CopyTable(GuyUtils.generalHelperTable, true, def.chat.scenes)
 
 return def
