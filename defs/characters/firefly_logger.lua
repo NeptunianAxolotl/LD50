@@ -94,11 +94,15 @@ local def = {
 							sound = "chat_good",
 						},
 						leadsToFunc = function (self, player)
-							local logCount = player.GetInventoryCount("log_item")
-							if logCount > 0 then
-								player.RemoveInventory("log_item", logCount)
+							local logCount, stickCount = player.GetConvertedWoodCounts()
+							if logCount > 0 or stickCount > 0 then
+								player.SetItemCount("log_item", 0)
+								player.SetItemCount("log_bundle_item", 0)
+								player.SetItemCount("stick_item", 0)
+								player.SetItemCount("stick_bundle_item", 0)
 								self.friendly = true
 								self.items.log_item = logCount
+								self.items.stick_item = stickCount
 								return "thanks", false
 							else
 								return "hang_on_no_logs", false
@@ -127,11 +131,15 @@ local def = {
 							sound = "chat_good",
 						},
 						leadsToFunc = function (self, player)
-							local logCount = player.GetInventoryCount("log_item")
-							if logCount > 0 then
-								player.RemoveInventory("log_item", logCount)
+							local logCount, stickCount = player.GetConvertedWoodCounts()
+							if logCount > 0 or stickCount > 0 then
+								player.SetItemCount("log_item", 0)
+								player.SetItemCount("log_bundle_item", 0)
+								player.SetItemCount("stick_item", 0)
+								player.SetItemCount("stick_bundle_item", 0)
 								self.friendly = true
 								self.items.log_item = logCount
+								self.items.stick_item = stickCount
 								return "thanks", false
 							else
 								return "hang_on_no_logs", false
@@ -837,11 +845,15 @@ local def = {
 							sound = "chat_good",
 						},
 						leadsToFunc = function (self, player)
-							local logCount = player.GetInventoryCount("log_item")
-							if logCount > 0 then
-								player.RemoveInventory("log_item", logCount)
+							local logCount, stickCount = player.GetConvertedWoodCounts()
+							if logCount > 0 or stickCount > 0 then
+								player.SetItemCount("log_item", 0)
+								player.SetItemCount("log_bundle_item", 0)
+								player.SetItemCount("stick_item", 0)
+								player.SetItemCount("stick_bundle_item", 0)
 								self.friendly = true
 								self.items.log_item = logCount
+								self.items.stick_item = stickCount
 								return "thanks", false
 							else
 								return "hang_on_no_logs", false
