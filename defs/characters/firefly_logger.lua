@@ -3,7 +3,10 @@ local def = {
 	initData = {
 		pissed = false,
 		friendly = false,
-		mood = 0,
+		firstTalk = true,
+		branch1 = false,
+		branch2 = false, 
+		branch3 = false,
 		items = {
 			log_item = 0,
 		}
@@ -53,7 +56,10 @@ local def = {
 		end,
 		scenes = {
 			hello = {
-				msg = {{
+				msg = {
+				
+				
+				{
 					text = "What're you talking to me fer?  Go git some wood for the fire!",
 					sound = "chat_good",
 				}},

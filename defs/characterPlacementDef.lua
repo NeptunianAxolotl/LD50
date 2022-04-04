@@ -1,15 +1,18 @@
 local characters = {
 	{
-		name = "firefly_logger",
-		pos = {-100, 120},
+		name = "firefly_logger",	
+		data = {animDir = 0},
+		pos = {-130, -60},
 	},
 	{
 		name = "firefly_creeper",
-		pos = {500, -500},
+		data = {animDir = math.pi/2},
+		pos = {700, -500},
 	},
 	{
-		name = "firefly_mute",
-		pos = {-500, -200},
+		name = "firefly_mute",	
+		data = {animDir = math.pi},
+		pos = {-1600, -1200},
 	},
 }
 
