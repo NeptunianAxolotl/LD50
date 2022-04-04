@@ -243,6 +243,9 @@ api.generalHelperTable = {
 				leadsTo = "options_fuel",
 			},
 			{
+				displayFunc = function (self, player)
+					return player.HasTech("axe")
+				end,
 				msg = {
 					text = "I need you to cut down some trees.",
 					sound = "chat_good",
@@ -250,6 +253,9 @@ api.generalHelperTable = {
 				leadsTo = "options_trees",
 			},
 			{
+				displayFunc = function (self, player)
+					return player.HasTech("pick")
+				end,
 				msg = {
 					text = "I need you to mine something for me.",
 					sound = "chat_good",
@@ -257,6 +263,9 @@ api.generalHelperTable = {
 				leadsTo = "options_mine",
 			},
 			{
+				displayFunc = function (self, player)
+					return player.HasTech("furnace")
+				end,
 				msg = {
 					text = "I need you to work the furnace.",
 					sound = "chat_good",
@@ -264,6 +273,9 @@ api.generalHelperTable = {
 				leadsTo = "options_furnace",
 			},
 			{
+				displayFunc = function (self, player)
+					return player.HasTech("workshop")
+				end,
 				msg = {
 					text = "I need you to man the workshop.",
 					sound = "chat_good",
@@ -295,6 +307,9 @@ api.generalHelperTable = {
 				leadsTo = "options_fuel",
 			},
 			{
+				displayFunc = function (self, player)
+					return player.HasTech("axe")
+				end,
 				msg = {
 					text = "I need you to cut down some trees.",
 					sound = "chat_good",
@@ -302,6 +317,9 @@ api.generalHelperTable = {
 				leadsTo = "options_trees",
 			},
 			{
+				displayFunc = function (self, player)
+					return player.HasTech("pick")
+				end,
 				msg = {
 					text = "I need you to mine something for me.",
 					sound = "chat_good",
@@ -309,6 +327,9 @@ api.generalHelperTable = {
 				leadsTo = "options_mine_first",
 			},
 			{
+				displayFunc = function (self, player)
+					return player.HasTech("furnace")
+				end,
 				msg = {
 					text = "I need you to work the furnace.",
 					sound = "chat_good",
@@ -316,6 +337,9 @@ api.generalHelperTable = {
 				leadsTo = "options_furnace",
 			},
 			{
+				displayFunc = function (self, player)
+					return player.HasTech("workshop")
+				end,
 				msg = {
 					text = "I need you to man the workshop.",
 					sound = "chat_good",

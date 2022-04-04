@@ -55,70 +55,19 @@ local def = {
 					delay = 1
 				}},
 				replyDelay = 2,
-				replies = {
-					{
-						msg = {
-							text = "You can come sit closer by the fire later, if you help out.",
-							sound = "chat_good",
-						},
-						leadsTo = "help2",
-					},
-				}
-			},
-			help2 = {
-				msg = {{
-					text = "Sure!",
-					sound = "chat_good",
-					delay = 1,
-				},
-				{
-					text = "What d'you want me to do?",
-					sound = "chat_good",
-					delay = 2.5,
-				},
-				},
 				onSceneFunc = function (self, player)
 					-- Called with the scene is opened.
 					--ChatHandler.AddMessage("SCENE FUNC")
 					self.friendly = true
 					self.wallowingInDarkness = false
 				end,
-				replyDelay = 4,
-					replies = {
+				replies = {
 					{
 						msg = {
-							text = "I need you to gather fuel.",
+							text = "You can come sit closer by the fire later, if you help out.",
 							sound = "chat_good",
 						},
-						leadsTo = "options_fuel",
-					},
-					{
-						msg = {
-							text = "I need you to cut down some trees.",
-							sound = "chat_good",
-						},
-						leadsTo = "options_trees",
-					},
-					{
-						msg = {
-							text = "I need you to mine something for me.",
-							sound = "chat_good",
-						},
-						leadsTo = "options_mine_first",
-					},
-					{
-						msg = {
-							text = "I need you to work the furnace.",
-							sound = "chat_good",
-						},
-						leadsTo = "options_furnace",
-					},
-					{
-						msg = {
-							text = "I need you to man the workshop.",
-							sound = "chat_good",
-						},
-						leadsTo = "options_workshop",
+						leadsTo = "options_first",
 					},
 				}
 			},
