@@ -3,15 +3,14 @@ local FeatureUtils = require("utilities/featureUtils")
 
 local def = {
 	name = "furnace",
-	radius = 80,
+	radius = 170,
 	collide = true,
 	image = "furnace",
-	desc = "Smelt ore",
-	placementRadius = 130,
+	placementRadius = 260,
 	portraitNeutral = "furnace_portrait",
 	humanName = "Furnace",
 	voidDestroys = true,
-	mouseHit = {rx = -100, ry = -100, width = 200, height = 200},
+	mouseHit = {rx = -170, ry = -215, width = 340, height = 380},
 	initData = {
 		energyRadius = 10,
 		energyProvided = 0,

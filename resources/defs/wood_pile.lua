@@ -6,7 +6,7 @@ return {
 		xScale = 3,
 		yScale = 3,
 		xOffset = 0.5,
-		yOffset = 0.5,
+		yOffset = 0.7,
 	},
 	{
 		name = "build_wood_pile",
@@ -15,6 +15,6 @@ return {
 		xScale = 3,
 		yScale = 3,
 		xOffset = 0.5,
-		yOffset = 0.5,
+		yOffset = 0.7,
 	},
 }

@@ -3,15 +3,14 @@ local FeatureUtils = require("utilities/featureUtils")
 
 local def = {
 	name = "anvil",
-	radius = 80,
-	desc = "Forge item",
+	radius = 60,
 	collide = true,
 	image = "anvil",
 	placementRadius = 130,
 	portraitNeutral = "anvil_portrait",
 	humanName = "Anvil",
 	voidDestroys = true,
-	mouseHit = {rx = -100, ry = -100, width = 200, height = 200},
+	mouseHit = {rx = -60, ry = -75, width = 120, height = 120},
 	initData = {
 	},
 	deconstructMaterials = {"metal", "metal", "metal"},

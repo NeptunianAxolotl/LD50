@@ -6,7 +6,7 @@ local def = {
 	animationOverlay = "firefly_light_anim",
 	portraitNeutral = "portrait_firefly_neutral",
 	portraitHappy = "portrait_firefly_happy",
-	mouseHit = {rx = -35, ry = -190, width = 70, height = 200},
+	mouseHit = {rx = -55, ry = -110, width = 110, height = 120},
 	collideDensity = 1,
 	radius = 16,
 	shadowRadius = 14,

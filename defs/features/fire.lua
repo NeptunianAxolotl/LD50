@@ -43,7 +43,7 @@ local def = {
 		
 		self.UpdateRadius((self.energyRadius*Global.FIRE_SIZE_SCALE + 45)/45)
 	end,
-	mouseHit = {rx = -100, ry = -100, width = 200, height = 200},
+	mouseHit = {rx = -50, ry = -50, width = 100, height = 100},
 }
 
 return def

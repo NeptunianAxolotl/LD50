@@ -54,7 +54,7 @@ local scales = {
 	big_digger   = 1,
 	big_wood_hut = 1,
 	coal_bin     = 1,
-	furnace      = 12,
+	furnace      = 11,
 	metal_hut    = 1,
 	coal_mine    = 3,
 	ore_mine     = 3,
@@ -72,8 +72,8 @@ local portraitScales = {
 
 local offsets = {
 	anvil        = 0.65,
-	furnace      = 0.7,
-	wood_hut      = 0.8,
+	furnace      = 0.6,
+	wood_hut      = 0.65,
 }
 
 for i = 1, #featureNames do

@@ -266,9 +266,10 @@ local function NewFeature(self, physicsWorld, world)
 	function self.HitBoxToScreen()
 		local bodyPos = self.GetPos()
 		local hit = def.mouseHit
-		local pos = world.WorldToScreen({bodyPos[1] + hit.rx, bodyPos[2] + hit.ry})
+		local myScale = math.max(1, self.radiusScale)
+		local pos = world.WorldToScreen({bodyPos[1] + hit.rx * myScale, bodyPos[2] + hit.ry* myScale})
 		local scale = world.WorldScaleToScreenScale()
-		return pos, hit.width * scale, hit.height * scale
+		return pos, hit.width * scale * myScale, hit.height * scale * myScale
 	end
 	
 	function self.Draw(drawQueue, left, top, right, bot)
@@ -285,6 +286,24 @@ local function NewFeature(self, physicsWorld, world)
 					local scale = self.radiusScale and self.radiusScale > 1 and self.radiusScale
 					Resources.DrawAnimation(def.animation, pos[1], pos[2], self.animTime, false, false, scale)
 				end
+						
+				if Global.DRAW_DEBUG then
+					love.graphics.setLineWidth(20)
+					if def.name == "coal_mine" then
+						love.graphics.setColor(0,0,0, 1)
+					elseif def.name == "ruby_mine" then
+						love.graphics.setColor(1,0,0, 1)
+					elseif def.name == "emerald_mine" then
+						love.graphics.setColor(0,1,0, 1)
+					elseif def.name == "stone_mine" then
+						love.graphics.setColor(0.5,0.5,0.5, 1)
+					elseif def.name == "ore_mine" then
+						love.graphics.setColor(1,1,0, 1)
+					else
+						love.graphics.setColor(1,1,1, 1)
+					end
+					love.graphics.circle('line', pos[1], pos[2], def.radius * self.radiusScale)
+				end
 			end})
 		end
 		if self.shadow then
@@ -299,23 +318,6 @@ local function NewFeature(self, physicsWorld, world)
 			for i = 1, #self.lightTable do
 				ShadowHandler.UpdateLightParams(self.lightTable[i], util.Add(pos, util.RandomPointInCircle(danceRadius)), lightGround)
 			end
-		end
-		if Global.DRAW_DEBUG then
-			love.graphics.setLineWidth(20)
-			if def.name == "coal_mine" then
-				love.graphics.setColor(0,0,0, 1)
-			elseif def.name == "ruby_mine" then
-				love.graphics.setColor(1,0,0, 1)
-			elseif def.name == "emerald_mine" then
-				love.graphics.setColor(0,1,0, 1)
-			elseif def.name == "stone_mine" then
-				love.graphics.setColor(0.5,0.5,0.5, 1)
-			elseif def.name == "ore_mine" then
-				love.graphics.setColor(1,1,0, 1)
-			else
-				love.graphics.setColor(1,1,1, 1)
-			end
-			love.graphics.circle('line', pos[1], pos[2], def.radius * self.radiusScale)
 		end
 		if Global.DRAW_ENERGY_RINGS and self.energyRadius and def.isFire then
 			love.graphics.setLineWidth(32)

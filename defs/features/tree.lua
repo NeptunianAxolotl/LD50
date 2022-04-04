@@ -1,6 +1,6 @@
 local def = {
 	name = "tree",
-	radius = 42,
+	radius = 58,
 	collide = true,
 	image = "tree",
 	shadowRadius = 27,
@@ -8,7 +8,7 @@ local def = {
 	placementRadius = 220,
 	voidDestroys = true,
 	imageAlpha = 0.82,
-	mouseHit = {rx = -45, ry = -220, width = 90, height = 260},
+	mouseHit = {rx = -45, ry = -160, width = 90, height = 200},
 	initData = {
 	},
 	isMine = true,

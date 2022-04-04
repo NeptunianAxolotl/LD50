@@ -3,14 +3,14 @@ local FeatureUtils = require("utilities/featureUtils")
 
 local def = {
 	name = "wood_hut",
-	radius = 80,
+	radius = 170,
 	collide = true,
 	image = "wood_hut",
-	placementRadius = 130,
+	placementRadius = 200,
 	portraitNeutral = "wood_hut",
 	desc = "Wooden hut",
 	voidDestroys = true,
-	mouseHit = {rx = -100, ry = -100, width = 200, height = 200},
+	mouseHit = {rx = -170, ry = -240, width = 340, height = 380},
 	initData = {
 	},
 	deconstructMaterials = {"log", "log", "log", "log", "log", "log", "stick", "stick", },
