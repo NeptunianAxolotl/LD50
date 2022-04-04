@@ -876,6 +876,46 @@ local terrain = {
     name = "ore_mine",
     pos = {4580, -1340},
 },
+{
+    name = "log",
+    pos = {-240, 2960},
+},
+{
+    name = "log",
+    pos = {-350, 3170},
+},
+{
+    name = "axe",
+    pos = {-170, 3410},
+},
+{
+    name = "ore",
+    pos = {5570, 2530},
+},
+{
+    name = "ore",
+    pos = {5450, 2790},
+},
+{
+    name = "ore",
+    pos = {5830, 2970},
+},
+{
+    name = "metal",
+    pos = {-5320, 840},
+},
+{
+    name = "metal",
+    pos = {-5020, 420},
+},
+{
+    name = "metal",
+    pos = {-5090, 280},
+},
+{
+    name = "pick",
+    pos = {-7000, 5310},
+},
 
 }
 
