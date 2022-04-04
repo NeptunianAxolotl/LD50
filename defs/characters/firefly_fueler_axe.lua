@@ -11,17 +11,13 @@ local def = {
 		}
 	},
 	behaviour = function (self, world, dt)
-		if not self.friendly then
-			return
-		end
-		
 		if self.moveGoalPos then
 			return
 		end
 		
 		GuyUtils.FuelFire(self, TerrainHandler.GetHomeFire(), 0.9)
 	end,
-		chat = {
+			chat = {
 		acceptsChat = function(self)
 			return true
 		end,
@@ -31,61 +27,32 @@ local def = {
 		scenes = {
 			options = {
 				msg = {{
-					text = "Hey, what's up?",
+					text = "HELP OPTIONS PLACEHOLDER",
 					sound = "chat_good",
 				}},			
-				replyDelay = 1,
-					replies = {
-					{
-						msg = {
-							text = "I need you to gather fuel.",
-							sound = "chat_good",
-						},
-						leadsTo = "help1",
-					},
-					{
-						msg = {
-							text = "I need you to cut down some trees.",
-							sound = "chat_good",
-						},
-						leadsTo = "help1",
-					},
-					{
-						msg = {
-							text = "I need you to mine something for me.",
-							sound = "chat_good",
-						},
-						leadsTo = "help1",
-					},
-					{
-						msg = {
-							text = "I need you to gather fuel.",
-							sound = "chat_good",
-						},
-						leadsTo = "help1",
-					},
-					{
-						msg = {
-							text = "I need you to gather fuel.",
-							sound = "chat_good",
-						},
-						leadsTo = "help1",
-					},
-					{
-						msg = {
-							text = "Keep up the good work!",
-							sound = "chat_good",
-						},
-					},
-				}
+				replyDelay = 2,
 			},
 			hello = {
 				msg = {{
-					text = "What do you want?",
+					text = "Oh, good.  I was worried everyone had gone.",
 					sound = "chat_good",
 				}},
-				replyDelay = 0.5,
+				replyDelay = 1,
 				replies = {
+					{
+						msg = {
+							text = "No, I'm still here.",
+							sound = "chat_good",
+						},
+						leadsTo = "stillhere",
+					},
+					{
+						msg = {
+							text = "What's wrong?",
+							sound = "chat_good",
+						},
+						leadsTo = "whatwrong",
+					},
 					{
 						msg = {
 							text = "I need your help.",
@@ -95,6 +62,8 @@ local def = {
 					},
 				}
 			},
+			stillhere = {},
+			whatwrong = {},
 			help1 = {
 				msg = {{
 					text = "Oh?",
@@ -122,6 +91,11 @@ local def = {
 					text = "(The firefly decides to help you out.)",
 					sound = "chat_good",
 					delay = 2,
+				},
+				{
+					text = "(Talk to him again for options.)",
+					sound = "chat_good",
+					delay = 3.5,
 				},
 				},
 				onSceneFunc = function (self, player)
