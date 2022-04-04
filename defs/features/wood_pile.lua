@@ -1,3 +1,6 @@
+
+local FeatureUtils = require("utilities/featureUtils")
+
 local def = {
 	name = "wood_pile",
 	radius = 80,
@@ -17,6 +20,10 @@ local def = {
 	isPile = {
 		{"log_item", 3},
 		{"stick_item", 5},
+	},
+	deconstructMaterials = {
+		"log",
+		"log",
 	},
 	stockCheckFunc = function (self)
 		return (self.items.stick_item or 0) > 0 or (self.items.log_item or 0) > 0
@@ -38,6 +45,11 @@ local def = {
 				}},
 				replyDelay = 0,
 				replies = {
+					FeatureUtils.DestoryHelper(
+						"axe_item", "prybar_item", 3, false,
+						"Destroy the wood pile.",
+						"You hack at the wood pile until it is merely a pile of wood."
+					),
 					{
 						displayFunc = function (self, player)
 							return player.ItemHasSpace("stick_item") and (self.items.stick_item or 0) > 0
