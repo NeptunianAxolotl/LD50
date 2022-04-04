@@ -233,6 +233,20 @@ local function NewGuy(self, physicsWorld, world)
 		end
 	end
 	
+	function self.FilterOutInventory(whitelist)
+		local whiteMap = {}
+		for i = 1, #whitelist do
+			whiteMap[whitelist[i]] = true
+		end
+		for key, value in pairs(self.items or {}) do
+			if not whiteMap[key] then
+				local itemDef = ItemDefs[key]
+				TerrainHandler.DropFeatureInFreeSpace(self.GetPos(), itemDef.dropAs, value * itemDef.dropMult)
+				self.RemoveInventory(key, value)
+			end
+		end
+	end
+	
 	function self.RemoveInventory(item, count)
 		if def.isPlayer then
 			PlayerHandler.RemoveInventory(item, count)
@@ -354,7 +368,7 @@ local function NewGuy(self, physicsWorld, world)
 		if def.updateFunc then
 			def.updateFunc(self, world, dt)
 		end
-		if def.coldRunLevel and self.lightValue < def.coldRunLevel then
+		if (not self.wallowingInDarkness) and def.coldRunLevel and self.lightValue < def.coldRunLevel then
 			if GuyUtils.RunToFire(self) then
 				if def.isPlayer and not self.blockedUntilMoveFinished and not TerrainHandler.GetPositionEnergy(self.GetPos()) then
 					ChatHandler.AddMessage("It's so cold here, I have to go back to the fire")
