@@ -2,7 +2,7 @@ local characters = {
 	{
 		name = "firefly_logger",	
 		data = {animDir = 0},
-		pos = {-130, -60},
+		pos = {-180, 90},
 	},
 	{
 		name = "firefly_creeper",
