@@ -251,7 +251,11 @@ function api.GetViewRestriction()
 	if self.playerGuy.IsDead() then
 		return
 	end
-	return {{pos = util.Add(self.playerGuy.GetPos(), util.Mult(0.01, self.playerGuy.GetVelocity())), radius = 960 * (Global.DEBUG_CAMERA_ZOOM or 1)}}
+	local radius = 960 * (Global.DEBUG_CAMERA_ZOOM or 1)
+	if Global.DEBUG_SPACE_ZOOM_OUT and love.keyboard.isDown("space") then
+		radius = radius * 10
+	end
+	return {{pos = util.Add(self.playerGuy.GetPos(), util.Mult(0.01, self.playerGuy.GetVelocity())), radius = radius}}
 end
 
 

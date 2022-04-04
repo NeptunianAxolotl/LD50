@@ -206,7 +206,7 @@ function api.Draw()
 	NpcHandler.Draw(drawQueue)
 	EffectsHandler.Draw(drawQueue)
 	
-	if not Global.DEBUG_NO_SHADOW then
+	if not Global.DEBUG_NO_SHADOW and not (Global.DEBUG_SPACE_ZOOM_OUT and love.keyboard.isDown("space")) then
 		ShadowHandler.DrawGroundShadow(self.cameraTransform)
 	end
 	love.graphics.replaceTransform(self.cameraTransform)
@@ -215,7 +215,7 @@ function api.Draw()
 		if not d then break end
 		d.f()
 	end
-	if not Global.DEBUG_NO_SHADOW then
+	if not Global.DEBUG_NO_SHADOW and not (Global.DEBUG_SPACE_ZOOM_OUT and love.keyboard.isDown("space")) then
 		ShadowHandler.DrawVisionShadow(self.cameraTransform)
 	end
 	

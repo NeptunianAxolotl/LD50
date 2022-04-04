@@ -24,6 +24,7 @@ local globals = {
 	PLAYER_START_Y = 250,
 	DRAW_ENERGY_RINGS = true,
 	
+	DEBUG_SPACE_ZOOM_OUT = true,
 	DEBUG_PRINT_CLICK_POS = true,
 	DEBUG_MAP_METRICS = true,
 	--DEBUG_CAMERA_ZOOM = 10,

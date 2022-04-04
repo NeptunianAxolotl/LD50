@@ -195,7 +195,7 @@ end
 
 function api.FullyGeneralHelperGuy(self)
 	if self.jobType == "job_fuel" then
-		api.FuelFire(self, TerrainHandler.GetHomeFire(), 0.9)
+		api.FuelFire(self, TerrainHandler.GetHomeFire(), 0.75)
 	elseif self.jobType == "job_furnace" then
 		return api.GatherAndCraft(self, "ore_item", Global.ORE_TO_METAL, "ore", "furnace", "metal_item")
 	elseif self.jobType == "job_furnace" then
