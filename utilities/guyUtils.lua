@@ -224,7 +224,7 @@ end
 
 function api.FullyGeneralHelperGuy(self)
 	if self.jobType == "job_fuel" then
-		api.FuelFire(self, TerrainHandler.GetHomeFire(), 0.92)
+		api.FuelFire(self, TerrainHandler.GetHomeFire(), 0.85)
 	elseif self.jobType == "job_furnace" then
 		return api.GatherAndCraft(self, "ore_item", Global.ORE_TO_METAL, "ore", "furnace", "metal_item")
 	elseif self.jobType == "job_furnace" then
@@ -475,6 +475,10 @@ api.generalHelperTable = {
 			--ChatHandler.AddMessage("SCENE FUNC")
 			self.jobType = "job_mine"
 			self.mineType = "coal_mine"
+			if player.GetInventoryCount("pick_item") > 0 then
+				player.RemoveInventory("pick_item", 1)
+				self.AddToInventory("pick_item")
+			end
 			self.FilterOutInventory({"pick_item"})
 		end,
 		replyDelay = 1.5,
@@ -489,6 +493,10 @@ api.generalHelperTable = {
 			--ChatHandler.AddMessage("SCENE FUNC")
 			self.jobType = "job_mine"
 			self.mineType = "ore_mine"
+			if player.GetInventoryCount("pick_item") > 0 then
+				player.RemoveInventory("pick_item", 1)
+				self.AddToInventory("pick_item")
+			end
 			self.FilterOutInventory({"pick_item"})
 		end,
 		replyDelay = 1.5,
@@ -503,6 +511,10 @@ api.generalHelperTable = {
 			--ChatHandler.AddMessage("SCENE FUNC")
 			self.jobType = "job_mine"
 			self.mineType = "ruby_mine"
+			if player.GetInventoryCount("pick_item") > 0 then
+				player.RemoveInventory("pick_item", 1)
+				self.AddToInventory("pick_item")
+			end
 			self.FilterOutInventory({"pick_item"})
 		end,
 		replyDelay = 1.5,
@@ -517,6 +529,10 @@ api.generalHelperTable = {
 			--ChatHandler.AddMessage("SCENE FUNC")
 			self.jobType = "job_mine" 
 			self.mineType = "emerald_mine"
+			if player.GetInventoryCount("pick_item") > 0 then
+				player.RemoveInventory("pick_item", 1)
+				self.AddToInventory("pick_item")
+			end
 			self.FilterOutInventory({"pick_item"})
 		end,
 		replyDelay = 1.5,
@@ -559,6 +575,10 @@ api.generalHelperTable = {
 			--ChatHandler.AddMessage("SCENE FUNC")
 			self.jobType = "job_trees"
 			self.mineType = "mine_none"
+			if player.GetInventoryCount("axe_item") > 0 then
+				player.RemoveInventory("axe_item", 1)
+				self.AddToInventory("axe_item")
+			end
 			self.FilterOutInventory({"axe_item"})
 		end,
 		replyDelay = 1.5,
