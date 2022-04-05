@@ -3,8 +3,8 @@ local terrain = {
 		name = "wood_pile",
 		pos = {-550, 150},
 		items = {
-			log_item = 0,
-			stick_item = 3
+			log_item = 3,
+			stick_item = 6
 		}
 	},
 	{
