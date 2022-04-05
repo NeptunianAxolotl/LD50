@@ -922,11 +922,11 @@ local terrain = {
 },
 {
     name = "ruby",
-    pos = {-1160, 3480},
+    pos = {-1110, 3300},
 },
 {
     name = "pick",
-    pos = {-840, 3290},
+    pos = {-1160, 3480},
 },
 {
     name = "anvil",

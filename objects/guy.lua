@@ -30,6 +30,7 @@ local function DoMoveGoalAction(self)
 			end
 		end
 	elseif action == "collect" and feature then
+		self.doingCollect = false
 		if (not ActionCallback) or ActionCallback(not feature.IsDead(), feature, action, item) then
 			if feature.def.isPile then
 				if not self.def.isPlayer then

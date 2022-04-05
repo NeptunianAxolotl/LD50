@@ -180,9 +180,13 @@ local function NewFeature(self, physicsWorld, world)
 				self.Destroy()
 			end
 		end
-		Delay.Add(def.mineTime / (guy.GetDef().workMult or 1), CreateItem)
+		local mineTime = def.mineTime
+		if not guy.def.isPlayer then
+			mineTime = mineTime * Global.NPC_MINE_MULT
+		end
+		Delay.Add(mineTime  / (guy.GetDef().workMult or 1), CreateItem)
 		
-		return def.mineTime
+		return mineTime
 	end
 	
 	function self.IsBusy()

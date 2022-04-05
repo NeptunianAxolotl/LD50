@@ -18,7 +18,7 @@ local def = {
 		}
 	},
 	isPile = {
-		{"coal_item", 3},
+		{"coal_item", 10},
 	},
 	deconstructMaterials = {"metal", "rock", "rock"},
 	stockCheckFunc = function (self)

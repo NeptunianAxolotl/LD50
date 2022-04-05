@@ -37,7 +37,7 @@ local def = {
 				replyDelay = 0,
 				replies = {
 					FeatureUtils.DestoryHelper(
-						"prybar_item", false, 3.5, false,
+						"prybar_item", false, 2, false,
 						"Destroy the workshop.",
 						"You dismantle the workshop."
 					),

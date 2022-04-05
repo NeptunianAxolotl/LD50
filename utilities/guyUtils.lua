@@ -2,6 +2,7 @@
 local util = require("include/util")
 local ItemDefs = util.LoadDefDirectory("defs/items")
 local FeatureDefs = util.LoadDefDirectory("defs/features")
+local ItemAction = require("defs/itemActions")
 
 local loseFuelFeatures = {
 	["log"] = true,
@@ -81,12 +82,23 @@ function api.SeekAndFuelFire(self, fire)
 		if self.GetInventoryCount(item) > 0 then
 			local function UseFuel(success)
 				if success then
-					self.RemoveInventory(item, 1)
+					for i = 1, self.GetInventoryCount("log_item") do
+						ItemAction.DoItemToFeature(fire, "burn", "log_item")
+					end
+					for i = 1, self.GetInventoryCount("stick_item") do
+						ItemAction.DoItemToFeature(fire, "burn", "stick_item")
+					end
+					for i = 1, self.GetInventoryCount("coal_item") do
+						ItemAction.DoItemToFeature(fire, "burn", "coal_item")
+					end
+					self.items.log_item = 0
+					self.items.stick_item = 0
+					self.items.coal_item = 0
 					self.behaviourDelay = 0.8
 				end
 				return true
 			end
-			self.SetMoveGoal(fire.GetPos(), fire.GetRadius() + Global.DROP_LEEWAY, fire, "burn", item, UseFuel)
+			self.SetMoveGoal(fire.GetPos(), fire.GetRadius() + Global.DROP_LEEWAY, fire, "burn_all", false, UseFuel)
 			return true
 		end
 	end
@@ -193,9 +205,10 @@ function api.OrganiseFuel(self, fire)
 end
 
 function api.FuelFire(self, fire, organiseChance)
-	if organiseChance and math.random() < organiseChance and api.OrganiseFuel(self, fire)then
+	if (not self.collecting) and organiseChance and math.random() < organiseChance and api.OrganiseFuel(self, fire)then
 		return true
 	end
+	self.doingCollect = true
 	if api.SeekAndFuelFire(self, fire) then
 		return true
 	end
@@ -211,7 +224,7 @@ end
 
 function api.FullyGeneralHelperGuy(self)
 	if self.jobType == "job_fuel" then
-		api.FuelFire(self, TerrainHandler.GetHomeFire(), 0.75)
+		api.FuelFire(self, TerrainHandler.GetHomeFire(), 0.92)
 	elseif self.jobType == "job_furnace" then
 		return api.GatherAndCraft(self, "ore_item", Global.ORE_TO_METAL, "ore", "furnace", "metal_item")
 	elseif self.jobType == "job_furnace" then

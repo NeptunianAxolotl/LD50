@@ -15,13 +15,13 @@ local def = {
 	mouseHit = {rx = -100, ry = -100, width = 200, height = 200},
 	initData = {
 		items = {
-			log_item = 3,
-			stick_item = 3,
+			log_item = 30,
+			stick_item = 30,
 		}
 	},
 	isPile = {
-		{"log_item", 3},
-		{"stick_item", 5},
+		{"log_item", 8},
+		{"stick_item", 12},
 	},
 	deconstructMaterials = {
 		"log",
