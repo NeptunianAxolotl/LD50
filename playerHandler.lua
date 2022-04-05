@@ -335,7 +335,7 @@ function api.MousePressedWorld(mx, my, button)
 	local feature = self.hoveredFeature
 	local featurePos = feature.GetPos()
 	if feature.GetDef().isFire then
-		self.playerGuy.SetMoveGoal(featurePos, feature.GetRadius() + Global.DROP_LEEWAY, feature, "burn_all", false, ActionCallback)
+		self.playerGuy.SetMoveGoal(featurePos, feature.GetRadius() + Global.DROP_FIRE_LEEWAY, feature, "burn_all", false, ActionCallback)
 	elseif feature.GetDef().isMine then
 		local canMine = (not feature.GetDef().mineTool) or (api.GetInventoryCount(feature.GetDef().mineTool) > 0)
 		if canMine then

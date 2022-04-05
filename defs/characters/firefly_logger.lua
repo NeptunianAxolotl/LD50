@@ -37,9 +37,9 @@ local def = {
 				end
 				local feature = TerrainHandler.GetClosetFeature(self.GetPos(), "fire")
 				if self.items.log_item > 0 then
-					self.SetMoveGoal(feature.GetPos(), feature.GetRadius() + Global.DROP_LEEWAY, feature, "burn", "log_item", UseLog)
+					self.SetMoveGoal(feature.GetPos(), feature.GetRadius() + Global.DROP_FIRE_LEEWAY, feature, "burn", "log_item", UseLog)
 				else
-					self.SetMoveGoal(feature.GetPos(), feature.GetRadius() + Global.DROP_LEEWAY, feature, "burn", "stick_item", UseLog)
+					self.SetMoveGoal(feature.GetPos(), feature.GetRadius() + Global.DROP_FIRE_LEEWAY, feature, "burn", "stick_item", UseLog)
 				end
 			end
 		end

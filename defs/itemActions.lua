@@ -16,6 +16,7 @@ function api.DoItemToFeature(feature, action, item)
 	if action == "burn" then
 		feature.fuelValue = (feature.fuelValue or 0) + ItemDefs[item].burnValue
 		feature.fuelBoostValue = (feature.fuelBoostValue or 0) + ItemDefs[item].boostValue
+		feature.totalFuel = (feature.totalFuel or 0) + ItemDefs[item].burnValue + ItemDefs[item].boostValue
 	end
 end
 

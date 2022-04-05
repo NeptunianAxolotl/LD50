@@ -18,7 +18,7 @@ local def = {
 				return true
 			end
 			local feature = TerrainHandler.GetClosetFeature(self.GetPos(), "fire")
-			self.SetMoveGoal(feature.GetPos(), feature.GetRadius() + Global.DROP_LEEWAY, feature, "burn", "log_item", UseLog)
+			self.SetMoveGoal(feature.GetPos(), feature.GetRadius() + Global.DROP_FIRE_LEEWAY, feature, "burn", "log_item", UseLog)
 		end
 		
 		if self.pissed and not self.moveGoalPos then

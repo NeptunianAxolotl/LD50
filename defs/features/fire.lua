@@ -1,8 +1,8 @@
 
 local function GetNewFuelValue(world, value, dt)
 	local minutes = world.GetLifetime()/60
-	local linearDrain = Global.LINEAR_FUEL_DRAIN + minutes * Global.LINEAR_DRAIN_INCREASE_PER_MINUTE
-	local decayCoeff = Global.FUEL_DECAY_COEFF + minutes * Global.FUEL_DECAY_COEFF_INCREASE_PER_MINUTE
+	local linearDrain = Global.LINEAR_FUEL_DRAIN + math.pow(minutes, 1.8) * Global.LINEAR_DRAIN_INCREASE_PER_MINUTES
+	local decayCoeff = Global.FUEL_DECAY_COEFF + math.pow(minutes, 1.5) * Global.FUEL_DECAY_COEFF_INCREASE_PER_MINUTE
 	return math.max(0, linearDrain*dt + value*math.exp(dt*decayCoeff))
 end
 
@@ -32,9 +32,13 @@ local def = {
 		self.fuelValue = GetNewFuelValue(world, self.fuelValue, dt)
 		self.fuelBoostValue = GetNewFuelValue(world, self.fuelBoostValue, dt*6) -- Burns faster
 		
+		local newFireValue = self.fuelValue + self.fuelBoostValue
 		if Global.DEBUG_PRINT_FIRE then
-			local newFireValue = self.fuelValue + self.fuelBoostValue
 			print(math.floor((oldFireValue - newFireValue)/dt), math.floor(newFireValue))
+		end
+		
+		if newFireValue <= 10 then
+			world.SetGameOver(false, "fire_out")
 		end
 		
 		self.smoothedValue = util.AverageScalar(self.smoothedValue, self.fuelValue + self.fuelBoostValue, 0.11)

@@ -98,7 +98,7 @@ function api.SeekAndFuelFire(self, fire)
 				end
 				return true
 			end
-			self.SetMoveGoal(fire.GetPos(), fire.GetRadius() + Global.DROP_LEEWAY, fire, "burn_all", false, UseFuel)
+			self.SetMoveGoal(fire.GetPos(), fire.GetRadius() + Global.DROP_FIRE_LEEWAY, fire, "burn_all", false, UseFuel)
 			return true
 		end
 	end
@@ -167,7 +167,7 @@ function api.RunToFire(self, fire)
 		fire = TerrainHandler.GetHomeFire()
 	end
 	if fire and (not self.blockedUntilMoveFinished) then
-		self.SetMoveGoal(fire.GetPos(), (fire.energyRadius or (fire.GetRadius() + Global.APPROACH_LEEWAY*5)) * 0.5 * (math.random()*0.4 + 0.4))
+		self.SetMoveGoal(fire.GetPos(), (fire.energyRadius or (fire.GetRadius() + Global.APPROACH_LEEWAY*5) + 120) * 0.5 * (math.random()*0.4 + 0.4))
 		self.unblockMoveTimer = 15
 		return true
 	end

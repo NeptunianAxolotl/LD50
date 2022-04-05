@@ -66,6 +66,22 @@ function api.SetGameOver(hasWon, overType)
 	if self.gameWon or self.gameLost then
 		return
 	end
+	ChatHandler.AddMessage("Your fire has gone out, and your light has followed.", 100, 100)
+	ChatHandler.AddMessage("", 100, 100)
+	ChatHandler.AddMessage("Your fire has gone out, and your light has followed. Your tattered wings have turned to dust. Your carapace has grown cold.", 100, 100)
+	ChatHandler.AddMessage("", 100, 100)
+	ChatHandler.AddMessage("Nothing remains but embers, floating in darkness.", 100, 100)
+	ChatHandler.AddMessage("", 100, 100)
+
+	local minutes = math.floor(self.lifetime/60)
+	local seconds = math.floor(self.lifetime - minutes * 60)
+	local fuel = math.floor(TerrainHandler.GetHomeFire().totalFuel or 0)
+	
+	ChatHandler.AddMessage("(You have failed to delay the inevitable, and your game has ended.)", 1000, 100)
+	ChatHandler.AddMessage("(You delayed for " .. minutes .. " minutes and " .. seconds .. " seconds.)", 100, 100)
+	ChatHandler.AddMessage("(You spent " .. fuel .. " units of fuel in the proces.)", 100, 100)
+	ChatHandler.AddMessage("(Press Ctrl+R to play again..)", 100, 100)
+
 	if hasWon then
 		self.gameWon = true
 	else
@@ -91,6 +107,9 @@ function api.MousePressed(x, y, button)
 	if PlayerHandler.MousePressedInterface(uiX, uiY, button) then
 		return
 	end
+	if api.GetGameOver() then
+		return --No moving around the world or dialogue
+	end
 	if DialogueHandler.MousePressedInterface(uiX, uiY, button) then
 		return
 	end
@@ -107,6 +126,7 @@ function api.MousePressed(x, y, button)
 		print("},")
 		return true
 	end
+	
 	PlayerHandler.MousePressedWorld(x, y, button)
 end
 

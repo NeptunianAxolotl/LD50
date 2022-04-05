@@ -40,9 +40,8 @@ local function DigTile(self, dt)
 		TerrainHandler.GetHomeFire().UseFuel(dt*Global.BIG_DIG_FUEL_PER_SECOND) 
 	end
 	if dug then
-		ChatHandler.AddMessage("make goodies")
+		self.slowDigCheck = util.UpdateTimer(self.slowDigCheck, dt)
 	end
-	self.slowDigCheck = util.UpdateTimer(self.slowDigCheck, dt)
 end
 
 local def = {
@@ -63,7 +62,7 @@ local def = {
 	},
 	deconstructMaterials = {"metal_frame_item", "metal_item", "metal_item", "emerald_item"},
 	requiresPower = true,
-	toPowerRangeMult = 0.75,
+	toPowerRangeMult = 1,
 	updateFunc = function (self, dt)
 		if not (self.HasPower() and self.enabled) then
 			self.enabled = false
