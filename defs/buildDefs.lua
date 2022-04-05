@@ -11,7 +11,7 @@ local buildDefs = {
 		buildImage = "build_coal_bin",
 		name = "build_coal_bin",
 		feature = "coal_bin",
-		cost = {"metal_item", "metal_item", "rock_item", "rock_item"},
+		cost = {"metal_item", "rock_item", "rock_item"},
 	},
 	{
 		unlockReq = "anvil",

@@ -42,7 +42,7 @@ function api.CheckUnlocks(world, playerData, dt)
 		end
 	end
 	if not playerData.HasTech("coal_bin") then
-		if inChatWithType == "coal_bin" and not playerFreezing then
+		if (inChatWithType == "coal_bin" and not playerFreezing) or playerData.GetInventoryCount("coal_item") > 0 then
 			playerData.UnlockTech("coal_bin", true)
 		end
 	end

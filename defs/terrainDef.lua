@@ -936,6 +936,61 @@ local terrain = {
     name = "wood_pile",
     pos = {-6660, -500},
 },
+{
+    name = "ore_mine",
+    pos = {-3150, 330},
+},
+{
+    name = "ore_mine",
+    pos = {-2560, 590},
+},
+{
+    name = "ore_mine",
+    pos = {-3090, 930},
+},
+{
+    name = "ore_mine",
+    pos = {-1960, 40},
+},{
+    name = "coal_mine",
+    pos = {1460, -1540},
+},
+{
+    name = "coal_mine",
+    pos = {840, -2240},
+},
+{
+    name = "coal_mine",
+    pos = {1080, -3030},
+},
+{
+    name = "coal_mine",
+    pos = {1630, -3010},
+},
+{
+    name = "coal_mine",
+    pos = {1500, -3810},
+},
+{
+    name = "coal_mine",
+    pos = {2160, -4010},
+},
+{
+    name = "coal_mine",
+    pos = {2700, -3110},
+},
+{
+    name = "coal_mine",
+    pos = {3200, -3280},
+},
+{
+    name = "coal_mine",
+    pos = {3230, -3940},
+},
+{
+    name = "coal_mine",
+    pos = {3310, -4830},
+},
 }
 
 return terrain

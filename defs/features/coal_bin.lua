@@ -20,7 +20,7 @@ local def = {
 	isPile = {
 		{"coal_item", 10},
 	},
-	deconstructMaterials = {"metal", "rock", "rock"},
+	deconstructMaterials = {"metal", "rock"},
 	stockCheckFunc = function (self)
 		return (self.items.coal_item or 0) > 0
 	end,

@@ -98,11 +98,11 @@ function api.DrawBuild(world, playerData, inventorySlots, checkHover, inBuildMen
 		colorMult = 1.1
 	end
 	
-	love.graphics.setColor(0.7*colorMult - 0.2*animTime, 0.9*colorMult - 0.2*animTime, 0.9*colorMult - 0.2*animTime, 1)
+	love.graphics.setColor(0.7*colorMult - 0.4*animTime, 0.9*colorMult - 0.4*animTime, 0.9*colorMult - 0.4*animTime, 1)
 	love.graphics.setLineWidth(4)
 	love.graphics.rectangle("fill", startX + buildSpacing, startY, boxSize*1.618, boxSize, 0, 0, 5)
 	
-	love.graphics.setColor(0.63*colorMult - 0.2*animTime, 0.81*colorMult - 0.2*animTime, 0.81*colorMult - 0.2*animTime, 1)
+	love.graphics.setColor(0.63*colorMult - 0.4*animTime, 0.81*colorMult - 0.4*animTime, 0.81*colorMult - 0.4*animTime, 1)
 	love.graphics.setLineWidth(4)
 	love.graphics.rectangle("line", startX + buildSpacing, startY, boxSize*1.618, boxSize, 0, 0, 5)
 	
@@ -138,10 +138,11 @@ function api.DrawBuildMenu(world, playerData)
 	end
 	
 	Font.SetSize(0)
-	love.graphics.print("Availible Structures", left + 200, top + 36)
+	love.graphics.setColor(0, 0, 0, 1)
+	love.graphics.print("Availible Structures", left + 208, top + 36)
 
 	local startX = left + 100
-	local startY = top + 150
+	local startY = top + 145
 
 	for i = 1, #BuildDefs do
 		local def = BuildDefs[i]

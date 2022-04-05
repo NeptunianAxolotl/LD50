@@ -82,6 +82,53 @@ local characters = {
 		name = "firefly_fueler_makeaxe",
 		pos = {-5190, 550},
 	},
+{
+    name = "firefly_fueler0",
+    pos = {3670, -1470},
+},
+{
+    name = "firefly_fueler2",
+    pos = {-9720, 870},
+},
+{
+    name = "firefly_fueler1",
+    pos = {-6580, 5240},
+},
+{
+    name = "firefly_fueler0",
+    pos = {4840, 2010},
+},
+{
+    name = "firefly_fueler2",
+    pos = {-3280, -4280},
+},
+{
+    name = "firefly_fueler0",
+    pos = {-10130, -6020},
+},
+{
+    name = "firefly_fueler1",
+    pos = {2330, -6090},
+},
+{
+    name = "firefly_fueler0",
+    pos = {-11020, 690},
+},
+{
+    name = "firefly_fueler0",
+    pos = {-900, 3710},
+},
+{
+    name = "firefly_fueler0",
+    pos = {-6320, -8390},
+		data = {animDir = 0},
+},
+{
+    name = "firefly_fueler1",
+    pos = {-6040, -8380},
+		data = {animDir = math.pi},
+},
+
 }
 
 return characters
