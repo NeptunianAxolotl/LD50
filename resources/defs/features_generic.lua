@@ -52,7 +52,7 @@ local data = {
 
 local scales = {
 	anvil        = 3,
-	big_digger   = 4,
+	big_digger   = 4.5,
 	big_wood_hut = 1,
 	coal_bin     = 4,
 	furnace      = 11,
@@ -73,8 +73,9 @@ local portraitScales = {
 
 local offsets = {
 	anvil        = 0.65,
+	big_digger   = 0.76,
 	furnace      = 0.6,
-	wood_hut      = 0.65,
+	wood_hut     = 0.65,
 }
 
 for i = 1, #featureNames do

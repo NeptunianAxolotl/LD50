@@ -619,10 +619,16 @@ local terrain = {
 {
     name = "coal_bin",
     pos = {2370, 5870},
+		items = {
+			coal_item = 3,
+		}
 },
 {
     name = "coal_bin",
     pos = {2070, -5930},
+		items = {
+			coal_item = 3,
+		}
 },
 {
     name = "wood_hut",

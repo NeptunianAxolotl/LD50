@@ -60,7 +60,7 @@ local def = {
 		behaviourDelay = 0,
 		enabled = true,
 	},
-	deconstructMaterials = {"metal_frame_item", "metal_item", "metal_item", "emerald_item"},
+	deconstructMaterials = {"metal_frame", "metal", "metal", "emerald"},
 	requiresPower = true,
 	toPowerRangeMult = 1,
 	updateFunc = function (self, dt)

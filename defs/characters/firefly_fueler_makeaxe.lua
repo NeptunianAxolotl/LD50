@@ -225,7 +225,9 @@ local def = {
 			build = {
 				msg = {
 				{
-					text = "Cool.  Here you go.",
+					textFunc = function (self, player)
+						return (self.givenMetal and "Hang on, I didn't I already give you my metal?") or "Cool.  Here you go."
+					end,
 					sound = "chat_good",
 					delay = 1.5,
 				},
