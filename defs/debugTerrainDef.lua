@@ -6,6 +6,14 @@ local terrain = {
 		pos = {0, 0},
 	},
 	{
+		name = "big_digger",
+		pos = {-400, -400},
+	},
+	{
+		name = "workshop",
+		pos = {-400, 500},
+	},
+	{
 		name = "coal_bin",
 		pos = {500, 500},
 		items = {

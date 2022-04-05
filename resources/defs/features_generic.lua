@@ -52,9 +52,9 @@ local data = {
 
 local scales = {
 	anvil        = 3,
-	big_digger   = 1,
+	big_digger   = 4,
 	big_wood_hut = 1,
-	coal_bin     = 1,
+	coal_bin     = 4,
 	furnace      = 11,
 	metal_hut    = 1,
 	coal_mine    = 3,
@@ -63,7 +63,7 @@ local scales = {
 	stone_mine   = 3,
 	emerald_mine = 3,
 	wood_hut     = 3,
-	workshop     = 1,
+	workshop     = 3,
 }
 
 local portraitScales = {
