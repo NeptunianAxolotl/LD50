@@ -3,8 +3,8 @@ local def = {
 	dropAs = "stick",
 	disc = "Stick bundle (5 sticks)",
 	dropMult = Global.STICK_BUNDLE,
-	burnValue = Global.STICK_FUEL * Global.STICK_BUNDLE,
-	boostValue = Global.STICK_FUEL_BOOST * Global.STICK_BUNDLE,
+	burnValue = Global.STICK_FUEL * Global.STICK_BUNDLE * Global.RESOURCE_FUEL_MULT,
+	boostValue = Global.STICK_FUEL_BOOST * Global.STICK_BUNDLE * Global.RESOURCE_BOOST_FUEL_MULT,
 }
 
 return def
