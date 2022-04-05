@@ -86,7 +86,7 @@ end
 local placeList = {
 	--"fire", -- already got one
 	
-	--"big_digger", -- eats what I'm testing
+	"big_digger", -- eats what I'm testing
 	
 	-- Huts
 	"metal_hut",

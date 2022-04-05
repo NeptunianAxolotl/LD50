@@ -14,7 +14,7 @@ local def = {
 	mouseHit = {rx = -100, ry = -100, width = 200, height = 200},
 	initData = {
 		items = {
-			coal_item = 3,
+			coal_item = 0,
 		}
 	},
 	isPile = {

@@ -12,6 +12,7 @@ local def = {
 			ore_item = 0,
 		},
 		wallowingInDarkness = true,
+		givenMetal = false,
 	},
 	behaviour = function (self, world, dt)
 		if not self.friendly then
@@ -237,8 +238,11 @@ local def = {
 							sound = "chat_good",
 						},
 						leadsToFunc = function (self, player)
-							player.AddItem("metal_item")					
-							player.AddItem("metal_item")
+							if not self.givenMetal then
+								player.AddItem("metal_item")
+								player.AddItem("metal_item")
+							end
+							self.givenMetal = true
 							return "leavematerial", false
 						end,
 					},
