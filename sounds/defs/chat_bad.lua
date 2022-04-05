@@ -1,4 +1,4 @@
 return {
-	file = "sounds/files/effects/chat_bad.mp3",
-	volMult = 0.1,
+	file = "sounds/files/effects/chop_sfx.mp3",
+	volMult = 0.3,
 }
