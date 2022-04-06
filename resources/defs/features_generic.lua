@@ -69,6 +69,7 @@ local scales = {
 local portraitScales = {
 	furnace      = 8,
 	anvil = 8,
+	big_digger   = 3,
 }
 
 local offsets = {
