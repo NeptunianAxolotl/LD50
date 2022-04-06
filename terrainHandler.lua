@@ -71,7 +71,7 @@ function api.GetClosetFeature(pos, featureType, toSurface, requireLight, require
 				return false
 			end
 			local featurePos = feature.GetPos()
-			local dist = util.Dist(pos[1], pos[2], featurePos[1], featurePos[2]) - feature.GetRadius()
+			local dist = util.Dist(pos[1], pos[2], featurePos[1], featurePos[2]) - feature.GetRadius(true)
 			return dist
 		end
 	else

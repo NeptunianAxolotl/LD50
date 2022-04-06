@@ -45,7 +45,7 @@ local def = {
 		self.energyRadius = math.pow(self.smoothedValue, 0.85) * 12
 		--print(math.floor(self.energyRadius), math.floor(self.fuelValue))
 		
-		self.UpdateRadius(math.min(10,(self.energyRadius*Global.FIRE_SIZE_SCALE + 45)/45))
+		self.UpdateRadius(math.min(Global.MAX_FIRE_SCALE,(self.energyRadius*Global.FIRE_SIZE_SCALE + 45)/45))
 	end,
 	mouseHit = {rx = -50, ry = -50, width = 100, height = 100},
 }

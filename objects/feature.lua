@@ -52,7 +52,10 @@ local function NewFeature(self, physicsWorld, world)
 		return self.cachedPos
 	end
 	
-	function self.GetRadius()
+	function self.GetRadius(wantMaxRadius)
+		if wantMaxRadius and def.isFire then
+			return def.radius * Global.MAX_FIRE_SCALE
+		end
 		return def.radius * math.max(1, self.radiusScale)
 	end
 	

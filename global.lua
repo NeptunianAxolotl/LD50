@@ -81,6 +81,7 @@ local globals = {
 	
 	FIREFLY_FADE = 0.11,
 	FIREFLY_GAIN = 0.17,
+	MAX_FIRE_SCALE = 10,
 	
 	ORGANISE_PILE_DIST = 0.95,
 	
