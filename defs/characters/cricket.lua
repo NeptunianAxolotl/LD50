@@ -31,56 +31,7 @@ local def = {
 			return
 		end
 		GuyUtils.FullyGeneralHelperGuy(self)
-	end,
-	chat = {
-		acceptsChat = function(self)
-			return true
-		end,
-		getEntry = function(self, player)
-			return (self.friendly and "options") or "hello"
-		end,
-		scenes = {
-			hello = {
-				msg = {{
-					text = "What do you want?",
-					sound = "chat_good",
-				}},
-				replyDelay = 0.5,
-				replies = {
-					{
-						msg = {
-							text = "I need your help.",
-							sound = "chat_good",
-						},
-						leadsTo = "help1",
-					},
-				}
-			},
-			help1 = {
-				msg = {{
-					text = "Oh?",
-					sound = "chat_good",
-					delay = 1
-				}},
-				replyDelay = 2,
-				onSceneFunc = function (self, player)
-					-- Called with the scene is opened.
-					--ChatHandler.AddMessage("SCENE FUNC")
-					self.friendly = true
-					self.wallowingInDarkness = false
-				end,
-				replies = {
-					{
-						msg = {
-							text = "You can come sit closer by the fire later, if you help out.",
-							sound = "chat_good",
-						},
-						leadsTo = "options_first",
-					},
-				}
-			},
-		},
-	}
+	end
 }
 
 def.chat.scenes = util.CopyTable(GuyUtils.generalHelperTable, true, def.chat.scenes)
