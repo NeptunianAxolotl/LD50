@@ -68,7 +68,7 @@ function api.SetGameOver(hasWon, overType)
 	end
 	ChatHandler.AddMessage("Your fire has gone out, and your light has followed.", 100, 100)
 	ChatHandler.AddMessage("", 100, 100)
-	ChatHandler.AddMessage("Your fire has gone out, and your light has followed. Your tattered wings have turned to dust. Your carapace has grown cold.", 100, 100)
+	ChatHandler.AddMessage("Your tattered wings have turned to dust. Your carapace has grown cold.", 100, 100)
 	ChatHandler.AddMessage("", 100, 100)
 	ChatHandler.AddMessage("Nothing remains but embers, floating in darkness.", 100, 100)
 	ChatHandler.AddMessage("", 100, 100)
