@@ -94,7 +94,7 @@ local function DrawConsole()
 		if displayed then
 			if unclickable then
 				love.graphics.setColor(0.5, 0.5, 0.5, 1)
-			elseif util.PosInRectangle(mousePos, drawPos[1], drawPos[2] - (replyDrawPos * Global.REPLY_LINE_SPACING), 100000, Global.LINE_SPACING) then
+			elseif util.PosInRectangle(mousePos, drawPos[1], drawPos[2] - (replyDrawPos * Global.REPLY_LINE_SPACING), 275, Global.LINE_SPACING) then
 				love.graphics.setColor(1, 0.2, 0.2, 1)
 				self.hoveredReply = i
 			else
