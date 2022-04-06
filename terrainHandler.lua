@@ -51,7 +51,7 @@ function api.DropFeatureInFreeSpace(pos, toDrop, count, usePlaceDistance)
 	end
 end
 
-function api.GetClosetFeature(pos, featureType, toSurface, requireLight, requirePower, requireNotGoal, requireNotBusy, skipChance, requireStock)
+function api.GetClosetFeature(pos, featureType, toSurface, requireLight, requirePower, requireNotGoal, requireNotBusy, skipChance, requireStock, skipNoCollide)
 	if featureType and type(featureType) == "string" then
 		featureType = {[featureType] = true}
 	end
@@ -63,7 +63,8 @@ function api.GetClosetFeature(pos, featureType, toSurface, requireLight, require
 					(requireLight and not feature.HasLight()) or 
 					(requirePower and not feature.HasPower()) or 
 					(requireNotGoal and feature.IsMoveTarget(true)) or 
-					(requireNotBusy and feature.IsBusyOrTalking(true)) then
+					(requireNotBusy and feature.IsBusyOrTalking(true)) or 
+					(skipNoCollide and not feature.def.collide) then
 				return false
 			end
 			if skipChance and skipChance > math.random() then
@@ -80,7 +81,8 @@ function api.GetClosetFeature(pos, featureType, toSurface, requireLight, require
 					(requireLight and not feature.HasLight()) or 
 					(requirePower and not feature.HasPower()) or 
 					(requireNotGoal and feature.IsMoveTarget(true)) or 
-					(requireNotBusy and feature.IsBusyOrTalking(true)) then
+					(requireNotBusy and feature.IsBusyOrTalking(true)) or 
+					(skipNoCollide and not feature.def.collide) then
 				return false
 			end
 			if skipChance and skipChance > math.random() then
@@ -100,14 +102,17 @@ end
 
 function api.FindFreeSpace(centre, freeRadius)
 	local searchRadius = 0
-	local searchInc = 15
-	while searchRadius < 4000 do
+	local searchInc = 4
+	local ignoreItemFeatureRadius = 350
+	while searchRadius < 1200 do -- Intentionally kills features if they are being shuffled off an island
 		local pos = util.Add(centre, util.RandomPointInCircle(searchRadius))
-		local _, closeDist = api.GetClosetFeature(pos, featureType, true)
-		if closeDist > freeRadius and GroundHandler.PositionHasGround(pos, freeRadius) then
-			return pos
+		if GroundHandler.PositionHasGround(pos, freeRadius) then
+			local _, closeDist = api.GetClosetFeature(pos, false, true, false, false, false, false, false, false, searchRadius > ignoreItemFeatureRadius)
+			if closeDist > freeRadius then
+				return pos
+			end
 		end
-		searchInc = searchInc + 2
+		searchInc = searchInc + 0.4
 		searchRadius = searchRadius + searchInc
 	end
 	return false

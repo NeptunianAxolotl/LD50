@@ -242,7 +242,12 @@ local function NewFeature(self, physicsWorld, world)
 			return
 		end
 		if def.noDigRadius and not self.noDigTiles then
-			self.noDigTiles = GroundHandler.SetPosDigProtection(self.GetPos(), def.noDigRadius)
+			local pos = self.GetPos()
+			if def.noDigOffset then
+				pos = util.Add(pos, def.noDigOffset)
+			end
+			print(pos)
+			self.noDigTiles = GroundHandler.SetPosDigProtection(pos, def.noDigRadius)
 		end
 		if def.updateFunc then
 			def.updateFunc(self, dt, world)

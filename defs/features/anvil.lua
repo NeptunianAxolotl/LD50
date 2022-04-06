@@ -9,7 +9,7 @@ local def = {
 	placementRadius = 130,
 	portraitNeutral = "anvil_portrait",
 	humanName = "Anvil",
-	decs = "Forge a tool",
+	desc = "Forge a tool",
 	voidDestroys = true,
 	mouseHit = {rx = -60, ry = -75, width = 120, height = 120},
 	initData = {

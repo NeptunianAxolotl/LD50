@@ -406,7 +406,11 @@ function api.Draw(drawQueue)
 		local tileX, tileY = GroundHandler.PosToTile(self.playerGuy.GetPos())
 		local pos = GroundHandler.TileToPos(tileX, tileY)
 		love.graphics.setColor(GroundHandler.CheckTileExists(tileX, tileY) and 0 or 1, 0.5, 0.5, 1)
-		love.graphics.setLineWidth(4)
+		if GroundHandler.IsTileDiggable(tileX, tileY) then
+			love.graphics.setLineWidth(4)
+		else
+			love.graphics.setLineWidth(40)
+		end
 		love.graphics.rectangle("line", pos[1] - Global.TILE_WIDTH/2, pos[2] - Global.TILE_HEIGHT/2, Global.TILE_WIDTH, Global.TILE_HEIGHT, 0, 0, 5)
 	end
 end
