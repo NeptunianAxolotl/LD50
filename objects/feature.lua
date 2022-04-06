@@ -246,7 +246,6 @@ local function NewFeature(self, physicsWorld, world)
 			if def.noDigOffset then
 				pos = util.Add(pos, def.noDigOffset)
 			end
-			print(pos)
 			self.noDigTiles = GroundHandler.SetPosDigProtection(pos, def.noDigRadius)
 		end
 		if def.updateFunc then
