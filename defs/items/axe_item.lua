@@ -1,7 +1,7 @@
 local def = {
 	image = "axe_item_inventory",
 	dropAs = "axe",
-	desc = "Axe - for cutting trees",
+	desc = "A ravenous axe",
 	craftingTime = 2,
 	isTool = true,
 }

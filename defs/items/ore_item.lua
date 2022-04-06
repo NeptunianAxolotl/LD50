@@ -1,7 +1,7 @@
 local def = {
 	image = "ore_item_inventory",
 	dropAs = "ore",
-	desc = "Ore - for smelting into metal",
+	desc = "Raw metal ore",
 }
 
 return def

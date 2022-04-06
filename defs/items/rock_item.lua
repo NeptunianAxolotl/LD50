@@ -1,7 +1,7 @@
 local def = {
 	image = "rock_item_inventory",
 	dropAs = "rock",
-	desc = "Rock",
+	desc = "An inert rock",
 }
 
 return def

@@ -1,7 +1,7 @@
 local def = {
 	image = "prybar_item_inventory",
 	dropAs = "prybar",
-	desc = "Prybar - for disassembling structures such as huts",
+	desc = "A destructive prybar",
 	craftingTime = 2,
 	isTool = true,
 }

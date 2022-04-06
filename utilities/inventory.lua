@@ -177,7 +177,7 @@ function api.DrawBuildMenu(world, playerData)
 	return closeHover, buildHover
 end
 
-function api.DrawTooltip(startX, startY, item, feature, npc, buildMenu)
+function api.DrawTooltip(startX, startY, inventory, item, feature, npc, buildMenu)
 	local text = false
 	if buildMenu then
 		text = "Spend resources to place a structure."
@@ -185,10 +185,12 @@ function api.DrawTooltip(startX, startY, item, feature, npc, buildMenu)
 		text = "Talk with a fellow firefly"
 	elseif feature then
 		text = feature.def.desc or "Feature missing desc"
-	elseif feature then
-		local itemDef = ItemDefs[item]
-		text = itemDef.desc or "Item missing desc"
-	else
+	elseif item then
+		local itemDef = ItemDefs[inventory[item]]
+		text = itemDef and itemDef.desc
+	end
+	
+	if not text then
 		return
 	end
 

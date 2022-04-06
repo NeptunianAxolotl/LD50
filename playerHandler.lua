@@ -448,7 +448,7 @@ function api.DrawInterface()
 	
 	self.hoveredBuildMenu = InventoryUtil.DrawBuild(self.world, api, Global.INVENTORY_SLOTS, (not DialogueHandler.InChat()), self.buildMenuOpen, 80, 15, 0, 120, 70)
 	
-	InventoryUtil.DrawTooltip(startX, startY, self.hoveredItem, self.hoveredFeature, self.hoveredNpc, self.hoveredBuildMenu)
+	InventoryUtil.DrawTooltip(startX, startY, self.inventory, self.hoveredItem, self.hoveredFeature, self.hoveredNpc, self.hoveredBuildMenu)
 	
 	self.hoveredFeature = false
 	self.hoveredNpc = false

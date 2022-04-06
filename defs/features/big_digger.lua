@@ -105,6 +105,7 @@ local def = {
 						end
 					end,
 					sound = "chat_good",
+					delay = 0.01,
 				}},
 				replyDelay = 0,
 				replies = {
