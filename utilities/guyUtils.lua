@@ -579,7 +579,7 @@ api.generalHelperTable = {
 			--ChatHandler.AddMessage("SCENE FUNC")
 			self.jobType = "job_trees"
 			self.mineType = "mine_none"
-			if player.GetInventoryCount("axe_item") > 0  and self.GetInventoryCount("axe_item") < 1then
+			if player.GetInventoryCount("axe_item") > 0  and self.GetInventoryCount("axe_item") < 1 then
 				player.RemoveInventory("axe_item", 1)
 				self.AddToInventory("axe_item")
 			end
