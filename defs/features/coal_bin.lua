@@ -8,7 +8,7 @@ local def = {
 	image = "coal_bin",
 	desc = "Deposit or remove coal",
 	humanName = "Coal Bin",
-	placementRadius = 130,
+	placementRadius = 180,
 	portraitNeutral = "coal_bin_portrait",
 	voidDestroys = true,
 	mouseHit = {rx = -100, ry = -100, width = 200, height = 200},

@@ -6,7 +6,7 @@ local api = {}
 
 function api.GetItemAction(item, feature)
 	local itemDef = ItemDefs[item]
-	if itemDef.burnValue and feature.GetDef().isFire then
+	if itemDef and itemDef.burnValue and feature.GetDef().isFire then
 		return "burn"
 	end
 	return false
