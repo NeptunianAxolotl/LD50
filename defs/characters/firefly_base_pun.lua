@@ -12,17 +12,6 @@ local def = {
 			ore_item = 0,
 		},
 		wallowingInDarkness = true,
-		talkJob = "a.pdmyintb",
-		talkJobFire = "",
-		talkJobTree = "",
-		talkJobMine = "",
-		talkJobMineCoal = "",
-		talkJobMineOre = "",
-		talkJobMineRuby = "",
-		talkJobMineEmerald = "",
-		talkJobMineStone = "",
-		talkJobFurnace = "",
-		talkJobWorkshop = "",
 	},
 	behaviour = function (self, world, dt)
 		if not self.friendly then
@@ -234,7 +223,6 @@ local def = {
 	}
 }
 
-GuyUtils.GenerateHelperTable(def)
 def.chat.scenes = util.CopyTable(GuyUtils.generalHelperTable, true, def.chat.scenes)
 
 return def

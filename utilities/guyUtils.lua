@@ -239,11 +239,10 @@ function api.FullyGeneralHelperGuy(self)
 	end
 end
 
-function api.GenerateHelperTable(def)
 api.generalHelperTable = {
 	options = {
 		msg = {{
-			text = def.talkJob,
+			text = "What d'you want me to do?",
 			sound = "chat_good",
 			delay = 1,
 		}},			
@@ -307,7 +306,7 @@ api.generalHelperTable = {
 	},
 	options_first = {
 		msg = {{
-			text = def.talkJob,
+			text = "What d'you want me to do?",
 			sound = "chat_good",
 			delay = 1.5,
 		}},			
@@ -364,7 +363,7 @@ api.generalHelperTable = {
 	},
 	options_mine = {
 		msg = {{
-			text = def.talkJobMine,
+			text = "What'd you want me to dig for?",
 			sound = "chat_good",
 			delay = 1,
 		}},		
@@ -416,7 +415,7 @@ api.generalHelperTable = {
 	},
 	options_mine_first = {
 		msg = {{
-			text = def.talkJobMine,
+			text = "What'd you want me to dig for?",
 			sound = "chat_good",
 			delay = 1,
 		}},		
@@ -468,7 +467,7 @@ api.generalHelperTable = {
 	},
 	options_mine_coal = {
 		msg = {{
-			text = def.talkJobMineCoal,
+			text = "Just coal me when you need me.",
 			sound = "chat_good",
 		}},		
 		onSceneFunc = function (self, player)
@@ -486,7 +485,7 @@ api.generalHelperTable = {
 	},
 	options_mine_metal = {
 		msg = {{
-			text = def.talkJobMineOre,
+			text = "Just coal me when you need me.",
 			sound = "chat_good",
 		}},		
 		onSceneFunc = function (self, player)
@@ -504,7 +503,7 @@ api.generalHelperTable = {
 	},
 	options_mine_ruby = {
 		msg = {{
-			text = def.talkJobMineRuby,
+			text = "...I don't have a good pun for this one, actually.  Just...gonna go do the thing.",
 			sound = "chat_good",
 		}},		
 		onSceneFunc = function (self, player)
@@ -522,7 +521,7 @@ api.generalHelperTable = {
 	},
 	options_mine_emerald = {
 		msg = {{
-			text = def.talkJobMineEmerald,
+			text = "Gonna get me some green.",
 			sound = "chat_good",
 		}},		
 		onSceneFunc = function (self, player)
@@ -540,7 +539,7 @@ api.generalHelperTable = {
 	},
 	options_mine_stone = {
 		msg = {{
-			text = def.talkJobMineStone,
+			text = "Sure, don't quarry about it.",
 			sound = "chat_good",
 		}},		
 		onSceneFunc = function (self, player)
@@ -558,7 +557,7 @@ api.generalHelperTable = {
 		},
 	options_fuel = {
 		msg = {{
-			text = def.talkJobFire,
+			text = "Got me all fired up!",
 			sound = "chat_good",
 		}},		
 		onSceneFunc = function (self, player)
@@ -572,7 +571,7 @@ api.generalHelperTable = {
 	},
 	options_trees = {
 		msg = {{
-			text = def.talkJobTree,
+			text = "Chop chop!",
 			sound = "chat_good",
 		}},		
 		onSceneFunc = function (self, player)
@@ -590,7 +589,7 @@ api.generalHelperTable = {
 	},
 	options_furnace = {
 		msg = {{
-			text = def.talkJobFurnace,
+			text = "Turnin' up the heat!",
 			sound = "chat_good",
 		}},		
 		onSceneFunc = function (self, player)
@@ -604,7 +603,7 @@ api.generalHelperTable = {
 	},
 	options_workshop = {
 		msg = {{
-			text = def.talkJobWorkshop,
+			text = "I'm workin' on it!",
 			sound = "chat_good",
 		}},		
 		onSceneFunc = function (self, player)
@@ -618,14 +617,11 @@ api.generalHelperTable = {
 		},
 	options_nothing = {
 		msg = {{
-			text = def.talkJobNone,
+			text = "Yessir!",
 			sound = "chat_good",
 		}},
 		replyDelay = 1.5,
 	},
 }
-end
-
-api.generalHelperTable = {}
 
 return api

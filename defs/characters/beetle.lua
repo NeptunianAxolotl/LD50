@@ -1,7 +1,7 @@
 local def = {
 	radius = 42,
 	collide = true,
-	animation = "firefly_anim",
+	animation = "test_anim",
 	portraitNeutral = "portrait_rhino_neutral",
 	portraitHappy = "portrait_rhino_happy",
 	shadowRadius = 27,

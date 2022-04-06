@@ -10,24 +10,9 @@ local def = {
 	radius = 16,
 	shadowRadius = 14,
 	coldRunLevel = 0.4,
-	
-	talkJob = "What d'you want me to do?",
-	talkJobFire = "Got me all fired up!",
-	talkJobTree = "Chop chop!",
-	talkJobMine = "What'd you want me to dig for?",
-	talkJobMineCoal = "Just coal me when you need me.",
-	talkJobMineOre = "Gonna be pretty metal.",
-	talkJobMineRuby = "...I don't have a good pun for this one, actually.  Just...gonna go do the thing.",
-	talkJobMineEmerald = "Gonna get me some green.",
-	talkJobMineStone = "Sure, don't quarry about it.",
-	talkJobFurnace = "Turnin' up the heat!",
-	talkJobWorkshop = "I'm workin' on it!",
-	talkJobNone = "Yessir!",
-		
 	initData = {
 		lightValue = 1,
 	},
-
 	overAnimColorFunc = function (self)
 		local intensity = (math.random() + 2) * self.lightValue * 0.33
 		return {0.5 + 0.5*intensity, 0.5 + 0.5*intensity, 0}

@@ -7,24 +7,12 @@ local def = {
 	speedMult = 0.7,
 	workMult = 0.7,
 	jobType = "job_fuel",
-	mineType = "mine_none",	
-	
-	talkJob = "apdmyintb",
-	talkJobFire = "",
-	talkJobMineCoal = "",
-	talkJobMineOre = "",
-	talkJobMineRuby = "",
-	talkJobMineEmerald = "",
-	talkJobMineStone = "",
-	talkJobFurnace = "",
-	talkJobWorkshop = "",	
-		
+	mineType = "mine_none",
 	initData = {
 		items = {
 			ore_item = 0,
 		},
-		wallowingInDarkness = true,	
-	
+		wallowingInDarkness = true,
 	},
 	behaviour = function (self, world, dt)
 		if not self.friendly then
@@ -87,7 +75,6 @@ local def = {
 	}
 }
 
-GuyUtils.GenerateHelperTable(def)
 def.chat.scenes = util.CopyTable(GuyUtils.generalHelperTable, true, def.chat.scenes)
 
 return def
