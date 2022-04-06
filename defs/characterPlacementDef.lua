@@ -16,7 +16,7 @@ local characters = {
 		pos = {-2700, -1900},
 	},
 	{
-		name = "firefly_base_sitclose",	
+		name = "cricket_base_sitclose",	
 		data = {animDir = 0},
 		pos = {-160, -350},
 	},
@@ -40,7 +40,7 @@ local characters = {
 		pos = {-9260, -5660},
 	},
 	{
-		name = "firefly_base_sitclose",
+		name = "cricket_base_sitclose",
 		pos = {-10300, 460},
 	},
 	{
