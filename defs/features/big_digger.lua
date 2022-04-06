@@ -33,6 +33,21 @@ local function DigTile(self, dt)
 			return
 		end
 	end
+	if math.random() < 5 * dt or not self.drawLineTimer then
+		self.topOfTower = self.topOfTower or util.Add(self.GetPos(), self.def.topPos)
+		local tilePos = util.Add(GroundHandler.TileToPos(self.digTileX, self.digTileY), util.RandomPointInEllipse(Global.TILE_WIDTH*0.4, Global.TILE_HEIGHT*0.4))
+		
+		EffectsHandler.SpawnEffect("sparkles_out", tilePos, {velocity = util.RandomPointInEllipse(2, 1), scale = math.random()*0.3 + 0.9})
+		if math.random() < 0.4 then
+			local velocity = util.RandomPointInEllipse(1.2, 0.8)
+			local sparklePos = util.Subtract(self.topOfTower, util.Mult(50, velocity))
+			EffectsHandler.SpawnEffect("sparkles", sparklePos, {velocity = velocity, scale = 0.5*(math.random()*0.4 + 1)})
+		end
+		if not self.drawLineTimer then
+			self.drawLineTimer = 0.11
+			self.drawLineTo = tilePos
+		end
+	end
 	local dug, dead = GroundHandler.DealTileDamage(self.digTileX, self.digTileY, dt*Global.BIG_DIG_DAMAGE)
 	if dead then
 		self.digTileX, self.digTileY = false, false
@@ -55,6 +70,7 @@ local def = {
 	portraitNeutral = "big_digger_portrait",
 	humanName = "Excavator",
 	voidDestroys = true,
+	topPos = {-10, -395},
 	mouseHit = {rx = -100, ry = -100, width = 200, height = 200},
 	initData = {
 		behaviourDelay = 0,
@@ -64,6 +80,7 @@ local def = {
 	requiresPower = true,
 	toPowerRangeMult = 1,
 	updateFunc = function (self, dt)
+		self.drawLineTimer = util.UpdateTimer(self.drawLineTimer, dt)
 		if not (self.HasPower() and self.enabled) then
 			self.enabled = false
 			return
@@ -83,6 +100,16 @@ local def = {
 		if self.digTileX then
 			DigTile(self, dt)
 		end
+	end,
+	extraDrawFunc = function (self, drawQueue)
+		if not (self.drawLineTimer and self.topOfTower and self.drawLineTo) then
+			return
+		end
+		drawQueue:push({y=self.pos[2] + 100000; f=function()
+			love.graphics.setColor(0.2, 0.8, 0.1, self.drawLineTimer*7)
+			love.graphics.setLineWidth(4)
+			love.graphics.line(self.topOfTower[1], self.topOfTower[2], self.drawLineTo[1], self.drawLineTo[2])
+		end})
 	end,
 	chat = {
 		acceptsChat = function(self)

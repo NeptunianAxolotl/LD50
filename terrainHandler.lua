@@ -104,7 +104,7 @@ function api.FindFreeSpace(centre, freeRadius)
 	local searchRadius = 0
 	local searchInc = 4
 	local ignoreItemFeatureRadius = 350
-	while searchRadius < 1200 do -- Intentionally kills features if they are being shuffled off an island
+	while searchRadius < 1000 do -- Intentionally kills features if they are being shuffled off an island
 		local pos = util.Add(centre, util.RandomPointInCircle(searchRadius))
 		if GroundHandler.PositionHasGround(pos, freeRadius) then
 			local _, closeDist = api.GetClosetFeature(pos, false, true, false, false, false, false, false, false, searchRadius > ignoreItemFeatureRadius)
@@ -112,7 +112,7 @@ function api.FindFreeSpace(centre, freeRadius)
 				return pos
 			end
 		end
-		searchInc = searchInc + 0.4
+		searchInc = searchInc + 0.5
 		searchRadius = searchRadius + searchInc
 	end
 	return false

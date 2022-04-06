@@ -317,6 +317,9 @@ local function NewFeature(self, physicsWorld, world)
 				end
 			end})
 		end
+		if def.extraDrawFunc then
+			def.extraDrawFunc(self, drawQueue)
+		end
 		if self.shadow then
 			ShadowHandler.UpdateShadowParams(self.shadow, pos, def.shadowRadius)
 		end

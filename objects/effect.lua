@@ -41,7 +41,11 @@ local function NewEffect(self, def)
 		end
 	end
 	
-	function self.Draw(drawQueue)
+	function self.Draw(drawQueue, left, top, right, bot)
+		local pos = self.pos
+		if not (pos[1] > left and pos[2] > top and pos[1] < right and pos[2] < bot) then
+			return
+		end
 		drawQueue:push({y=self.pos[2] + self.inFront; f=function()
 			if def.fontSize and self.text then
 				local col = def.color
@@ -51,11 +55,11 @@ local function NewEffect(self, def)
 				love.graphics.setColor(1, 1, 1, 1)
 			elseif self.actualImageOverride or def.actual_image then
 				Resources.DrawImage(self.actualImageOverride or def.actual_image, self.pos[1], self.pos[2], self.direction, GetAlpha(),
-					(self.scale or 1)*((def.lifeScale and (1 - 0.5*self.life/maxLife)) or 1),
+					(self.scale or 1)*((def.lifeScale and (1 - def.lifeScaleGoal*self.life/maxLife)) or 1),
 				def.color)
 			else
 				Resources.DrawAnimation(def.image, self.pos[1], self.pos[2], self.animTime, self.direction, GetAlpha(),
-					(self.scale or 1)*((def.lifeScale and (1 - 0.5*self.life/maxLife)) or 1),
+					(self.scale or 1)*((def.lifeScale and (1 - def.lifeScaleGoal*self.life/maxLife)) or 1),
 				def.color)
 			end
 		end})
@@ -64,11 +68,11 @@ local function NewEffect(self, def)
 	function self.DrawInterface()
 		if self.actualImageOverride or def.actual_image then
 			Resources.DrawImage(self.actualImageOverride or def.actual_image, self.pos[1], self.pos[2], self.direction, GetAlpha(),
-					(self.scale or 1)*((def.lifeScale and (1 - 0.5*self.life/maxLife)) or 1),
+					(self.scale or 1)*((def.lifeScale and (1 - def.lifeScaleGoal*self.life/maxLife)) or 1),
 				def.color)
 		else
 			Resources.DrawAnimation(def.image, self.pos[1], self.pos[2], self.animTime, self.direction, GetAlpha(),
-					(self.scale or 1)*((def.lifeScale and (1 - 0.5*self.life/maxLife)) or 1),
+					(self.scale or 1)*((def.lifeScale and (1 - def.lifeScaleGoal*self.life/maxLife)) or 1),
 				def.color)
 		end
 	end

@@ -98,12 +98,18 @@ function api.KeyPressed(key, scancode, isRepeat)
 	if key == "r" and (love.keyboard.isDown("lctrl") or love.keyboard.isDown("rctrl")) then
 		api.Restart()
 	end
+	if key == "p" then
+		self.paused = not self.paused
+	end
 	--if key == "s" and (love.keyboard.isDown("lctrl") or love.keyboard.isDown("rctrl")) then
 	--	api.TakeScreenshot()
 	--end
 end
 
 function api.MousePressed(x, y, button)
+	if api.GetPaused() then
+		return
+	end
 	local uiX, uiY = self.interfaceTransform:inverse():transformPoint(x, y)
 	if PlayerHandler.MousePressedInterface(uiX, uiY, button) then
 		return
@@ -112,9 +118,6 @@ function api.MousePressed(x, y, button)
 		return --No moving around the world or dialogue
 	end
 	if DialogueHandler.MousePressedInterface(uiX, uiY, button) then
-		return
-	end
-	if api.GetPaused() or api.GetGameOver() then
 		return
 	end
 	x, y = self.cameraTransform:inverse():transformPoint(x, y)
@@ -275,7 +278,7 @@ function api.Initialize()
 	
 	Delay.Initialise()
 	ShadowHandler.Initialize(api)
-	EffectsHandler.Initialize()
+	EffectsHandler.Initialize(api)
 	SoundHandler.Initialize()
 	MusicHandler.Initialize(api)
 	ChatHandler.Initialize(api)

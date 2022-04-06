@@ -25,7 +25,14 @@ function api.Update(dt)
 end
 
 function api.Draw(drawQueue)
-	IterableMap.ApplySelf(self.worldEffects, "Draw", drawQueue)
+	local left, top, right, bot = self.world.GetCameraExtents(200)
+	--IterableMap.ApplySelf(self.worldEffects, "Draw", drawQueue, left, top, right, bot)
+	
+	local indexMax, keyByIndex, dataByKey = IterableMap.GetBarbarianData(self.worldEffects)
+	--print(indexMax)
+	for i = 1, indexMax do
+		dataByKey[keyByIndex[i]].Draw(drawQueue, left, top, right, bot)
+	end
 end
 
 function api.DrawInterface()
@@ -40,11 +47,12 @@ function api.GetActivityInterface()
 	return IterableMap.Count(self.interfaceEffects)
 end
 
-function api.Initialize()
+function api.Initialize(parentWorld)
 	self = {
 		worldEffects = IterableMap.New(),
 		interfaceEffects = IterableMap.New(),
-		animationTimer = 0
+		animationTimer = 0,
+		world = parentWorld,
 	}
 end
 
