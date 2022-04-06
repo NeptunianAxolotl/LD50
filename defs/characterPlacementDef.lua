@@ -1,4 +1,5 @@
 local characters = {
+-- central fire
 	{
 		name = "firefly_logger",	
 		data = {animDir = 0},
