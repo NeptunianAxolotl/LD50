@@ -227,7 +227,7 @@ function api.FullyGeneralHelperGuy(self)
 		api.FuelFire(self, TerrainHandler.GetHomeFire(), 0.85)
 	elseif self.jobType == "job_furnace" then
 		return api.GatherAndCraft(self, "ore_item", Global.ORE_TO_METAL, "ore", "furnace", "metal_item")
-	elseif self.jobType == "job_furnace" then
+	elseif self.jobType == "job_workshop" then
 		return api.GatherAndCraft(self, "metal_item", Global.METAL_TO_FRAME, "metal", "workshop", "metal_frame_item")
 	elseif self.jobType == "job_trees" then
 		return api.MineFeature(self, "tree", "axe_item")
@@ -475,7 +475,7 @@ api.generalHelperTable = {
 			--ChatHandler.AddMessage("SCENE FUNC")
 			self.jobType = "job_mine"
 			self.mineType = "coal_mine"
-			if player.GetInventoryCount("pick_item") > 0 then
+			if player.GetInventoryCount("pick_item") > 0 and self.GetInventoryCount("pick_item") < 1 then
 				player.RemoveInventory("pick_item", 1)
 				self.AddToInventory("pick_item")
 			end
@@ -493,7 +493,7 @@ api.generalHelperTable = {
 			--ChatHandler.AddMessage("SCENE FUNC")
 			self.jobType = "job_mine"
 			self.mineType = "ore_mine"
-			if player.GetInventoryCount("pick_item") > 0 then
+			if player.GetInventoryCount("pick_item") > 0 and self.GetInventoryCount("pick_item") < 1 then
 				player.RemoveInventory("pick_item", 1)
 				self.AddToInventory("pick_item")
 			end
@@ -511,7 +511,7 @@ api.generalHelperTable = {
 			--ChatHandler.AddMessage("SCENE FUNC")
 			self.jobType = "job_mine"
 			self.mineType = "ruby_mine"
-			if player.GetInventoryCount("pick_item") > 0 then
+			if player.GetInventoryCount("pick_item") > 0 and self.GetInventoryCount("pick_item") < 1 then
 				player.RemoveInventory("pick_item", 1)
 				self.AddToInventory("pick_item")
 			end
@@ -529,7 +529,7 @@ api.generalHelperTable = {
 			--ChatHandler.AddMessage("SCENE FUNC")
 			self.jobType = "job_mine" 
 			self.mineType = "emerald_mine"
-			if player.GetInventoryCount("pick_item") > 0 then
+			if player.GetInventoryCount("pick_item") > 0 and self.GetInventoryCount("pick_item") < 1 then
 				player.RemoveInventory("pick_item", 1)
 				self.AddToInventory("pick_item")
 			end
@@ -547,6 +547,10 @@ api.generalHelperTable = {
 			--ChatHandler.AddMessage("SCENE FUNC")
 			self.jobType = "job_mine"
 			self.mineType = "stone_mine"
+			if player.GetInventoryCount("pick_item") > 0 and self.GetInventoryCount("pick_item") < 1 then
+				player.RemoveInventory("pick_item", 1)
+				self.AddToInventory("pick_item")
+			end
 			self.FilterOutInventory({"pick_item"})
 		end,
 		replyDelay = 1.5,
@@ -575,7 +579,7 @@ api.generalHelperTable = {
 			--ChatHandler.AddMessage("SCENE FUNC")
 			self.jobType = "job_trees"
 			self.mineType = "mine_none"
-			if player.GetInventoryCount("axe_item") > 0 then
+			if player.GetInventoryCount("axe_item") > 0  and self.GetInventoryCount("axe_item") < 1then
 				player.RemoveInventory("axe_item", 1)
 				self.AddToInventory("axe_item")
 			end
