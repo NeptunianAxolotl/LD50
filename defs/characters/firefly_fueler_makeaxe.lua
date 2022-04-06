@@ -103,6 +103,13 @@ local def = {
 						},
 						leadsTo = "build",
 					},
+					
+					
+					
+					
+					
+					
+					
 				}
 			},
 			sightseeing = {
@@ -226,7 +233,7 @@ local def = {
 				msg = {
 				{
 					textFunc = function (self, player)
-						return (self.givenMetal and "Hang on, I didn't I already give you my metal?") or "Cool.  Here you go."
+						return (self.givenMetal and "Hang on, I already gave you my metal. You schemer.") or "Cool.  Here you go."
 					end,
 					sound = "chat_good",
 					delay = 1.5,

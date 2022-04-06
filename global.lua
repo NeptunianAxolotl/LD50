@@ -60,7 +60,7 @@ local globals = {
 	
 	RUBY_LIGHT_RANGE = 1000,
 	FURNACE_LIGHT_RANGE = 1200,
-	RUBY_MINE_LIGHT_RANGE = 800,
+	RUBY_MINE_LIGHT_RANGE = 600,
 	
 	LIGHT_SLOW_UPDATE = 1.5,
 	PORTRAIT_SPEED = 4,
@@ -70,7 +70,9 @@ local globals = {
 	
 	LINEAR_FUEL_DRAIN = -0.02,
 	FUEL_DECAY_COEFF = -0.0015,
-	LINEAR_DRAIN_INCREASE_PER_MINUTES = -0.015,
+	LINEAR_DRAIN_INCREASE_PER_MINUTES = -0.015, 
+	--replace this with a time-dependent function (wherever it is processed)
+	--which depends on another coefficient defined here.
 	FUEL_DECAY_COEFF_INCREASE_PER_MINUTE = -0.00001,
 	
 	RESOURCE_FUEL_MULT = 0.9,
