@@ -35,7 +35,7 @@ local globals = {
 	--USE_DEBUG_MAP = true,
 	--DEBUG_START_LIFETIME = 50 * 60,
 	--DEBUG_PRINT_FIRE = true,
-	--UNLOCK_ALL_TECH = true,
+	UNLOCK_ALL_TECH = true,
 	--DRAW_DEBUG = true,
 	
 	TREE_SPAWN_RAND = 400,

@@ -1,6 +1,7 @@
 
 local IterableMap = require("include/IterableMap")
 local util = require("include/util")
+local GuyUtils = require("utilities/guyUtils")
 
 local CharacterDefs = util.LoadDefDirectory("defs/characters")
 local characterPlacementDef = (Global.USE_DEBUG_MAP and require("defs/debugCharPlaceDef")) or require("defs/characterPlacementDef")
@@ -15,6 +16,11 @@ function api.SpawnCharacter(name, pos, data)
 	data.pos = pos
 	data.def = def
 	IterableMap.Add(self.characters, NewGuy(data, self.world.GetPhysicsWorld(), self.world))
+	
+	guyKey = IterableMap.GetKeyByIndex(self.characters, self.characters.indexMax)
+	guy = IterableMap.Get(self.characters, guyKey)
+	GuyUtils.GenerateHelperTable(guy.def)
+	guy.def.chat.scenes = util.CopyTable(GuyUtils.generalHelperTable, true, guy.def.chat.scenes)
 end
 
 local function SetupInitialCharacters()
