@@ -182,7 +182,11 @@ function api.DrawTooltip(startX, startY, inventory, item, feature, npc, buildMen
 	if buildMenu then
 		text = "Spend resources to place a structure."
 	elseif npc then
-		text = "Talk with a fellow firefly"
+		if npc.def.desc then
+			text = npc.def.desc
+		else
+			text = "Talk with a fellow firefly"
+		end
 	elseif feature then
 		text = feature.def.desc or "Feature missing desc"
 	elseif item then

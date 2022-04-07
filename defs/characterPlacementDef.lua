@@ -16,7 +16,7 @@ local characters = {
 		pos = {-2700, -1900},
 	},
 	{
-		name = "cricket_base_sitclose",	
+		name = "firefly_base_sitclose",	
 		data = {animDir = 0},
 		pos = {-160, -350},
 	},
@@ -44,7 +44,7 @@ local characters = {
 		pos = {-10300, 460},
 	},
 	{
-		name = "firefly_base_pun",
+		name = "cricket_base_sitclose",
 		pos = {-10430, 1040},
 	},
 	{
@@ -88,7 +88,7 @@ local characters = {
 		pos = {3670, -1470},
 	},
 	{
-		name = "firefly_base_sticks",
+		name = "cricket_base_sitclose",
 		pos = {-9720, 870},
 	},
 	{
@@ -112,7 +112,7 @@ local characters = {
 		pos = {2330, -6090},
 	},
 	{
-		name = "firefly_base_sitclose",
+		name = "cricket_base_sitclose",
 		pos = {-11020, 690},
 	},
 	{
