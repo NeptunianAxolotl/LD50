@@ -1,9 +1,26 @@
 local characters = {
 -- central fire
-	{
+	{ --starter dude
+		name = "firefly_base_sitclose",	
+		data = {animDir = 0},
+		pos = {-160, -350},
+	},
+	{ --backstory old dude
 		name = "firefly_logger",	
 		data = {animDir = 0},
 		pos = {-400, 100},
+	},
+
+--central fire outskirts
+	{
+		name = "firefly_base_sticks",	
+		data = {animDir = 0},
+		pos = {-200, 1200},
+	},
+	{ --HNNNNNNNNNG
+		name = "firefly_tech_axe",	
+		data = {animDir = 0},
+		pos = {-900, -1500},
 	},
 	{
 		name = "firefly_sulker",
@@ -16,28 +33,32 @@ local characters = {
 		pos = {-2700, -1900},
 	},
 	{
-		name = "firefly_base_sitclose",	
-		data = {animDir = 0},
-		pos = {-160, -350},
-	},
-	{
 		name = "firefly_base_pun",	
 		data = {animDir = math.pi},
 		pos = {2100, -700},
 	},
 	{
-		name = "firefly_base_sticks",	
-		data = {animDir = 0},
-		pos = {-200, 1200},
-	},
-	{
-		name = "firefly_tech_axe",	
-		data = {animDir = 0},
-		pos = {-900, -1500},
-	},
-	{
 		name = "firefly_base_sitclose",
-		pos = {-9260, -5660},
+		pos = {3670, -1470},
+	},
+	{ -- this guy is super isolated, idk about him
+		name = "firefly_base_sitclose",
+		pos = {-900, 3710},
+	},
+
+-- west village 1
+	{
+		name = "firefly_base_sticks",
+		pos = {-4470, 1010},
+	},
+	{ --make axe dude
+		name = "firefly_tech_makeaxe",
+		pos = {-5190, 550},
+	},
+-- west village 2 (crickets)
+	{
+		name = "cricket_base_sitclose",
+		pos = {-9720, 870},
 	},
 	{
 		name = "cricket_base_sitclose",
@@ -46,27 +67,43 @@ local characters = {
 	{
 		name = "cricket_base_sitclose",
 		pos = {-10430, 1040},
+	},	
+	{
+		name = "cricket_base_sitclose",
+		pos = {-11020, 690},
 	},
+-- southwest village
 	{
 		name = "firefly_base_pun",
 		pos = {-7530, 5310},
 	},
+		{
+		name = "firefly_base_pun",
+		pos = {-6580, 5240},
+	},
+-- southeast village
 	{
 		name = "firefly_base_sitclose",
 		pos = {4540, 2800},
 	},
-	{
+		{
 		name = "firefly_base_sitclose",
 		pos = {5290, 2650},
 	},
 	{
-		name = "firefly_base_sticks",
-		pos = {-4470, 1010},
+		name = "firefly_base_sitclose",
+		pos = {4840, 2010},
 	},
+-- north/northwest village
 	{
 		name = "firefly_base_sticks",
 		pos = {-2350, -4240},
 	},
+	{
+		name = "firefly_base_sticks",
+		pos = {-3280, -4280},
+	},
+-- northeast village
 	{
 		name = "firefly_base_sitclose",
 		pos = {2180, -5490},
@@ -80,52 +117,26 @@ local characters = {
 		pos = {1400, -6000},
 	},
 	{
-		name = "firefly_tech_makeaxe",
-		pos = {-5190, 550},
-	},
-	{
-		name = "firefly_base_sitclose",
-		pos = {3670, -1470},
-	},
-	{
-		name = "cricket_base_sitclose",
-		pos = {-9720, 870},
-	},
-	{
-		name = "firefly_base_pun",
-		pos = {-6580, 5240},
-	},
-	{
-		name = "firefly_base_sitclose",
-		pos = {4840, 2010},
-	},
-	{
-		name = "firefly_base_sticks",
-		pos = {-3280, -4280},
-	},
-	{
-		name = "firefly_base_sitclose",
-		pos = {-10130, -6020},
-	},
-	{
 		name = "firefly_base_pun",
 		pos = {2330, -6090},
 	},
+-- beetle ravine LHS
 	{
-		name = "cricket_base_sitclose",
-		pos = {-11020, 690},
+		name = "beetle_base_sitclose",
+		pos = {-9260, -5660},
 	},
 	{
-		name = "firefly_base_sitclose",
-		pos = {-900, 3710},
+		name = "beetle_base_sitclose",
+		pos = {-10130, -6020},
 	},
+-- beetle ravine RHS
 	{
-		name = "firefly_base_sitclose",
+		name = "beetle_base_sitclose",
 		pos = {-6320, -8390},
 			data = {animDir = 0},
 	},
 	{
-		name = "firefly_base_pun",
+		name = "beetle_base_sitclose",
 		pos = {-6040, -8380},
 			data = {animDir = math.pi},
 	},
