@@ -26,7 +26,7 @@ local globals = {
 	
 	DEBUG_SPACE_ZOOM_OUT = true,
 	--DEBUG_PRINT_CLICK_POS = true,
-	--DEBUG_FIRE_OVERRIDE = 150,
+	--DEBUG_FIRE_OVERRIDE = 15000,
 	--DEBUG_PLAYER_SPEED = 3,
 	--DEBUG_START_ITEM = "prybar_item",
 	--DEBUG_MAP_METRICS = true,
@@ -83,7 +83,7 @@ local globals = {
 	FIREFLY_GAIN = 0.17,
 	MAX_FIRE_SCALE = 10,
 	
-	ORGANISE_PILE_DIST = 0.95,
+	ORGANISE_PILE_LEEWAY = 100,
 	
 	NPC_MINE_MULT = 2.7,
 	

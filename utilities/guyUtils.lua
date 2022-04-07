@@ -4,7 +4,7 @@ local ItemDefs = util.LoadDefDirectory("defs/items")
 local FeatureDefs = util.LoadDefDirectory("defs/features")
 local ItemAction = require("defs/itemActions")
 
-local loseFuelFeatures = {
+local looseFuelFeatures = {
 	["log"] = true,
 	stick = true,
 	coal = true,
@@ -114,7 +114,7 @@ function api.DumpInCloserPile(self, fire)
 			local averagePos = util.Average(self.GetPos(), fire.GetPos())
 			local fireDist = util.DistVectors(self.GetPos(), fire.GetPos())
 			local pileFeature, pileDist = TerrainHandler.GetClosetFeature(averagePos, pileForItem[item], false, true, true)
-			if pileFeature and pileDist and pileDist * 2 < fireDist*Global.ORGANISE_PILE_DIST then
+			if pileFeature and pileDist and pileDist * 2 < fireDist - Global.ORGANISE_PILE_LEEWAY then
 				self.SetMoveGoal(pileFeature.GetPos(), pileFeature.GetRadius() + Global.DROP_LEEWAY, pileFeature, "drop", item)
 				return true
 			end
@@ -201,11 +201,11 @@ function api.OrganiseFuel(self, fire)
 	if api.DumpInCloserPile(self, fire) then
 		return true
 	end
-	return api.SeekAndCollectFeature(self, loseFuelFeatures)
+	return api.SeekAndCollectFeature(self, looseFuelFeatures)
 end
 
 function api.FuelFire(self, fire, organiseChance)
-	if (not self.collecting) and organiseChance and math.random() < organiseChance and api.OrganiseFuel(self, fire)then
+	if (not self.doingCollect) and organiseChance and math.random() < organiseChance and api.OrganiseFuel(self, fire)then
 		return true
 	end
 	self.doingCollect = true
@@ -224,7 +224,7 @@ end
 
 function api.FullyGeneralHelperGuy(self)
 	if self.jobType == "job_fuel" then
-		api.FuelFire(self, TerrainHandler.GetHomeFire(), 0.85)
+		api.FuelFire(self, TerrainHandler.GetHomeFire(), 0.9)
 	elseif self.jobType == "job_furnace" then
 		return api.GatherAndCraft(self, "ore_item", Global.ORE_TO_METAL, "ore", "furnace", "metal_item")
 	elseif self.jobType == "job_workshop" then
