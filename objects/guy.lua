@@ -428,13 +428,16 @@ local function NewGuy(self, physicsWorld, world)
 			return
 		end
 		local bx, by = self.body:getPosition()
+		local bodyPos = {bx, by}
 		local anim = (GroundHandler.CheckTileAtPosExists(self.GetPos()) and def.animation) or def.animationFlying or def.animation
 		drawQueue:push({y=by + 24; f=function()
+			GuyUtils.DrawInventory(self, anim, bodyPos, drawQueue, true)
 			Resources.DrawIsoAnimation(anim, bx, by, self.animTime, self.animDir)
 			if def.animationOverlay then
 				local color = def.overAnimColorFunc(self)
 				Resources.DrawIsoAnimation(def.animationOverlay, bx, by, self.animTime, self.animDir, false, false, color)
 			end
+			GuyUtils.DrawInventory(self, anim, bodyPos, drawQueue, false)
 		end})
 		ShadowHandler.UpdateShadowParams(self.shadow, {bx, by}, def.shadowRadius)
 		if self.light then

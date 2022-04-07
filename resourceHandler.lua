@@ -91,15 +91,29 @@ local function LoadIsoAnimation(resData)
 		})
 	end
 	
+	if resData.anchors then
+		for i = 1, #resData.files do
+			dirAnim[i].anchors = {}
+			for key, value in pairs(resData.anchors) do
+				dirAnim[i].anchors[key] = value[i]
+			end
+		end
+	end
+	
 	local data = {
 		dirAnim = dirAnim,
 		duration = resData.duration,
 		firstDir = resData.firstDir or 0,
 		directionCount = #resData.files,
 		rotate = resData.rotate,
+		anchors = resData.anchors,
 	}
 	
 	return data
+end
+
+local function GetAnimationFrame(progress, duration, frames)
+	return math.floor((progress%duration) / duration * frames) + 1
 end
 
 --------------------------------------------------
@@ -244,8 +258,7 @@ function api.DrawAnimInternal(data, x, y, progress, rotation, alpha, scale, colo
 	rotation = rotation or 0
 	progress = progress or 0
 	
-	local quadToDraw = math.floor((progress%data.duration) / data.duration * data.frames) + 1
-	
+	local quadToDraw = GetAnimationFrame(progress, data.duration, data.frames)
 	love.graphics.draw(data.image, data.quads[quadToDraw], x, y, rotation, data.xScale*scale, data.yScale*scale, data.xOffset, data.yOffset, 0, 0)
 	
 	if self.debugMode then
@@ -276,6 +289,23 @@ function api.DrawIsoAnimation(name, x, y, progress, direction, alpha, scale, col
 	end
 	
 	api.DrawAnimInternal(data.dirAnim[drawDir], x, y, progress, rotation, alpha, scale, color)
+end
+
+function api.GetIsoAnimationAnchorOffset(name, anchorName, progress, direction, scale)
+	if not self.animations[name] then
+		print("Invalid GetIsoAnimationAnchorOffset ", name)
+		return {0, 0}
+	end
+	scale = scale or 1
+	progress = progress or 0
+	
+	local data = self.animations[name]
+	local drawDir = util.DirectionToCardinal(direction, data.firstDir, data.directionCount)
+	dirData = data.dirAnim[drawDir]
+	
+	local animFrame = GetAnimationFrame(progress, dirData.duration, dirData.frames)
+	local offset = dirData.anchors[anchorName][animFrame]
+	return {offset[1]*dirData.xScale*scale, offset[2]*dirData.yScale*scale}
 end
 
 --------------------------------------------------

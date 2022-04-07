@@ -239,6 +239,35 @@ function api.FullyGeneralHelperGuy(self)
 	end
 end
 
+function api.DrawInventory(self, anim, pos, drawQueue, isPreSprite)
+	if not self.items or self.def.isPlayer then
+		return
+	end
+	local drawDir = util.DirectionToCardinal(self.animDir, 0, 4)
+	if (drawDir == 4) == (not isPreSprite) then
+		return
+	end
+	local drawOffset = 0
+	local realDrawPos = false
+	for item, count in pairs(self.items) do
+		if count > 0 then
+			if not realDrawPos then
+				realDrawPos = true
+				pos = util.Add(util.Add(pos, self.def.itemDrawDirOffset[drawDir]), Resources.GetIsoAnimationAnchorOffset(anim, "arms", self.animTime, self.animDir))
+			end
+			local def = ItemDefs[item]
+			for i = 1, count do
+				if drawDir == 1 or drawDir == 4 then
+					Resources.DrawImage(def.image, pos[1], pos[2] + drawOffset, false, false, {-1 * (def.holdScale or 1), (def.holdScale or 1)})
+				else
+					Resources.DrawImage(def.image, pos[1], pos[2] + drawOffset, false, false, def.holdScale)
+				end
+				drawOffset = drawOffset - 12
+			end
+		end
+	end
+end
+
 api.generalHelperTable = {
 	options = {
 		msg = {{

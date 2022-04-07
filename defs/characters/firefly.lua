@@ -7,6 +7,7 @@ local def = {
 	portraitNeutral = "portrait_firefly_neutral",
 	portraitHappy = "portrait_firefly_happy",
 	mouseHit = {rx = -55, ry = -110, width = 110, height = 120},
+	itemDrawDirOffset = {{45, -35}, {0, -35}, {-45, -35}, {0, -80}},
 	collideDensity = 1,
 	radius = 16,
 	shadowRadius = 14,

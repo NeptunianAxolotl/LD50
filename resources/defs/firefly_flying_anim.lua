@@ -12,4 +12,32 @@ return {
 		"resources/images/playersheet2_flying_w.png",
 		"resources/images/playersheet2_flying_n.png",
 	},
+	anchors = {
+		arms = {
+			{
+				{0,0},
+				{1,0},
+				{1,0},
+				{0,0},
+			},
+			{
+				{0,0},
+				{0,-1},
+				{0,0},
+				{0,-1},
+			},
+			{
+				{0,0},
+				{-1,0},
+				{-1,0},
+				{0,0},
+			},
+			{
+				{0,0},
+				{0,-1},
+				{0,0},
+				{0,-1},
+			},
+		}
+	},
 }

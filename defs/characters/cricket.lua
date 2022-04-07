@@ -10,6 +10,7 @@ local def = {
 	portraitHappy = "portrait_cricket_happy",
 	shadowRadius = 27,
 	mouseHit = {rx = -55, ry = -110, width = 110, height = 120},
+	itemDrawDirOffset = {{45, -35}, {0, -15}, {-45, -35}, {0, -80}},
 	collideDensity = 1,
 	radius = 16,
 	shadowRadius = 14,

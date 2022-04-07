@@ -12,4 +12,32 @@ return {
 		"resources/images/cricket_w_flying.png",
 		"resources/images/cricket_n_flying.png",
 	},
+	anchors = {
+		arms = {
+			{
+				{0,0},
+				{1,0},
+				{1,0},
+				{0,0},
+			},
+			{
+				{0,0},
+				{0,-1},
+				{0,0},
+				{0,-1},
+			},
+			{
+				{0,0},
+				{-1,0},
+				{-1,0},
+				{0,0},
+			},
+			{
+				{0,0},
+				{0,-1},
+				{0,0},
+				{0,-1},
+			},
+		}
+	},
 }
