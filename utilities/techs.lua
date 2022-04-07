@@ -51,6 +51,11 @@ function api.CheckUnlocks(world, playerData, dt)
 			playerData.UnlockTech("workshop", true)
 		end
 	end
+	if not playerData.HasTech("metal_frame") then
+		if (inChatWithType == "workshop" and not playerFreezing) or playerData.GetInventoryCount("metal_frame_item") > 0 then
+			playerData.UnlockTech("metal_frame")
+		end
+	end
 	if not playerData.HasTech("big_digger") then
 		if inChatWithType == "big_digger" and not playerFreezing then
 			playerData.UnlockTech("big_digger", true)

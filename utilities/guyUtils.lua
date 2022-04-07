@@ -227,7 +227,7 @@ function api.FullyGeneralHelperGuy(self)
 		api.FuelFire(self, TerrainHandler.GetHomeFire(), 0.85)
 	elseif self.jobType == "job_furnace" then
 		return api.GatherAndCraft(self, "ore_item", Global.ORE_TO_METAL, "ore", "furnace", "metal_item")
-	elseif self.jobType == "job_furnace" then
+	elseif self.jobType == "job_workshop" then
 		return api.GatherAndCraft(self, "metal_item", Global.METAL_TO_FRAME, "metal", "workshop", "metal_frame_item")
 	elseif self.jobType == "job_trees" then
 		return api.MineFeature(self, "tree", "axe_item")
