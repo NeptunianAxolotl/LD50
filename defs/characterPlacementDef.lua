@@ -17,12 +17,12 @@ local characters = {
 		data = {animDir = 0},
 		pos = {-160, -350},
 	},
-	{ --second person milling about
-		name = "firefly_base_sitclose2",	
-		data = {animDir = math.pi},
-		pos = {510, 250},
-	},
---and the aging logger next to the wood pile
+	--{ --second person milling about
+	--	name = "firefly_base_sitclose2",	
+	--	data = {animDir = math.pi},
+	--	pos = {510, 250},
+	--},
+	--and the aging logger next to the wood pile
 	{ --backstory old dude
 		name = "firefly_logger",	
 		data = {animDir = 0},
@@ -137,11 +137,11 @@ local characters = {
 -- SOUTHERN CRAG CRICKET CAMP --
 --------------------------------
 
-	{
-		name = "cricket_base_sitclose",
-		pos = {500, 6200},
-		data = {animDir = math.pi},
-	},
+	--{
+	--	name = "cricket_base_sitclose",
+	--	pos = {500, 6200},
+	--	data = {animDir = math.pi},
+	--},
 	
 -----------------------------
 -- NORTH/NORTHWEST VILLAGE --
@@ -181,21 +181,21 @@ local characters = {
 -- NORTHEAST CLIFFSIDE OVERLOOK --
 ----------------------------------
 
-	{
-		name = "firefly_base_pun",
-		pos = {7350, -8350},
-		data = {animDir = math.pi},
-	},
-	{
-		name = "firefly_base_pun",
-		pos = {7200, -8500},
-		data = {animDir = math.pi/2},
-	},
-	{
-		name = "firefly_base_pun",
-		pos = {6900, -8400},
-		data = {animDir = 0},
-	},
+	--{
+	--	name = "firefly_base_pun",
+	--	pos = {7350, -8350},
+	--	data = {animDir = math.pi},
+	--},
+	--{
+	--	name = "firefly_base_pun",
+	--	pos = {7200, -8500},
+	--	data = {animDir = math.pi/2},
+	--},
+	--{
+	--	name = "firefly_base_pun",
+	--	pos = {6900, -8400},
+	--	data = {animDir = 0},
+	--},
 
 -------------------------------
 -- BEETLE RAVINE - WEST EDGE --
@@ -209,10 +209,10 @@ local characters = {
 		name = "beetle_base_sitclose",
 		pos = {-10130, -6020},
 	},
-	{ --third guy
-		name = "beetle_base_sitclose",
-		pos = {-10300, -5720},
-	},
+	--{ --third guy
+	--	name = "beetle_base_sitclose",
+	--	pos = {-10300, -5720},
+	--},
 	
 ----------------------------------
 -- BEETLE RAVINE - EASTERN PEAK --
