@@ -575,7 +575,9 @@ function util.CopyTable(tableToCopy, deep, appendTo)
 		if (deep and type(value) == "table") then
 			copy[key] = util.CopyTable(value, true, appendTo and copy[key])
 		else
-			copy[key] = value
+			if not copy[key] then
+				copy[key] = value
+			end
 		end
 	end
 	return copy
