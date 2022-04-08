@@ -4,29 +4,15 @@ local GuyUtils = require("utilities/guyUtils")
 
 local def = {
 	inheritFrom = "firefly",
-	speedMult = 0.7,
-	workMult = 0.7,
+	speedMult = 1.5,
+	workMult = 1.5,
 	jobType = "job_fuel",
 	mineType = "mine_none",
-	
 	initData = {
 		items = {
 			ore_item = 0,
 		},
-		wallowingInDarkness = true,
-		
-		talkJob = "[test text for job]",
-		talkJobFire = "Got me all fired up!",
-		talkJobTree = "Chop chop!",
-		--talkJobMine = "[test text for mining]",
-		talkJobMineCoal = "Just coal me when you need me.",
-		talkJobMineOre = "Gonna be pretty metal.",
-		talkJobMineRuby = "...I don't have a good pun for this one, actually.  Just...gonna go do the thing.",
-		talkJobMineEmerald = "Gonna get me some green.",
-		talkJobMineStone = "Sure, don't quarry about it.",
-		talkJobFurnace = "Turnin' up the heat!",
-		talkJobWorkshop = "I'm workin' on it!",
-		talkJobNone = "Yessir!",
+		wallowingInDarkness = true,	
 	},
 	behaviour = function (self, world, dt)
 		if not self.friendly then

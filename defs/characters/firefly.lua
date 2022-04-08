@@ -16,19 +16,18 @@ local def = {
 
 	initData = {
 		lightValue = 1,
-		
-		--talkJob = "What d'you want me to do?",
-		talkJobFire = "Got me all fired up!",
-		talkJobTree = "Chop chop!",
-		talkJobMine = "What'd you want me to dig for?",
-		talkJobMineCoal = "Just coal me when you need me.",
-		talkJobMineOre = "Gonna be pretty metal.",
-		talkJobMineRuby = "...I don't have a good pun for this one, actually.  Just...gonna go do the thing.",
-		talkJobMineEmerald = "Gonna get me some green.",
-		talkJobMineStone = "Sure, don't quarry about it.",
-		talkJobFurnace = "Turnin' up the heat!",
-		talkJobWorkshop = "I'm workin' on it!",
-		talkJobNone = "Yessir!",
+		talkJob = "What do you need me to do?",
+		talkJobFire = "Fuel on the fire, got it.",
+		talkJobTree = "Chop down some trees?  Sure!",
+		talkJobMine = "What do you need me to mine?",
+		talkJobMineCoal = "Mining some coal?  Sure.",
+		talkJobMineOre = "Mine some ore?  Got it.",
+		talkJobMineRuby = "Mining fire rubies?  Will do.",
+		talkJobMineEmerald = "Mining emeralds?  Got it.",
+		talkJobMineStone = "I'll cut you some stone.",
+		talkJobFurnace = "I'll smelt you some metal at the furnace.",
+		talkJobWorkshop = "I'll man the workshop and make some metal frames.",
+		talkJobNone = "Good, good.  Come find me when you need me to do something else.",
 	},
 	overAnimColorFunc = function (self)
 		local intensity = (math.random() + 2) * self.lightValue * 0.33

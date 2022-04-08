@@ -12,6 +12,18 @@ local def = {
 			ore_item = 0,
 		},
 		wallowingInDarkness = true,
+		talkJob = "What'd you want me to do?",
+		talkJobFire = "Got me all fired up!",
+		talkJobTree = "Chop chop!",
+		talkJobMine = "What'd you want me to dig for?",
+		talkJobMineCoal = "Just coal me when you need me.",
+		talkJobMineOre = "Gonna be pretty metal.",
+		talkJobMineRuby = "...I don't have a good pun for this one, actually.  Just...gonna go do the thing.",
+		talkJobMineEmerald = "Gonna get me some green.",
+		talkJobMineStone = "Sure, don't quarry about it.",
+		talkJobFurnace = "Turnin' up the heat!",
+		talkJobWorkshop = "I'm workin' on it!",
+		talkJobNone = "Yessir!",
 	},
 	behaviour = function (self, world, dt)
 		if not self.friendly then
