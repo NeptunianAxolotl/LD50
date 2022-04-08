@@ -64,12 +64,14 @@ local scales = {
 	emerald_mine = 3,
 	wood_hut     = 3,
 	workshop     = 3,
+	tent		 = 3,
 }
 
 local portraitScales = {
-	furnace      = 8,
-	anvil = 8,
-	big_digger   = 3,
+	furnace     = 8,
+	anvil 		= 8,
+	big_digger  = 3,
+	tent 		= 2,
 }
 
 local offsets = {

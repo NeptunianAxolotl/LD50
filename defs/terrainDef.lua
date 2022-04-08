@@ -1,56 +1,482 @@
 local terrain = {
-	{
-		name = "wood_pile",
-		pos = {-550, 150},
+
+--split by item type
+--then split by area
+
+
+
+
+
+
+
+
+
+
+
+----------
+-- FIRE -- 
+----------
+ 	
+{
+	name = "fire",
+	pos = {0, 0},
+},
+
+---------------
+-- WOOD PILE --
+---------------
+
+{
+	name = "wood_pile",
+	pos = {-550, 150},
+	items = {
+		log_item = 3,
+		stick_item = 6
+	}
+},
+{
+    name = "wood_pile",
+    pos = {-6660, -500},
+},
+
+--------------
+-- COAL BIN --
+--------------
+
+{
+    name = "coal_bin",
+    pos = {2370, 5870},
 		items = {
-			log_item = 3,
-			stick_item = 6
+			coal_item = 3,
 		}
-	},
-	{
-		name = "fire",
-		pos = {0, 0},
-	},
-	{
-		name = "log",
-		pos = {50, 500},
-	},
-	{
-		name = "stick",
-		pos = {200, 200},
-	},
-	{
-		name = "tree",
-		pos = {-300, 700},
-	},
-	{
-		name = "tree",
-		pos = {-1300, -150},
-	},
-	{
-		name = "tree",
-		pos = {300, -800},
-	},
-	{
-		name = "tree",
-		pos = {800, 0},
-	},
-	{
-		name = "tree",
-		pos = {-1000, 800},
-	},
-	{
-		name = "tree",
-		pos = {-1400, 400},
-	},
-	{
-		name = "tree",
-		pos = {-800, 1000},
-	},
-	{
-		name = "tree",
-		pos = {700, 1100},
-	},
+},
+{
+    name = "coal_bin",
+    pos = {2070, -5930},
+		items = {
+			coal_item = 3,
+		}
+},
+	
+----------------
+-- WOODEN HUT --
+----------------
+
+{
+    name = "wood_hut",
+    pos = {-9730, -5530},
+},
+{
+    name = "wood_hut",
+    pos = {4180, 2990},
+},
+{
+    name = "wood_hut",
+    pos = {5110, 2440},
+},
+{
+    name = "wood_hut",
+    pos = {4920, 3020},
+},
+{
+    name = "wood_hut",
+    pos = {2750, -5880},
+},
+{
+    name = "wood_hut",
+    pos = {2200, -6530},
+},
+{
+    name = "wood_hut",
+    pos = {1650, -6300},
+},
+{
+    name = "wood_hut",
+    pos = {-9450, -6050},
+},
+{
+    name = "wood_hut",
+    pos = {-9900, 520},
+},
+{
+    name = "wood_hut",
+    pos = {-10680, 500},
+},
+{
+    name = "wood_hut",
+    pos = {-10050, 1320},
+},
+{
+    name = "wood_hut",
+    pos = {-7550, 5020},
+},
+{
+    name = "wood_hut",
+    pos = {-7000, 5100},
+},
+{
+    name = "wood_hut",
+    pos = {1570, -5430},
+},
+{
+    name = "wood_hut",
+    pos = {-2780, -4280},
+},
+{
+    name = "wood_hut",
+    pos = {-4900, 1000},
+},
+
+----------
+-- TENT --
+----------
+
+{
+	name = "tent",
+	pos = {1000, 5950},
+},
+
+-----------
+-- ANVIL --
+-----------
+
+{
+    name = "anvil",
+    pos = {2310, -5730},
+},
+{
+    name = "anvil",
+    pos = {-5190, 550},
+},
+
+-------------
+-- FURNACE -- 
+-------------
+
+{
+    name = "furnace",
+    pos = {4370, 2400},
+},
+
+--------------
+-- WORKSHOP --
+--------------
+
+{
+    name = "workshop",
+    pos = {-9330, -5050},
+},
+
+---------------
+-- EXCAVATOR --
+---------------
+
+{
+    name = "big_digger",
+    pos = {-8800, -5480},
+},
+
+---------
+-- AXE --
+---------
+
+{
+    name = "axe",
+    pos = {-170, 3410},
+},
+
+-------------
+-- PICKAXE --
+-------------
+
+{
+    name = "pick",
+    pos = {-1160, 3480},
+},
+{
+    name = "pick",
+    pos = {-7000, 5310},
+},
+{
+    name = "pick",
+    pos = {4030, -1490},
+},
+
+------------
+-- PRYBAR --
+------------
+
+{
+    name = "prybar",
+    pos = {-9870, 920},
+},
+
+----------
+-- ROCK --
+----------
+
+{
+    name = "rock",
+    pos = {1490, -2300},
+},
+
+
+----------
+-- COAL --
+----------
+
+{
+    name = "coal",
+    pos = {-3700, 290},
+},
+{
+    name = "coal",
+    pos = {-2140, -510},
+},
+
+
+---------
+-- ORE --
+---------
+
+{
+    name = "ore",
+    pos = {5570, 2530},
+},
+{
+    name = "ore",
+    pos = {5450, 2790},
+},
+{
+    name = "ore",
+    pos = {5830, 2970},
+},
+
+
+-----------
+-- METAL --
+-----------
+
+{
+    name = "metal",
+    pos = {-5320, 840},
+},
+{
+    name = "metal",
+    pos = {-5020, 420},
+},
+{
+    name = "metal",
+    pos = {-5090, 280},
+},
+
+
+
+
+----------
+-- RUBY --
+----------
+
+{
+    name = "ruby",
+    pos = {-1110, 3300},
+},
+{
+    name = "ruby",
+    pos = {4800, 2700},
+},
+{
+    name = "ruby",
+    pos = {-7280, 5200},
+},
+{
+    name = "ruby",
+    pos = {-3470, 230},
+},
+{
+    name = "ruby",
+    pos = {3740, 2050},
+},
+
+-------------
+-- EMERALD --
+-------------
+
+{
+    name = "emerald",
+    pos = {-9130, -5130},
+},
+
+---------
+-- LOG --
+---------
+
+{
+	name = "log",
+	pos = {50, 500},
+},
+{
+    name = "log",
+    pos = {-240, 2960},
+},
+{
+    name = "log",
+    pos = {-350, 3170},
+},
+
+
+
+-----------
+-- STICK --
+-----------
+
+{
+	name = "stick",
+	pos = {200, 200},
+},
+{
+    name = "stick",
+    pos = {-900, -960},
+},
+{
+    name = "stick",
+    pos = {-1240, -810},
+},
+{
+    name = "stick",
+    pos = {-1600, 0},
+},
+{
+    name = "stick",
+    pos = {-1690, 1000},
+},
+{
+    name = "stick",
+    pos = {-1310, 740},
+},
+{
+    name = "stick",
+    pos = {-560, 1500},
+},
+{
+    name = "stick",
+    pos = {100, 800},
+},
+{
+    name = "stick",
+    pos = {670, 1330},
+},
+{
+    name = "stick",
+    pos = {1070, 590},
+},
+{
+    name = "stick",
+    pos = {1330, -750},
+},
+{
+    name = "stick",
+    pos = {780, -580},
+},
+{
+    name = "stick",
+    pos = {310, -1580},
+},
+{
+    name = "stick",
+    pos = {-1260, -2300},
+},
+{
+    name = "stick",
+    pos = {30, -2280},
+},
+{
+    name = "stick",
+    pos = {-2200, 250},
+},
+{
+    name = "stick",
+    pos = {-690, 1970},
+},
+{
+    name = "stick",
+    pos = {1610, 1040},
+},
+{
+    name = "stick",
+    pos = {2840, 510},
+},
+{
+    name = "stick",
+    pos = {2540, -1260},
+},
+{
+    name = "stick",
+    pos = {2650, -2090},
+},
+{
+    name = "stick",
+    pos = {2090, -2150},
+},
+{
+    name = "stick",
+    pos = {-760, -130},
+},
+{
+    name = "stick",
+    pos = {490, 550},
+},
+{
+    name = "stick",
+    pos = {510, -650},
+},
+
+
+----------
+-- TREE --
+----------
+
+{
+	name = "tree",
+	pos = {-300, 700},
+},
+{
+	name = "tree",
+	pos = {-1300, -150},
+},
+{
+	name = "tree",
+	pos = {300, -800},
+},
+{
+	name = "tree",
+	pos = {800, 0},
+},
+{
+	name = "tree",
+	pos = {-1000, 800},
+},
+{
+	name = "tree",
+	pos = {-1400, 400},
+},
+{
+	name = "tree",
+	pos = {-800, 1000},
+},
+{
+	name = "tree",
+	pos = {700, 1100},
+},
+
+-----------
+-- MINES --
+-----------
+
+------------------
+-- STONE QUARRY --
+------------------
+
 {
     name = "stone_mine",
     pos = {8170, 200},
@@ -144,153 +570,59 @@ local terrain = {
     pos = {-500, -1430},
 },
 {
-    name = "ore_mine",
-    pos = {-3680, -4700},
+    name = "stone_mine",
+    pos = {-8820, 5200},
 },
 {
-    name = "ore_mine",
-    pos = {-4550, -5850},
+    name = "stone_mine",
+    pos = {-8760, 5770},
 },
 {
-    name = "ore_mine",
-    pos = {-4580, -6680},
+    name = "stone_mine",
+    pos = {-6850, 6070},
 },
 {
-    name = "ore_mine",
-    pos = {-4900, -7780},
+    name = "stone_mine",
+    pos = {-13460, 1540},
 },
 {
-    name = "ore_mine",
-    pos = {-6380, 4850},
+    name = "stone_mine",
+    pos = {-9930, -6320},
 },
 {
-    name = "ore_mine",
-    pos = {-6080, 4620},
+    name = "stone_mine",
+    pos = {-9200, -6280},
 },
 {
-    name = "ore_mine",
-    pos = {-5680, 5500},
+    name = "stone_mine",
+    pos = {-8700, -5920},
 },
 {
-    name = "ore_mine",
-    pos = {-5300, 4900},
+    name = "stone_mine",
+    pos = {-5360, -5200},
 },
 {
-    name = "ore_mine",
-    pos = {-4430, 5500},
+    name = "stone_mine",
+    pos = {-6400, -7600},
 },
 {
-    name = "ore_mine",
-    pos = {-6580, 5770},
+    name = "stone_mine",
+    pos = {-3820, -7770},
 },
 {
-    name = "ore_mine",
-    pos = {-12080, 950},
+    name = "stone_mine",
+    pos = {3930, 6130},
 },
 {
-    name = "ore_mine",
-    pos = {-12430, 600},
+    name = "stone_mine",
+    pos = {2040, 6330},
 },
-{
-    name = "ore_mine",
-    pos = {6200, 3150},
-},
-{
-    name = "ore_mine",
-    pos = {5400, 3050},
-},
-{
-    name = "ore_mine",
-    pos = {6300, 1750},
-},
-{
-    name = "ore_mine",
-    pos = {3470, -7880},
-},
-{
-    name = "ore_mine",
-    pos = {2570, -7680},
-},
-{
-    name = "ore_mine",
-    pos = {2300, -2500},
-},
-{
-    name = "ore_mine",
-    pos = {1370, -1980},
-},
-{
-    name = "ore_mine",
-    pos = {-3350, -2250},
-},
-{
-    name = "ore_mine",
-    pos = {-1450, 2020},
-},
-{
-    name = "ore_mine",
-    pos = {-11750, -4200},
-},
-{
-    name = "ore_mine",
-    pos = {-12080, -3450},
-},
-{
-    name = "ore_mine",
-    pos = {-11700, -2930},
-},
-{
-    name = "ore_mine",
-    pos = {-11900, -2600},
-},
-{
-    name = "ore_mine",
-    pos = {-11500, -1980},
-},
-{
-    name = "ore_mine",
-    pos = {-10930, -2600},
-},
-{
-    name = "ore_mine",
-    pos = {8270, 700},
-},
-{
-    name = "ore_mine",
-    pos = {-4930, -7430},
-},
-{
-    name = "ore_mine",
-    pos = {-12430, -3080},
-},
-{
-    name = "ore_mine",
-    pos = {-4750, 5400},
-},
-{
-    name = "ore_mine",
-    pos = {-6600, 520},
-},
-{
-    name = "ore_mine",
-    pos = {-5730, 520},
-},
-{
-    name = "ore_mine",
-    pos = {3950, -6330},
-},
-{
-    name = "ore_mine",
-    pos = {3470, -5780},
-},
-{
-    name = "ore_mine",
-    pos = {4250, -6730},
-},
-{
-    name = "ore_mine",
-    pos = {220, -7550},
-},
+
+
+---------------
+-- COAL MINE --
+---------------
+
 {
     name = "coal_mine",
     pos = {-9230, -1300},
@@ -440,6 +772,274 @@ local terrain = {
     pos = {-2080, -1300},
 },
 {
+    name = "coal_mine",
+    pos = {1460, -1540},
+},
+{
+    name = "coal_mine",
+    pos = {840, -2240},
+},
+{
+    name = "coal_mine",
+    pos = {1080, -3030},
+},
+{
+    name = "coal_mine",
+    pos = {1630, -3010},
+},
+{
+    name = "coal_mine",
+    pos = {1500, -3810},
+},
+{
+    name = "coal_mine",
+    pos = {2160, -4010},
+},
+{
+    name = "coal_mine",
+    pos = {2700, -3110},
+},
+{
+    name = "coal_mine",
+    pos = {3200, -3280},
+},
+{
+    name = "coal_mine",
+    pos = {3230, -3940},
+},
+{
+    name = "coal_mine",
+    pos = {3310, -4830},
+},
+{
+    name = "coal_mine",
+    pos = {-10010, -1410},
+},
+{
+    name = "coal_mine",
+    pos = {-10710, -1410},
+},
+{
+    name = "coal_mine",
+    pos = {-11750, -1460},
+},
+{
+    name = "coal_mine",
+    pos = {-12070, -1780},
+},
+{
+    name = "coal_mine",
+    pos = {-12450, -1100},
+},
+{
+    name = "coal_mine",
+    pos = {-13010, -610},
+},
+
+
+--------------
+-- ORE MINE --
+--------------
+
+{
+    name = "ore_mine",
+    pos = {-3680, -4700},
+},
+{
+    name = "ore_mine",
+    pos = {-4550, -5850},
+},
+{
+    name = "ore_mine",
+    pos = {-4580, -6680},
+},
+{
+    name = "ore_mine",
+    pos = {-4900, -7780},
+},
+{
+    name = "ore_mine",
+    pos = {-6380, 4850},
+},
+{
+    name = "ore_mine",
+    pos = {-6080, 4620},
+},
+{
+    name = "ore_mine",
+    pos = {-5680, 5500},
+},
+{
+    name = "ore_mine",
+    pos = {-5300, 4900},
+},
+{
+    name = "ore_mine",
+    pos = {-4430, 5500},
+},
+{
+    name = "ore_mine",
+    pos = {-6580, 5770},
+},
+{
+    name = "ore_mine",
+    pos = {-12080, 950},
+},
+{
+    name = "ore_mine",
+    pos = {-12430, 600},
+},
+{
+    name = "ore_mine",
+    pos = {6200, 3150},
+},
+{
+    name = "ore_mine",
+    pos = {5400, 3050},
+},
+{
+    name = "ore_mine",
+    pos = {6300, 1750},
+},
+{
+    name = "ore_mine",
+    pos = {3470, -7880},
+},
+{
+    name = "ore_mine",
+    pos = {2570, -7680},
+},
+{
+    name = "ore_mine",
+    pos = {2300, -2500},
+},
+{
+    name = "ore_mine",
+    pos = {1370, -1980},
+},
+{
+    name = "ore_mine",
+    pos = {-3350, -2250},
+},
+{
+    name = "ore_mine",
+    pos = {-1450, 2020},
+},
+{
+    name = "ore_mine",
+    pos = {-11750, -4200},
+},
+{
+    name = "ore_mine",
+    pos = {-12080, -3450},
+},
+{
+    name = "ore_mine",
+    pos = {-11700, -2930},
+},
+{
+    name = "ore_mine",
+    pos = {-11900, -2600},
+},
+{
+    name = "ore_mine",
+    pos = {-11500, -1980},
+},
+{
+    name = "ore_mine",
+    pos = {-10930, -2600},
+},
+{
+    name = "ore_mine",
+    pos = {8270, 700},
+},
+{
+    name = "ore_mine",
+    pos = {-4930, -7430},
+},
+{
+    name = "ore_mine",
+    pos = {-12430, -3080},
+},
+{
+    name = "ore_mine",
+    pos = {-4750, 5400},
+},
+{
+    name = "ore_mine",
+    pos = {-6600, 520},
+},
+{
+    name = "ore_mine",
+    pos = {-5730, 520},
+},
+{
+    name = "ore_mine",
+    pos = {3950, -6330},
+},
+{
+    name = "ore_mine",
+    pos = {3470, -5780},
+},
+{
+    name = "ore_mine",
+    pos = {4250, -6730},
+},
+{
+    name = "ore_mine",
+    pos = {220, -7550},
+},
+{
+    name = "ore_mine",
+    pos = {-3150, 330},
+},
+{
+    name = "ore_mine",
+    pos = {-2560, 590},
+},
+{
+    name = "ore_mine",
+    pos = {-3090, 930},
+},
+{
+    name = "ore_mine",
+    pos = {-1960, 40},
+},
+{
+    name = "ore_mine",
+    pos = {4200, -1850},
+},
+{
+    name = "ore_mine",
+    pos = {4580, -1340},
+},
+{
+    name = "ore_mine",
+    pos = {-10220, 820},
+},
+{
+    name = "ore_mine",
+    pos = {-3950, -5880},
+},
+{
+    name = "ore_mine",
+    pos = {-4530, -7280},
+},
+{
+    name = "ore_mine",
+    pos = {-5360, -6410},
+},
+{
+    name = "ore_mine",
+    pos = {-5820, -8030},
+},
+
+
+---------------
+-- RUBY MINE --
+---------------
+
+{
     name = "ruby_mine",
     pos = {-4630, -5500},
 },
@@ -487,6 +1087,11 @@ local terrain = {
     name = "ruby_mine",
     pos = {-5880, 920},
 },
+
+------------------
+-- EMERALD MINE --
+------------------
+
 {
     name = "emerald_mine",
     pos = {3170, -8180},
@@ -544,189 +1149,6 @@ local terrain = {
     pos = {-2400, -2550},
 },
 {
-    name = "big_digger",
-    pos = {-8800, -5480},
-},
-{
-    name = "furnace",
-    pos = {4370, 2400},
-},
-
-{
-    name = "wood_hut",
-    pos = {4180, 2990},
-},
-{
-    name = "wood_hut",
-    pos = {5110, 2440},
-},
-{
-    name = "wood_hut",
-    pos = {4920, 3020},
-},
-{
-    name = "wood_hut",
-    pos = {2750, -5880},
-},
-{
-    name = "wood_hut",
-    pos = {2200, -6530},
-},
-{
-    name = "wood_hut",
-    pos = {1650, -6300},
-},
-{
-    name = "wood_hut",
-    pos = {-9450, -6050},
-},
-{
-    name = "wood_hut",
-    pos = {-9900, 520},
-},
-{
-    name = "wood_hut",
-    pos = {-10680, 500},
-},
-{
-    name = "wood_hut",
-    pos = {-10050, 1320},
-},
-{
-    name = "wood_hut",
-    pos = {-7550, 5020},
-},
-{
-    name = "wood_hut",
-    pos = {-7000, 5100},
-},
-{
-    name = "wood_hut",
-    pos = {1570, -5430},
-},
-{
-    name = "wood_hut",
-    pos = {-2780, -4280},
-},
-{
-    name = "wood_hut",
-    pos = {-4900, 1000},
-},
-{
-    name = "anvil",
-    pos = {-5190, 550},
-},
-{
-    name = "coal_bin",
-    pos = {2370, 5870},
-		items = {
-			coal_item = 3,
-		}
-},
-{
-    name = "coal_bin",
-    pos = {2070, -5930},
-		items = {
-			coal_item = 3,
-		}
-},
-{
-    name = "wood_hut",
-    pos = {-9730, -5530},
-},
-{
-    name = "workshop",
-    pos = {-9330, -5050},
-},
-{
-    name = "ruby",
-    pos = {4800, 2700},
-},
-{
-    name = "ruby",
-    pos = {-7280, 5200},
-},
-{
-    name = "ruby",
-    pos = {-3470, 230},
-},
-{
-    name = "ruby",
-    pos = {3740, 2050},
-},
-{
-    name = "emerald",
-    pos = {-9130, -5130},
-},
-{
-    name = "ore_mine",
-    pos = {-10220, 820},
-},
-{
-    name = "ore_mine",
-    pos = {-3950, -5880},
-},
-{
-    name = "ore_mine",
-    pos = {-4530, -7280},
-},
-{
-    name = "ore_mine",
-    pos = {-5360, -6410},
-},
-{
-    name = "ore_mine",
-    pos = {-5820, -8030},
-},
-{
-    name = "stone_mine",
-    pos = {-8820, 5200},
-},
-{
-    name = "stone_mine",
-    pos = {-8760, 5770},
-},
-{
-    name = "stone_mine",
-    pos = {-6850, 6070},
-},
-{
-    name = "stone_mine",
-    pos = {-13460, 1540},
-},
-{
-    name = "stone_mine",
-    pos = {-9930, -6320},
-},
-{
-    name = "stone_mine",
-    pos = {-9200, -6280},
-},
-{
-    name = "stone_mine",
-    pos = {-8700, -5920},
-},
-{
-    name = "stone_mine",
-    pos = {-5360, -5200},
-},
-{
-    name = "stone_mine",
-    pos = {-6400, -7600},
-},
-{
-    name = "stone_mine",
-    pos = {-3820, -7770},
-},
-{
-    name = "stone_mine",
-    pos = {3930, 6130},
-},
-{
-    name = "stone_mine",
-    pos = {2040, 6330},
-},
-{
     name = "emerald_mine",
     pos = {-9290, -4330},
 },
@@ -738,265 +1160,11 @@ local terrain = {
     name = "emerald_mine",
     pos = {-9420, -6560},
 },
-{
-    name = "coal",
-    pos = {-3700, 290},
-},
-{
-    name = "coal",
-    pos = {-2140, -510},
-},
-{
-    name = "rock",
-    pos = {1490, -2300},
-},
-{
-    name = "coal_mine",
-    pos = {-10010, -1410},
-},
-{
-    name = "coal_mine",
-    pos = {-10710, -1410},
-},
-{
-    name = "coal_mine",
-    pos = {-11750, -1460},
-},
-{
-    name = "coal_mine",
-    pos = {-12070, -1780},
-},
-{
-    name = "coal_mine",
-    pos = {-12450, -1100},
-},
-{
-    name = "coal_mine",
-    pos = {-13010, -610},
-},
-{
-    name = "stick",
-    pos = {-900, -960},
-},
-{
-    name = "stick",
-    pos = {-1240, -810},
-},
-{
-    name = "stick",
-    pos = {-1600, 0},
-},
-{
-    name = "stick",
-    pos = {-1690, 1000},
-},
-{
-    name = "stick",
-    pos = {-1310, 740},
-},
-{
-    name = "stick",
-    pos = {-560, 1500},
-},
-{
-    name = "stick",
-    pos = {100, 800},
-},
-{
-    name = "stick",
-    pos = {670, 1330},
-},
-{
-    name = "stick",
-    pos = {1070, 590},
-},
-{
-    name = "stick",
-    pos = {1330, -750},
-},
-{
-    name = "stick",
-    pos = {780, -580},
-},
-{
-    name = "stick",
-    pos = {310, -1580},
-},
-{
-    name = "stick",
-    pos = {-1260, -2300},
-},
-{
-    name = "stick",
-    pos = {30, -2280},
-},
-{
-    name = "stick",
-    pos = {-2200, 250},
-},
-{
-    name = "stick",
-    pos = {-690, 1970},
-},
-{
-    name = "stick",
-    pos = {1610, 1040},
-},
-{
-    name = "stick",
-    pos = {2840, 510},
-},
-{
-    name = "stick",
-    pos = {2540, -1260},
-},
-{
-    name = "stick",
-    pos = {2650, -2090},
-},
-{
-    name = "stick",
-    pos = {2090, -2150},
-},
-{
-    name = "stick",
-    pos = {-760, -130},
-},
-{
-    name = "stick",
-    pos = {490, 550},
-},
-{
-    name = "stick",
-    pos = {510, -650},
-},
-{
-    name = "pick",
-    pos = {4030, -1490},
-},
-{
-    name = "ore_mine",
-    pos = {4200, -1850},
-},
-{
-    name = "ore_mine",
-    pos = {4580, -1340},
-},
-{
-    name = "log",
-    pos = {-240, 2960},
-},
-{
-    name = "log",
-    pos = {-350, 3170},
-},
-{
-    name = "axe",
-    pos = {-170, 3410},
-},
-{
-    name = "ore",
-    pos = {5570, 2530},
-},
-{
-    name = "ore",
-    pos = {5450, 2790},
-},
-{
-    name = "ore",
-    pos = {5830, 2970},
-},
-{
-    name = "metal",
-    pos = {-5320, 840},
-},
-{
-    name = "metal",
-    pos = {-5020, 420},
-},
-{
-    name = "metal",
-    pos = {-5090, 280},
-},
-{
-    name = "pick",
-    pos = {-7000, 5310},
-},
-{
-    name = "prybar",
-    pos = {-9870, 920},
-},
-{
-    name = "ruby",
-    pos = {-1110, 3300},
-},
-{
-    name = "pick",
-    pos = {-1160, 3480},
-},
-{
-    name = "anvil",
-    pos = {2310, -5730},
-},
-{
-    name = "wood_pile",
-    pos = {-6660, -500},
-},
-{
-    name = "ore_mine",
-    pos = {-3150, 330},
-},
-{
-    name = "ore_mine",
-    pos = {-2560, 590},
-},
-{
-    name = "ore_mine",
-    pos = {-3090, 930},
-},
-{
-    name = "ore_mine",
-    pos = {-1960, 40},
-},{
-    name = "coal_mine",
-    pos = {1460, -1540},
-},
-{
-    name = "coal_mine",
-    pos = {840, -2240},
-},
-{
-    name = "coal_mine",
-    pos = {1080, -3030},
-},
-{
-    name = "coal_mine",
-    pos = {1630, -3010},
-},
-{
-    name = "coal_mine",
-    pos = {1500, -3810},
-},
-{
-    name = "coal_mine",
-    pos = {2160, -4010},
-},
-{
-    name = "coal_mine",
-    pos = {2700, -3110},
-},
-{
-    name = "coal_mine",
-    pos = {3200, -3280},
-},
-{
-    name = "coal_mine",
-    pos = {3230, -3940},
-},
-{
-    name = "coal_mine",
-    pos = {3310, -4830},
-},
+
+---------
+-- END --
+---------
+
 }
 
 return terrain

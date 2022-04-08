@@ -1,22 +1,45 @@
+--add idle wiggle for people who aren't wallowing, as well.
+--everybody needs a hobby, a wound and a hope.
+
+--give the objects personalities as well
+
+--manual placement of corpses
+
 local characters = {
--- central fire
-	{ --starter dude
-		name = "firefly_base_sitclose",	
+
+------------------
+-- CENTRAL FIRE --
+------------------
+
+--consider two people near the fire, wandering around
+	{ --first interaction
+		name = "firefly_base_sitclose1",	
 		data = {animDir = 0},
 		pos = {-160, -350},
 	},
+	{ --second person milling about
+		name = "firefly_base_sitclose2",	
+		data = {animDir = math.pi},
+		pos = {510, 250},
+	},
+--and the aging logger next to the wood pile
 	{ --backstory old dude
 		name = "firefly_logger",	
 		data = {animDir = 0},
 		pos = {-400, 100},
 	},
 
---central fire outskirts
+----------------------------
+-- CENTRAL FIRE OUTSKIRTS --
+----------------------------
+
+--guy chilling some distance south of the fire
 	{
 		name = "firefly_base_sticks",	
 		data = {animDir = 0},
 		pos = {-200, 1200},
 	},
+--axe man 
 	{ --HNNNNNNNNNG
 		name = "firefly_tech_axe",	
 		data = {animDir = 0},
@@ -46,7 +69,10 @@ local characters = {
 		pos = {-900, 3710},
 	},
 
--- west village 1
+-------------------------
+-- WEST VILLAGE - NEAR --
+-------------------------
+
 	{
 		name = "firefly_base_sticks",
 		pos = {-4470, 1010},
@@ -55,7 +81,11 @@ local characters = {
 		name = "firefly_tech_makeaxe",
 		pos = {-5190, 550},
 	},
--- west village 2 (crickets)
+
+-----------------------------------
+-- WEST CRICKET ENCAMPMENT - FAR --
+-----------------------------------
+
 	{
 		name = "cricket_base_sitclose",
 		pos = {-9720, 870},
@@ -72,7 +102,11 @@ local characters = {
 		name = "cricket_base_sitclose",
 		pos = {-11020, 690},
 	},
--- southwest village
+	
+-----------------------
+-- SOUTHWEST VILLAGE --
+-----------------------
+
 	{
 		name = "firefly_base_pun",
 		pos = {-7530, 5310},
@@ -81,7 +115,11 @@ local characters = {
 		name = "firefly_base_pun",
 		pos = {-6580, 5240},
 	},
--- southeast village
+
+-----------------------
+-- SOUTHEAST VILLAGE --
+-----------------------
+
 	{
 		name = "firefly_base_sitclose",
 		pos = {4540, 2800},
@@ -94,7 +132,21 @@ local characters = {
 		name = "firefly_base_sitclose",
 		pos = {4840, 2010},
 	},
--- north/northwest village
+	
+--------------------------------
+-- SOUTHERN CRAG CRICKET CAMP --
+--------------------------------
+
+	{
+		name = "cricket_base_sitclose",
+		pos = {500, 6200},
+		data = {animDir = math.pi},
+	},
+	
+-----------------------------
+-- NORTH/NORTHWEST VILLAGE --
+-----------------------------
+
 	{
 		name = "firefly_base_sticks",
 		pos = {-2350, -4240},
@@ -103,7 +155,11 @@ local characters = {
 		name = "firefly_base_sticks",
 		pos = {-3280, -4280},
 	},
--- northeast village
+	
+-----------------------
+-- NORTHEAST VILLAGE --
+-----------------------
+
 	{
 		name = "firefly_base_sitclose",
 		pos = {2180, -5490},
@@ -120,7 +176,31 @@ local characters = {
 		name = "firefly_base_pun",
 		pos = {2330, -6090},
 	},
--- beetle ravine LHS
+	
+----------------------------------
+-- NORTHEAST CLIFFSIDE OVERLOOK --
+----------------------------------
+
+	{
+		name = "firefly_base_pun",
+		pos = {7350, -8350},
+		data = {animDir = math.pi},
+	},
+	{
+		name = "firefly_base_pun",
+		pos = {7200, -8500},
+		data = {animDir = math.pi/2},
+	},
+	{
+		name = "firefly_base_pun",
+		pos = {6900, -8400},
+		data = {animDir = 0},
+	},
+
+-------------------------------
+-- BEETLE RAVINE - WEST EDGE --
+-------------------------------
+
 	{
 		name = "beetle_base_sitclose",
 		pos = {-9260, -5660},
@@ -129,7 +209,15 @@ local characters = {
 		name = "beetle_base_sitclose",
 		pos = {-10130, -6020},
 	},
--- beetle ravine RHS
+	{ --third guy
+		name = "beetle_base_sitclose",
+		pos = {-10300, -5720},
+	},
+	
+----------------------------------
+-- BEETLE RAVINE - EASTERN PEAK --
+----------------------------------
+
 	{
 		name = "beetle_base_sitclose",
 		pos = {-6320, -8390},
