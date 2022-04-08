@@ -5,6 +5,7 @@ local def = {
 	radius = 42,
 	collide = true,
 	animation = "beetle_anim",
+	animationFlying = "beetle_flying_anim",
 	desc = "Talk to a beetle",
 	portraitNeutral = "portrait_beetle_neutral",
 	portraitHappy = "portrait_beetle_happy",

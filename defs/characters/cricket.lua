@@ -5,6 +5,7 @@ local def = {
 	radius = 42,
 	collide = true,
 	animation = "cricket_anim",
+	animationFlying = "cricket_flying_anim",
 	desc = "Talk to a cricket",
 	portraitNeutral = "portrait_cricket_neutral",
 	portraitHappy = "portrait_cricket_happy",
