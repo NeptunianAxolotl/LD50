@@ -87,19 +87,19 @@ local characters = {
 -----------------------------------
 
 	{
-		name = "cricket_base_sitclose",
+		name = "firefly_base_sitclose1",
 		pos = {-9720, 870},
 	},
 	{
-		name = "cricket_base_sitclose",
+		name = "firefly_base_sitclose",
 		pos = {-10300, 460},
 	},
 	{
-		name = "cricket_base_sitclose",
+		name = "firefly_base_pun",
 		pos = {-10430, 1040},
 	},	
 	{
-		name = "cricket_base_sitclose",
+		name = "firefly_base_sitclose1",
 		pos = {-11020, 690},
 	},
 	
@@ -202,11 +202,11 @@ local characters = {
 -------------------------------
 
 	{
-		name = "beetle_base_sitclose",
+		name = "firefly_base_sitclose1",
 		pos = {-9260, -5660},
 	},
 	{
-		name = "beetle_base_sitclose",
+		name = "firefly_base_pun",
 		pos = {-10130, -6020},
 	},
 	--{ --third guy
@@ -219,12 +219,12 @@ local characters = {
 ----------------------------------
 
 	{
-		name = "beetle_base_sitclose",
+		name = "firefly_base_pun",
 		pos = {-6320, -8390},
 			data = {animDir = 0},
 	},
 	{
-		name = "beetle_base_sitclose",
+		name = "firefly_base_sitclose1",
 		pos = {-6040, -8380},
 			data = {animDir = math.pi},
 	},
