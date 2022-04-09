@@ -3,7 +3,7 @@ local IterableMap = require("include/IterableMap")
 local util = require("include/util")
 
 local FeatureDefs = util.LoadDefDirectory("defs/features")
-local terrainDef = (Global.USE_DEBUG_MAP and require("defs/debugTerrainDef")) or require("defs/terrainDef")
+local terrainDef = require("defs/levels/" .. Global.MAP_NAME .. "/terrainDef")
 local NewFeature = require("objects/feature")
 
 local self = {}

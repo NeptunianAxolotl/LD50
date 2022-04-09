@@ -3,7 +3,7 @@ local IterableMap = require("include/IterableMap")
 local util = require("include/util")
 
 local CharacterDefs = util.LoadDefDirectory("defs/characters")
-local characterPlacementDef = (Global.USE_DEBUG_MAP and require("defs/debugCharPlaceDef")) or require("defs/characterPlacementDef")
+local characterPlacementDef = require("defs/levels/" .. Global.MAP_NAME .. "/charPlaceDef")
 local NewGuy = require("objects/guy")
 
 local self = {}

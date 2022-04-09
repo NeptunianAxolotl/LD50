@@ -24,6 +24,8 @@ local globals = {
 	PLAYER_START_Y = -300,
 	DRAW_ENERGY_RINGS = true,
 	
+	MAP_NAME = "ld_jam",
+	
 	--DEBUG_SPACE_ZOOM_OUT = true,
 	--DEBUG_PRINT_CLICK_POS = true,
 	--DEBUG_FIRE_OVERRIDE = 15000,
@@ -32,7 +34,6 @@ local globals = {
 	--DEBUG_MAP_METRICS = true,
 	--DEBUG_CAMERA_ZOOM = 1,
 	--DEBUG_NO_SHADOW = true,
-	--USE_DEBUG_MAP = true,
 	--DEBUG_START_LIFETIME = 50 * 60,
 	--DEBUG_PRINT_FIRE = true,
 	--UNLOCK_ALL_TECH = true,

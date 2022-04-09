@@ -3,7 +3,7 @@ local IterableMap = require("include/IterableMap")
 local util = require("include/util")
 local Resources = require("resourceHandler")
 
-local groundDef = (Global.USE_DEBUG_MAP and require("defs/debugGroundDef")) or require("defs/groundDef")
+local groundDef = require("defs/levels/" .. Global.MAP_NAME .. "/groundDef")
 
 local self = {}
 local api = {}
